@@ -3,7 +3,7 @@ name: server testing
 on:
   push:
     paths:
-      - server
+      - server/**
 
 jobs:
   test:
