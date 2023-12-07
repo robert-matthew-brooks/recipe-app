@@ -17,8 +17,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      
-      -name: use psql
+
+      - name: use psql
         uses: harmon758/postgresql-action@v1
         with:
           postgresql db: 'test_db'
