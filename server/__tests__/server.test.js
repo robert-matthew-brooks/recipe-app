@@ -8,4 +8,8 @@ describe('ALL endpoint not found', () => {
   });
 });
 
-// comment to test triggering github actions
+describe('GET /status', () => {
+  it('200: should confirm server is up', async () => {
+    await supertest(server).get('/status').expect(200);
+  });
+});
