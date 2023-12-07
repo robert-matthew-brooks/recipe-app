@@ -6,7 +6,8 @@ on:
       - server
 
 jobs:
-  run-unit-tests:
+  test:
+    name: run unit tests
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -28,6 +29,6 @@ jobs:
         working-directory: server
         run: npm ci
 
-      - name: run unit tests
+      - name: run jest
         working-directory: server
         run: PGDATABASE=test_db PGUSER=test_user PGPASSWORD=test_password npm test
