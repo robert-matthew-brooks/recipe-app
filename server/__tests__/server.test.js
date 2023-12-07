@@ -7,3 +7,5 @@ describe('ALL endpoint not found', () => {
     await supertest(server).get('/not-an-endpoint').expect(404);
   });
 });
+
+// comment to test triggering github actions
