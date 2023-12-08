@@ -48,7 +48,15 @@ describe('GET /recipes/:recipe_id', () => {
     }
   });
 
-  // TODO error handling
+  describe('error handling', () => {
+    it('400: should return an error if recipe_id is not a number', async () => {
+      await supertest(server).get('/recipes/invalid').expect(400);
+    });
+
+    it('404: should return an error if recipe_id is not in database', async () => {
+      await supertest(server).get('/recipes/999').expect(404);
+    });
+  });
 });
 
 describe('GET /recipes', () => {
