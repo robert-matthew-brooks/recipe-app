@@ -1,5 +1,5 @@
 const express = require('express');
-const recipesRouter = require('./error-handlers/recipes-router');
+const recipesRouter = require('./routers/recipes-router');
 const errHandlers = require('./error-handlers/error-handlers');
 
 const server = express();
