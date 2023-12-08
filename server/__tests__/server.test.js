@@ -25,7 +25,7 @@ describe('GET /health', () => {
 });
 
 describe('GET /recipes/:recipe_id', () => {
-  it('200: should return an object with correct properties', async () => {
+  it('200: should return a recipe object with correct properties', async () => {
     const { body } = await supertest(server).get('/recipes/1').expect(200);
 
     expect(body.recipe).toMatchObject({
@@ -47,4 +47,26 @@ describe('GET /recipes/:recipe_id', () => {
       expect(typeof step).toBe('string');
     }
   });
+
+  // TODO error handling
+});
+
+describe('GET /recipes', () => {
+  it('should return 10 recipe objects', async () => {
+    const { body } = await supertest(server).get('/recipes').expect(200);
+    expect(body.recipes).toHaveLength(10);
+  });
+
+  it('should return an array of recipe object with the correct properties', async () => {
+    const { body } = await supertest(server).get('/recipes').expect(200);
+
+    for (const recipe of body.recipes) {
+      expect(recipe).toMatchObject({
+        id: expect.any(Number),
+        name: expect.any(String),
+      });
+    }
+  });
+
+  // TODO error handling
 });

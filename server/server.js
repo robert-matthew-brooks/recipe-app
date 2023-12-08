@@ -3,6 +3,8 @@ const recipesRouter = require('./routers/recipes-router');
 
 const server = express();
 
+server.set('json spaces', 2);
+
 server.get('/health', (_req, res) => {
   res.send('Server OK');
 });

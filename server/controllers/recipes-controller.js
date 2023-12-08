@@ -5,7 +5,12 @@ async function getOne(req, res) {
 
   // TODO wrap in try/catch, pass to custom error handler
   const { recipe } = await recipesModel.getOne(recipeId);
-  res.status(200).send({ recipe });
+  res.send({ recipe });
 }
 
-module.exports = { getOne };
+async function getAll(req, res) {
+  const { recipes } = await recipesModel.getAll();
+  res.send({ recipes });
+}
+
+module.exports = { getOne, getAll };

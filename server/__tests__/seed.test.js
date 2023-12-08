@@ -13,7 +13,7 @@ afterAll(async () => {
 describe('ingredients table', () => {
   it('should contain 10 ingredients', async () => {
     const { rows } = await pool.query('SELECT * FROM ingredients;');
-    expect(rows.length).toBe(10);
+    expect(rows).toHaveLength(10);
   });
 
   it('should return objects with correct properties', async () => {
@@ -30,27 +30,9 @@ describe('ingredients table', () => {
 });
 
 describe('recipes table', () => {
-  it('should contain 3 recipes', async () => {
+  it('should contain 10 recipes', async () => {
     const { rows } = await pool.query('SELECT * FROM recipes;');
-    expect(rows.length).toBe(3);
-  });
-
-  it('should return objects with correct properties', async () => {
-    const { rows } = await pool.query('SELECT * FROM recipes;');
-
-    for (const recipe of rows) {
-      expect(recipe).toMatchObject({
-        id: expect.any(Number),
-        steps: expect.any(Array),
-      });
-    }
-  });
-});
-
-describe('recipes table', () => {
-  it('should contain 3 recipes', async () => {
-    const { rows } = await pool.query('SELECT * FROM recipes;');
-    expect(rows.length).toBe(3);
+    expect(rows).toHaveLength(10);
   });
 
   it('should return objects with correct properties', async () => {
@@ -66,9 +48,9 @@ describe('recipes table', () => {
 });
 
 describe('recipes_ingredients junction table', () => {
-  it('should contain 15 junctions (3 recipes * 5 ingredients)', async () => {
+  it('should contain 50 junctions (10 recipes * 5 ingredients)', async () => {
     const { rows } = await pool.query('SELECT * FROM recipes_ingredients;');
-    expect(rows.length).toBe(15);
+    expect(rows).toHaveLength(50);
   });
 
   it('should return objects with correct properties', async () => {
