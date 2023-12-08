@@ -18,9 +18,9 @@ describe('ALL endpoint not found', () => {
   });
 });
 
-describe('GET /', () => {
+describe('GET /health', () => {
   it('200: should confirm server is up', async () => {
-    await supertest(server).get('/').expect(200);
+    await supertest(server).get('/health').expect(200);
   });
 });
 
@@ -34,8 +34,6 @@ describe('GET /recipes/:recipe_id', () => {
       ingredients: expect.any(Array),
       steps: expect.any(Array),
     });
-
-    console.dir(body.recipe, { depth: null });
 
     for (const ingredient of body.recipe.ingredients) {
       expect(ingredient).toMatchObject({

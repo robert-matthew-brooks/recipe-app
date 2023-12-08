@@ -3,7 +3,7 @@ const recipesRouter = require('./routers/recipes-router');
 
 const server = express();
 
-server.get('/', (_req, res) => {
+server.get('/health', (_req, res) => {
   res.send('Server OK');
 });
 
