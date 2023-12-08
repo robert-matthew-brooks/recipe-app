@@ -1,7 +1,9 @@
 const pool = require('../db/pool');
+const { rejectIfNotNumber, rejectIfNotInDb } = require('../util/validate');
 
 async function getOne(recipeId) {
-  // TODO validate id
+  rejectIfNotNumber({ recipeId });
+  await rejectIfNotInDb('recipes', 'id', recipeId);
 
   const { rows } = await pool.query(
     `
@@ -30,4 +32,25 @@ async function getOne(recipeId) {
   return { recipe: rows[0] };
 }
 
-module.exports = { getOne };
+async function getAll() {
+  // TODO get search term from request
+  const searchTerm = '';
+
+  const { rows } = await pool.query(
+    `
+      SELECT
+        r.id,
+        r.name
+      FROM recipes_ingredients ri
+      INNER JOIN recipes r
+        ON r.id = ri.recipe_id
+        AND r.name LIKE $1
+      GROUP BY r.id;
+    `,
+    [`%${searchTerm}%`]
+  );
+
+  return { recipes: rows };
+}
+
+module.exports = { getOne, getAll };
