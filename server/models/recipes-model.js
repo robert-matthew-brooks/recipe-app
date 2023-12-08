@@ -1,7 +1,9 @@
 const pool = require('../db/pool');
+const { rejectIfNotNumber, rejectIfNotInDb } = require('../util/validate');
 
 async function getOne(recipeId) {
-  // TODO validate id
+  rejectIfNotNumber({ recipeId });
+  await rejectIfNotInDb('recipes', 'id', recipeId);
 
   const { rows } = await pool.query(
     `
