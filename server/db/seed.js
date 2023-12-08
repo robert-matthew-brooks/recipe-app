@@ -1,6 +1,7 @@
+const pool = require('./pool');
 const format = require('pg-format');
 
-async function seed(client, data) {
+async function seed(data) {
   const { ingredients, recipes } = data;
 
   /******************/
@@ -8,12 +9,15 @@ async function seed(client, data) {
   /******************/
 
   const getId = async (name, table) => {
-    const { rows } = await client.query(
-      `
-        SELECT id FROM ${table}
-        WHERE name = $1;
-      `,
-      [name]
+    const { rows } = await pool.query(
+      format(
+        `
+          SELECT id FROM %s
+          WHERE name = %L;
+        `,
+        table,
+        name
+      )
     );
 
     return rows[0].id;
@@ -23,35 +27,35 @@ async function seed(client, data) {
   /* drop tables */
   /***************/
 
-  await client.query('DROP TABLE IF EXISTS recipes_ingredients;');
-  await client.query('DROP TABLE IF EXISTS ingredients;');
-  await client.query('DROP TABLE IF EXISTS recipes;');
+  await pool.query('DROP TABLE IF EXISTS recipes_ingredients CASCADE;');
+  await pool.query('DROP TABLE IF EXISTS ingredients CASCADE;');
+  await pool.query('DROP TABLE IF EXISTS recipes CASCADE;');
 
   /*****************/
   /* create tables */
   /*****************/
 
-  await client.query(`
+  await pool.query(`
     CREATE TABLE ingredients (
       id SERIAL PRIMARY KEY,
       name VARCHAR UNIQUE NOT NULL,
-      unit VARCHAR
+      units VARCHAR
     );
   `);
 
-  await client.query(
+  await pool.query(
     `
       CREATE TABLE recipes (
         id SERIAL PRIMARY KEY,
         name VARCHAR UNIQUE NOT NULL,
-        instructions VARCHAR[]
+        steps VARCHAR[]
       );
     `
   );
 
   // junction tables
 
-  await client.query(
+  await pool.query(
     `
       CREATE TABLE recipes_ingredients (
         id SERIAL PRIMARY KEY,
@@ -72,16 +76,16 @@ async function seed(client, data) {
     `
       INSERT INTO ingredients (
         name,
-        unit
+        units
       )
       VALUES %L
     `,
     ingredients.map((ingredient) => {
-      return [ingredient.name, ingredient.unit];
+      return [ingredient.name, ingredient.units];
     })
   );
 
-  await client.query(insertIngredientsSql);
+  await pool.query(insertIngredientsSql);
 
   // recipes
 
@@ -89,16 +93,16 @@ async function seed(client, data) {
     `
       INSERT INTO recipes (
         name,
-        instructions
+        steps
       )
-      VALUES %L
+      VALUES %L;
     `,
     recipes.map((recipe) => {
-      return [recipe.name, `{${recipe.instructions.map((el) => `"${el}"`)}}`];
+      return [recipe.name, `{${recipe.steps.map((el) => `"${el}"`)}}`];
     })
   );
 
-  await client.query(insertRecipesSql);
+  await pool.query(insertRecipesSql);
 
   // recipes-ingredients junction
 
@@ -125,12 +129,12 @@ async function seed(client, data) {
         ingredient_id,
         amount
       )
-      VALUES %L
+      VALUES %L;
     `,
     recipesIngredientsData
   );
 
-  await client.query(insertRecipesIngredientsSql);
+  await pool.query(insertRecipesIngredientsSql);
 }
 
 module.exports = seed;

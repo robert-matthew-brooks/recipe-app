@@ -8,13 +8,7 @@ const recipes = [
       { name: 'ingredient-4', amount: '10tbsp' },
       { name: 'ingredient-5', amount: '100kg' },
     ],
-    instructions: [
-      'instruction-1',
-      'instruction-2',
-      'instruction-3',
-      'instruction-4',
-      'instruction-5',
-    ],
+    steps: ['step-1', 'step-2', 'step-3', 'step-4', 'step-5'],
   },
   {
     name: 'recipe-2',
@@ -25,13 +19,7 @@ const recipes = [
       { name: 'ingredient-9', amount: '10tbsp' },
       { name: 'ingredient-10', amount: '100kg' },
     ],
-    instructions: [
-      'instruction-1',
-      'instruction-2',
-      'instruction-3',
-      'instruction-4',
-      'instruction-5',
-    ],
+    steps: ['step-1', 'step-2', 'step-3', 'step-4', 'step-5'],
   },
   {
     name: 'recipe-3',
@@ -42,13 +30,7 @@ const recipes = [
       { name: 'ingredient-7', amount: '10ml' },
       { name: 'ingredient-9', amount: '100tbsp' },
     ],
-    instructions: [
-      'instruction-1',
-      'instruction-2',
-      'instruction-3',
-      'instruction-4',
-      'instruction-5',
-    ],
+    steps: ['step-1', 'step-2', 'step-3', 'step-4', 'step-5'],
   },
 ];
 
