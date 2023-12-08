@@ -1,12 +1,23 @@
 const express = require('express');
+const recipesRouter = require('./routers/recipes-router');
 
 const server = express();
 
-server.get('/status', (_req, res, _next) => {
-  res.send('OK');
+server.get('/', (_req, res) => {
+  res.send('Server OK');
 });
 
-server.all('*', (_req, res, _next) => {
+/**********/
+/* routes */
+/**********/
+
+server.use('/recipes', recipesRouter);
+
+/******************/
+/* error handling */
+/******************/
+
+server.all('*', (_req, res) => {
   res.status(404).send('endpoint not found');
 });
 

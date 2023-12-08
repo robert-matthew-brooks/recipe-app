@@ -14,7 +14,7 @@ const recipes = [
       { name: 'Puff Pastry', amount: '160g' },
       { name: 'Eggs', amount: '1' },
     ],
-    instructions: [
+    steps: [
       'Preheat the oven to 200°C, take the meat out of the fridge, and boil a kettle.',
       'Put the chicken on a baking tray, and add oil, salt and pepper. Put in the oven for 15mins.',
       'Cut the bacon into pieces. Cut the leek lengthways then finely slice it. Peel and press the garlic.',
@@ -40,7 +40,7 @@ const recipes = [
       { name: 'Creme Fraiche', amount: '150g' },
       { name: 'Tenderstem Broccoli', amount: '200g' },
     ],
-    instructions: [
+    steps: [
       'Preheat the oven to 200°C and boil a kettle.',
       'Finely slice the shallot. Peel and press the garlic. Grate all the cheese.',
       'Add the pasta to a pan of boiling water and cook for 12mins.',
@@ -68,7 +68,7 @@ const recipes = [
       { name: 'Naan Bread', amount: '2' },
       { name: 'Mint Leaves', amount: '10g' },
     ],
-    instructions: [
+    steps: [
       'Preheat the oven to 200°C.',
       'Peel the potatoes and cut into chips. Put them on a baking tray and add oil, salt and pepper. Put in the oven for 30mins.',
       'Peel and chop the red onion in half. Finely dice one half, and grate the other half. Peel and press the garlic.',
