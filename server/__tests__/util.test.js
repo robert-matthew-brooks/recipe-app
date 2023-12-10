@@ -1,4 +1,4 @@
-const { rejectIfNotNumber, rejectIfNotInDb } = require('../util/validate');
+const { rejectIfFailsRegex, rejectIfNotInDb } = require('../util/validate');
 const pool = require('../db/pool');
 const seed = require('../db/seed');
 const data = require('../db/data/test');
@@ -12,22 +12,28 @@ afterAll(async () => {
 });
 
 describe('util/validate.js', () => {
-  describe('rejectIfNotNumber()', () => {
-    it('should not reject if provided with a number', () => {
+  describe('rejectIfFailsRegex()', () => {
+    it('should not reject if passes regex', () => {
       expect(() => {
-        rejectIfNotNumber({ input: 123 });
+        rejectIfFailsRegex({ input: 123 }, '^[\\d]+$');
+      }).not.toThrow();
+
+      expect(() => {
+        rejectIfFailsRegex({ input: '123' }, '^[\\d]+$');
+      }).not.toThrow();
+
+      expect(() => {
+        rejectIfFailsRegex({ input: 'abc' }, '^[\\w]+$');
       }).not.toThrow();
     });
 
-    it('should not reject if provided with a string of digits', () => {
+    it('should reject if fails regex', () => {
       expect(() => {
-        rejectIfNotNumber({ input: '123' });
-      }).not.toThrow();
-    });
+        rejectIfFailsRegex({ input: 'abc' }, '^[\\d]+$');
+      }).toThrow();
 
-    it('should reject if not provided with a number', () => {
       expect(() => {
-        rejectIfNotNumber({ input: 'abc' });
+        rejectIfFailsRegex({ input: '!?*' }, '^[\\w]+$');
       }).toThrow();
     });
   });

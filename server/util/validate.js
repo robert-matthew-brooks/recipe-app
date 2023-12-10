@@ -1,9 +1,10 @@
 const pool = require('../db/pool');
 const format = require('pg-format');
 
-function rejectIfNotNumber(values) {
+function rejectIfFailsRegex(values, regexStr) {
+  const regex = new RegExp(regexStr, 'i');
   for (const key in values) {
-    if (!/^\d+$/.test(values[key])) {
+    if (!regex.test(values[key])) {
       throw { status: 400, msg: `invalid ${key}` };
     }
   }
@@ -30,4 +31,4 @@ async function rejectIfNotInDb(table, field, value) {
   }
 }
 
-module.exports = { rejectIfNotNumber, rejectIfNotInDb };
+module.exports = { rejectIfFailsRegex, rejectIfNotInDb };

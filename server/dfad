@@ -1,0 +1,9 @@
+ id |  name  | password |                         favourites                         
+----+--------+----------+------------------------------------------------------------
+  1 | user-1 | x        | {"[object Promise]","[object Promise]"}
+  2 | user-2 | x        | {"[object Promise]","[object Promise]"}
+  3 | user-3 | x        | {"[object Promise]","[object Promise]","[object Promise]"}
+  4 | user-4 | x        | {}
+  5 | user-5 | x        | {"[object Promise]"}
+(5 rows)
+

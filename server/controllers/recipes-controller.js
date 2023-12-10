@@ -11,9 +11,23 @@ async function getOne(req, res, next) {
   }
 }
 
-async function getAll(req, res) {
-  const { recipes } = await recipesModel.getAll();
-  res.send({ recipes });
+async function getAll(req, res, next) {
+  const {
+    search_term: searchTerm,
+    ingredient_ids: ingredientIdsStr,
+    is_vegetarian: isVegetarianStr,
+  } = req.query;
+
+  try {
+    const { recipes } = await recipesModel.getAll(
+      searchTerm,
+      ingredientIdsStr,
+      isVegetarianStr
+    );
+    res.send({ recipes });
+  } catch (err) {
+    next(err);
+  }
 }
 
 module.exports = { getOne, getAll };
