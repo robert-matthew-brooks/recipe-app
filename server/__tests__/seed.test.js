@@ -52,28 +52,6 @@ describe('recipes table', () => {
   });
 });
 
-describe('recipes_ingredients junction table', () => {
-  it('should contain 50 junctions (10 recipes * 5 ingredients)', async () => {
-    const { rows } = await pool.query('SELECT * FROM recipes_ingredients;');
-    expect(rows).toHaveLength(50);
-  });
-
-  it('should return objects with correct properties', async () => {
-    const { rows: recipes } = await pool.query(
-      'SELECT * FROM recipes_ingredients;'
-    );
-
-    for (const recipe of recipes) {
-      expect(recipe).toMatchObject({
-        id: expect.any(Number),
-        recipe_id: expect.any(Number),
-        ingredient_id: expect.any(Number),
-        amount: expect.any(Number),
-      });
-    }
-  });
-});
-
 describe('users table', () => {
   it('should contain 5 users', async () => {
     const { rows } = await pool.query('SELECT * FROM users;');
@@ -87,6 +65,48 @@ describe('users table', () => {
       expect(user).toMatchObject({
         id: expect.any(Number),
         name: expect.any(String),
+        favourites: expect.any(Array),
+        list: expect.any(Array),
+      });
+    }
+  });
+});
+
+describe('recipes_ingredients junction table', () => {
+  it('should contain 50 junctions (10 recipes * 5 ingredients)', async () => {
+    const { rows } = await pool.query('SELECT * FROM recipes_ingredients;');
+    expect(rows).toHaveLength(50);
+  });
+
+  it('should return objects with correct properties', async () => {
+    const { rows } = await pool.query('SELECT * FROM recipes_ingredients;');
+
+    for (const junction of rows) {
+      expect(junction).toMatchObject({
+        id: expect.any(Number),
+        recipe_id: expect.any(Number),
+        ingredient_id: expect.any(Number),
+        amount: expect.any(Number),
+      });
+    }
+  });
+});
+
+describe('recipes_likes table', () => {
+  it('should contain 10 junctions', async () => {
+    const { rows } = await pool.query('SELECT * FROM recipe_likes;');
+    expect(rows).toHaveLength(10);
+  });
+
+  it('should return objects with correct properties', async () => {
+    const { rows } = await pool.query('SELECT * FROM recipe_likes;');
+
+    for (const junction of rows) {
+      expect(junction).toMatchObject({
+        id: expect.any(Number),
+        recipe_id: expect.any(Number),
+        user_id: expect.any(Number),
+        is_liked: expect.any(Boolean),
       });
     }
   });
