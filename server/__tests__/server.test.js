@@ -33,6 +33,7 @@ describe('GET /recipes/:recipe_id', () => {
       name: expect.any(String),
       ingredients: expect.any(Array),
       steps: expect.any(Array),
+      is_vegetarian: expect.any(Boolean),
     });
 
     for (const ingredient of body.recipe.ingredients) {
@@ -65,7 +66,7 @@ describe('GET /recipes', () => {
     expect(body.recipes).toHaveLength(10);
   });
 
-  it('should return an array of recipe object with the correct properties', async () => {
+  it('should return an array of recipe objects with the correct properties', async () => {
     const { body } = await supertest(server).get('/recipes').expect(200);
 
     for (const recipe of body.recipes) {
@@ -76,5 +77,47 @@ describe('GET /recipes', () => {
     }
   });
 
-  // TODO error handling
+  it('should filter 5 tagged recipe names', async () => {
+    const { body } = await supertest(server)
+      .get('/recipes?search_term=tag')
+      .expect(200);
+
+    expect(body.recipes).toHaveLength(5);
+  });
+
+  it('should allow URI encoded strings with % symbol', async () => {
+    await supertest(server)
+      .get('/recipes?search_term=string%20with%20spaces')
+      .expect(200);
+
+    const encodedSearchTerm = encodeURI('string with spaces');
+
+    await supertest(server)
+      .get(`/recipes?search_term=${encodedSearchTerm}`)
+      .expect(200);
+  });
+
+  it('should filter 3 vegetarian recipes', async () => {
+    const { body } = await supertest(server)
+      .get('/recipes?is_vegetarian=true')
+      .expect(200);
+
+    expect(body.recipes).toHaveLength(3);
+  });
+
+  it('should filter 3 vegetarian recipes for any provided value', async () => {
+    const { body } = await supertest(server)
+      .get('/recipes?is_vegetarian=some-other-value-!*$')
+      .expect(200);
+
+    expect(body.recipes).toHaveLength(3);
+  });
+
+  describe('error handling', () => {
+    it('400: should return an error if tag is not valid', async () => {
+      await supertest(server)
+        .get('/recipes?search_term=i*n*v*a*l*i*d')
+        .expect(400);
+    });
+  });
 });

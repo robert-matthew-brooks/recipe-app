@@ -48,7 +48,8 @@ async function seed(data) {
       CREATE TABLE recipes (
         id SERIAL PRIMARY KEY,
         name VARCHAR UNIQUE NOT NULL,
-        steps VARCHAR[]
+        steps VARCHAR[],
+        is_vegetarian BOOLEAN
       );
     `
   );
@@ -93,12 +94,17 @@ async function seed(data) {
     `
       INSERT INTO recipes (
         name,
-        steps
+        steps,
+        is_vegetarian
       )
       VALUES %L;
     `,
     recipes.map((recipe) => {
-      return [recipe.name, `{${recipe.steps.map((el) => `"${el}"`)}}`];
+      return [
+        recipe.name,
+        `{${recipe.steps.map((el) => `"${el}"`)}}`,
+        recipe.isVegetarian,
+      ];
     })
   );
 

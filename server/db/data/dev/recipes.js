@@ -26,6 +26,7 @@ const recipes = [
       'Put the contents of the pan in an oven dish. Cover with pastry and press in the edges to seal. Cook in the oven for 20mins.',
       'When the oven has 5mins left, cook the green beans in a pan of water for 5mins.',
     ],
+    isVegetarian: false,
   },
   {
     name: 'Penne & Cheese',
@@ -51,6 +52,7 @@ const recipes = [
       'Add the cheese to the pan and stir until it has melted. Add salt and pepper, then stir in the pasta. Transfer to an overproof dish and cook in the oven for 5mins.',
       'Cook the broccoli in a pan with oil for 2mins. Add salt and pepper, and a splash of water.',
     ],
+    isVegetarian: false,
   },
   {
     name: 'Beef Kebab',
@@ -79,6 +81,7 @@ const recipes = [
       'Dice the inner cucumber and tomato. Mix in a bowl with the diced onion and add coriander to make a salad.',
       'Heat the naan bread in the oven for 3mins. Add the kebabs and masala sauce to the warm naan breads.',
     ],
+    isVegetarian: false,
   },
 ];
 

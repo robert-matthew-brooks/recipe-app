@@ -9,6 +9,7 @@ const recipes = [
       { name: 'ingredient-5', amount: '100kg' },
     ],
     steps: ['step-1', 'step-2', 'step-3', 'step-4', 'step-5'],
+    isVegetarian: false,
   },
   {
     name: 'recipe-2',
@@ -28,6 +29,7 @@ const recipes = [
       'step-6',
       'step-7',
     ],
+    isVegetarian: true,
   },
   {
     name: 'recipe-3',
@@ -39,6 +41,7 @@ const recipes = [
       { name: 'ingredient-9', amount: '100tbsp' },
     ],
     steps: ['step-1', 'step-2', 'step-3'],
+    isVegetarian: false,
   },
   {
     name: 'recipe-4',
@@ -50,6 +53,7 @@ const recipes = [
       { name: 'ingredient-5', amount: '100kg' },
     ],
     steps: ['step-1', 'step-2', 'step-3', 'step-4', 'step-5'],
+    isVegetarian: false,
   },
   {
     name: 'recipe-5',
@@ -69,9 +73,10 @@ const recipes = [
       'step-6',
       'step-7',
     ],
+    isVegetarian: true,
   },
   {
-    name: 'recipe-6',
+    name: 'recipe-6-tag',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-3', amount: '2g' },
@@ -80,9 +85,10 @@ const recipes = [
       { name: 'ingredient-9', amount: '100tbsp' },
     ],
     steps: ['step-1', 'step-2', 'step-3'],
+    isVegetarian: false,
   },
   {
-    name: 'recipe-7',
+    name: 'recipe-7-tag',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-2', amount: '2ml' },
@@ -91,9 +97,10 @@ const recipes = [
       { name: 'ingredient-5', amount: '100kg' },
     ],
     steps: ['step-1', 'step-2', 'step-3', 'step-4', 'step-5'],
+    isVegetarian: false,
   },
   {
-    name: 'recipe-8',
+    name: 'recipe-8-tag',
     ingredients: [
       { name: 'ingredient-6', amount: '1' },
       { name: 'ingredient-7', amount: '2ml' },
@@ -110,9 +117,10 @@ const recipes = [
       'step-6',
       'step-7',
     ],
+    isVegetarian: true,
   },
   {
-    name: 'recipe-9',
+    name: 'recipe-9-tag',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-3', amount: '2g' },
@@ -121,9 +129,10 @@ const recipes = [
       { name: 'ingredient-9', amount: '100tbsp' },
     ],
     steps: ['step-1', 'step-2', 'step-3'],
+    isVegetarian: false,
   },
   {
-    name: 'recipe-10',
+    name: 'recipe-10-tag',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-2', amount: '2ml' },
@@ -132,6 +141,7 @@ const recipes = [
       { name: 'ingredient-5', amount: '100kg' },
     ],
     steps: ['step-1', 'step-2', 'step-3', 'step-4', 'step-5'],
+    isVegetarian: false,
   },
 ];
 

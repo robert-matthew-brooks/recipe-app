@@ -1,8 +1,8 @@
 const pool = require('../db/pool');
-const { rejectIfNotNumber, rejectIfNotInDb } = require('../util/validate');
+const { rejectIfFailsRegex, rejectIfNotInDb } = require('../util/validate');
 
 async function getOne(recipeId) {
-  rejectIfNotNumber({ recipeId });
+  rejectIfFailsRegex({ recipeId }, '^[\\d]+$');
   await rejectIfNotInDb('recipes', 'id', recipeId);
 
   const { rows } = await pool.query(
@@ -17,7 +17,8 @@ async function getOne(recipeId) {
             'units', i.units
           )
         ) AS ingredients,
-        r.steps
+        r.steps,
+        r.is_vegetarian
       FROM recipes r
       INNER JOIN recipes_ingredients ri
         ON r.id = ri.recipe_id
@@ -32,9 +33,8 @@ async function getOne(recipeId) {
   return { recipe: rows[0] };
 }
 
-async function getAll() {
-  // TODO get search term from request
-  const searchTerm = '';
+async function getAll(searchTerm = '', isVegetarian) {
+  rejectIfFailsRegex({ searchTerm }, '^[\\w\\s%]*$');
 
   const { rows } = await pool.query(
     `
@@ -44,7 +44,8 @@ async function getAll() {
       FROM recipes_ingredients ri
       INNER JOIN recipes r
         ON r.id = ri.recipe_id
-        AND r.name LIKE $1
+        AND LOWER(r.name) LIKE LOWER($1)
+        AND r.is_vegetarian IS NOT ${isVegetarian ? 'FALSE' : 'NULL'}
       GROUP BY r.id;
     `,
     [`%${searchTerm}%`]

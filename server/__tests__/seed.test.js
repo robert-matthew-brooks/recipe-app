@@ -42,6 +42,7 @@ describe('recipes table', () => {
       expect(recipe).toMatchObject({
         id: expect.any(Number),
         steps: expect.any(Array),
+        is_vegetarian: expect.any(Boolean),
       });
     }
   });
