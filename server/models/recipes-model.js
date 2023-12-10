@@ -1,4 +1,5 @@
 const pool = require('../db/pool');
+const format = require('pg-format');
 const { rejectIfFailsRegex, rejectIfNotInDb } = require('../util/validate');
 
 async function getOne(recipeId) {
@@ -33,8 +34,26 @@ async function getOne(recipeId) {
   return { recipe: rows[0] };
 }
 
-async function getAll(searchTerm = '', isVegetarian) {
+async function getAll(searchTerm, ingredientIdsStr, isVegetarianStr) {
+  const ingredientIds = ingredientIdsStr ? JSON.parse(ingredientIdsStr) : [];
+  const isVegetarian = !!isVegetarianStr;
+
   rejectIfFailsRegex({ searchTerm }, '^[\\w\\s%]*$');
+  ingredientIds.forEach((ingredientId) => {
+    rejectIfFailsRegex({ ingredientId }, '^\\d+$');
+  });
+
+  // optional sql query strings
+
+  const searchTermQueryStr = format(
+    `AND LOWER(r.name) LIKE LOWER('%%%s%%')`,
+    searchTerm
+  );
+  const ingredientsQueryStr = format(
+    `AND ri.ingredient_id = ANY('{%s}')`,
+    ingredientIds
+  );
+  const vegetarianQueryStr = 'AND r.is_vegetarian IS TRUE';
 
   const { rows } = await pool.query(
     `
@@ -44,11 +63,11 @@ async function getAll(searchTerm = '', isVegetarian) {
       FROM recipes_ingredients ri
       INNER JOIN recipes r
         ON r.id = ri.recipe_id
-        AND LOWER(r.name) LIKE LOWER($1)
-        AND r.is_vegetarian IS NOT ${isVegetarian ? 'FALSE' : 'NULL'}
+        ${searchTerm ? searchTermQueryStr : ''}
+        ${ingredientIds.length > 0 ? ingredientsQueryStr : ''}
+        ${isVegetarian ? vegetarianQueryStr : ''}
       GROUP BY r.id;
-    `,
-    [`%${searchTerm}%`]
+    `
   );
 
   return { recipes: rows };

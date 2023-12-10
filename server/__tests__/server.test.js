@@ -97,6 +97,16 @@ describe('GET /recipes', () => {
       .expect(200);
   });
 
+  it('should filter 7 recipes with specific ingredients', async () => {
+    const ingredientIdsStr = JSON.stringify([1, 3]);
+
+    const { body } = await supertest(server)
+      .get(`/recipes?ingredient_ids=${ingredientIdsStr}`)
+      .expect(200);
+
+    expect(body.recipes).toHaveLength(7);
+  });
+
   it('should filter 3 vegetarian recipes', async () => {
     const { body } = await supertest(server)
       .get('/recipes?is_vegetarian=true')
@@ -117,6 +127,14 @@ describe('GET /recipes', () => {
     it('400: should return an error if tag is not valid', async () => {
       await supertest(server)
         .get('/recipes?search_term=i*n*v*a*l*i*d')
+        .expect(400);
+    });
+
+    it('400: should return an error if ingredient id values not valid', async () => {
+      const ingredientIdsStr = JSON.stringify([1, 2, 3, 'invalid']);
+
+      await supertest(server)
+        .get(`/recipes?ingredient_ids=${ingredientIdsStr}`)
         .expect(400);
     });
   });
