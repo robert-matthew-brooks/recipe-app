@@ -46,7 +46,7 @@ async function getAll(searchTerm, ingredientIdsStr, isVegetarianStr) {
   // optional sql query strings
 
   const searchTermQueryStr = format(
-    `AND LOWER(r.name) LIKE LOWER('%%%s%%')`,
+    `AND LOWER(r.name) LIKE LOWER('%%%s%%')`, // (%%%s%%) --> (%searchTerm%), with %% as escape for %
     searchTerm
   );
   const ingredientsQueryStr = format(
