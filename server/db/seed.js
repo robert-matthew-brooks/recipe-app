@@ -1,7 +1,7 @@
 const pool = require('./pool');
 const format = require('pg-format');
 
-async function seed({ ingredients, recipes, users }) {
+async function seed({ recipes, users }) {
   /******************/
   /* util functions */
   /******************/
@@ -108,6 +108,23 @@ async function seed({ ingredients, recipes, users }) {
 
   // ingredients
 
+  const ingredientsData = [];
+
+  for (const recipe of recipes) {
+    for (const ingredient of recipe.ingredients) {
+      const isDuplicate = ingredientsData.some(
+        (el) => el.name === ingredient.name
+      );
+
+      if (!isDuplicate) {
+        ingredientsData.push({
+          name: ingredient.name,
+          units: ingredient.amount.replace(/[\d.]/g, ''),
+        });
+      }
+    }
+  }
+
   const insertIngredientsSql = format(
     `
       INSERT INTO ingredients (
@@ -116,7 +133,7 @@ async function seed({ ingredients, recipes, users }) {
       )
       VALUES %L
     `,
-    ingredients.map((ingredient) => {
+    ingredientsData.map((ingredient) => {
       return [ingredient.name, ingredient.units];
     })
   );

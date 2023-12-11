@@ -141,3 +141,9 @@ describe('GET /recipes', () => {
     });
   });
 });
+
+// TODO list of completed recipes on user profile
+
+// TODO filter recipes by user_id
+
+// TODO get /users/:user_id
