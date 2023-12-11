@@ -73,7 +73,8 @@ async function seed({ recipes, users }) {
         name VARCHAR UNIQUE NOT NULL,
         password VARCHAR NOT NULL,
         favourites INT[],
-        list INT[]
+        list INT[],
+        done INT[]
       );
     `
   );
@@ -166,7 +167,8 @@ async function seed({ recipes, users }) {
         name,
         password,
         favourites,
-        list
+        list,
+        done
       )
       VALUES %L;
     `,
@@ -177,6 +179,7 @@ async function seed({ recipes, users }) {
           user.password,
           arrToSqlArr(await getIdList(user.favourites, 'recipes')),
           arrToSqlArr(await getIdList(user.list, 'recipes')),
+          arrToSqlArr(await getIdList(user.done, 'recipes')),
         ];
       })
     )

@@ -67,6 +67,7 @@ describe('users table', () => {
         name: expect.any(String),
         favourites: expect.any(Array),
         list: expect.any(Array),
+        done: expect.any(Array),
       });
     }
   });

@@ -142,10 +142,10 @@ describe('GET /recipes', () => {
   });
 });
 
-// TODO list of completed recipes on user profile
+// TODO get /users/:user_id
 
 // TODO filter recipes by user_id
 
-// TODO get /users/:user_id
-
 // TODO order recipe results by likes / date (add created_at field)
+
+// TODO comments
