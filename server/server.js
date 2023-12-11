@@ -6,6 +6,8 @@ const server = express();
 
 server.set('json spaces', 2);
 
+// TODO sign in middleware
+
 server.get('/health', (_req, res) => {
   res.send('Server OK');
 });
