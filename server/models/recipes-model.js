@@ -3,7 +3,7 @@ const format = require('pg-format');
 const { rejectIfFailsRegex, rejectIfNotInDb } = require('../util/validate');
 
 async function getOne(recipeSlug) {
-  await rejectIfNotInDb('recipes', 'slug', recipeSlug);
+  await rejectIfNotInDb(recipeSlug, 'slug', 'recipes');
 
   const { rows } = await pool.query(
     `

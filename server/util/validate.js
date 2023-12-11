@@ -10,7 +10,7 @@ function rejectIfFailsRegex(values, regexStr) {
   }
 }
 
-async function rejectIfNotInDb(table, field, value) {
+async function rejectIfNotInDb(value, field, table) {
   const { rows } = await pool.query(
     format(
       `
