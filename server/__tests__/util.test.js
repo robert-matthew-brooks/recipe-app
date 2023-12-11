@@ -43,7 +43,7 @@ describe('util/validate.js', () => {
       let returnedError;
 
       try {
-        await rejectIfNotInDb('recipes', 'slug', 'recipe-1');
+        await rejectIfNotInDb('recipe-1', 'slug', 'recipes');
       } catch (err) {
         returnedError = err;
       }
@@ -55,7 +55,7 @@ describe('util/validate.js', () => {
       let returnedError;
 
       try {
-        await rejectIfNotInDb('recipes', 'slug', 'not-a-recipe');
+        await rejectIfNotInDb('not-a-recipe', 'slug', 'recipes');
       } catch (err) {
         returnedError = err;
       }

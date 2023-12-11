@@ -1,0 +1,33 @@
+.RecipeCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  outline: 1px solid lightslategray;
+}
+
+.RecipeCard:hover {
+  outline-color: red;
+  z-index: 1;
+}
+
+.RecipeCard--img-box {
+  width: 100%;
+  aspect-ratio: 1;
+  background-size: cover;
+  background-position: center;
+}
+
+.RecipeCard--title {
+  width: fit-content;
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.RecipeCard--author {
+  color: gray;
+  font-size: 0.8rem;
+  font-style: italic;
+}

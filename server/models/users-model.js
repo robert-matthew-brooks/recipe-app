@@ -2,7 +2,7 @@ const pool = require('../db/pool');
 const { rejectIfNotInDb } = require('../util/validate');
 
 async function getOne(userName) {
-  await rejectIfNotInDb('users', 'name', userName);
+  await rejectIfNotInDb(userName, 'name', 'users');
 
   const { rows } = await pool.query(
     `

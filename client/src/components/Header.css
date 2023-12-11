@@ -1,0 +1,18 @@
+#Header {
+  background-size: cover;
+  background-position: center;
+}
+
+#Header--inner {
+  height: 15rem;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 0;
+}
+
+#Header--title {
+  margin: 0 3rem;
+  padding: 1.5rem 2rem 1rem 2rem;
+  font-size: 3rem;
+  background-color: white;
+}
