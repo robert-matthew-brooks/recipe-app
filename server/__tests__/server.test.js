@@ -34,6 +34,7 @@ describe('GET /recipes/:recipe_id', () => {
       ingredients: expect.any(Array),
       steps: expect.any(Array),
       is_vegetarian: expect.any(Boolean),
+      likes: expect.any(Number),
     });
 
     for (const ingredient of body.recipe.ingredients) {
@@ -73,6 +74,7 @@ describe('GET /recipes', () => {
       expect(recipe).toMatchObject({
         id: expect.any(Number),
         name: expect.any(String),
+        likes: expect.any(Number),
       });
     }
   });

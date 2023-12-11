@@ -93,9 +93,9 @@ describe('recipes_ingredients junction table', () => {
 });
 
 describe('recipes_likes table', () => {
-  it('should contain 10 junctions', async () => {
+  it('should contain 13 junctions', async () => {
     const { rows } = await pool.query('SELECT * FROM recipe_likes;');
-    expect(rows).toHaveLength(10);
+    expect(rows).toHaveLength(13);
   });
 
   it('should return objects with correct properties', async () => {
