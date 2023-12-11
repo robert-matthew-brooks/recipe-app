@@ -2,9 +2,10 @@ const users = [
   {
     name: 'Bob',
     password: 'password123',
-    favourites: ['Chicken, Leek and Bacon Pie'],
-    list: ['Chicken, Leek and Bacon Pie', 'Penne & Cheese', 'Beef Kebab'],
-    likes: ['Penne & Cheese'],
+    favourites: ['chicken-leek-and-bacon-pie'],
+    list: ['chicken-leek-and-bacon-pie', 'penne-and-cheese', 'beef-kebab'],
+    done: ['chicken-leek-and-bacon-pie'],
+    likes: ['penne-and-cheese'],
   },
 ];
 

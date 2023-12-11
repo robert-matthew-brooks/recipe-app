@@ -45,6 +45,8 @@ describe('recipes table', () => {
     for (const recipe of recipes) {
       expect(recipe).toMatchObject({
         id: expect.any(Number),
+        name: expect.any(String),
+        slug: expect.any(String),
         steps: expect.any(Array),
         is_vegetarian: expect.any(Boolean),
       });

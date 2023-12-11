@@ -1,6 +1,7 @@
 const recipes = [
   {
-    name: 'recipe-1',
+    name: 'Recipe One',
+    slug: 'recipe-1',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-2', amount: '2ml' },
@@ -12,7 +13,8 @@ const recipes = [
     isVegetarian: false,
   },
   {
-    name: 'recipe-2',
+    name: 'Recipe Two',
+    slug: 'recipe-2',
     ingredients: [
       { name: 'ingredient-6', amount: '1' },
       { name: 'ingredient-7', amount: '2ml' },
@@ -32,7 +34,8 @@ const recipes = [
     isVegetarian: true,
   },
   {
-    name: 'recipe-3',
+    name: 'Recipe Three',
+    slug: 'recipe-3',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-3', amount: '2g' },
@@ -44,7 +47,8 @@ const recipes = [
     isVegetarian: false,
   },
   {
-    name: 'recipe-4',
+    name: 'Recipe Four',
+    slug: 'recipe-4',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-2', amount: '2ml' },
@@ -56,7 +60,8 @@ const recipes = [
     isVegetarian: false,
   },
   {
-    name: 'recipe-5',
+    name: 'Recipe Five',
+    slug: 'recipe-5',
     ingredients: [
       { name: 'ingredient-6', amount: '1' },
       { name: 'ingredient-7', amount: '2ml' },
@@ -76,7 +81,8 @@ const recipes = [
     isVegetarian: true,
   },
   {
-    name: 'recipe-6-tag',
+    name: 'Recipe Six (tagged)',
+    slug: 'recipe-6-tag',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-3', amount: '2g' },
@@ -88,7 +94,8 @@ const recipes = [
     isVegetarian: false,
   },
   {
-    name: 'recipe-7-tag',
+    name: 'Recipe Seven (tagged)',
+    slug: 'recipe-7-tag',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-2', amount: '2ml' },
@@ -100,7 +107,8 @@ const recipes = [
     isVegetarian: false,
   },
   {
-    name: 'recipe-8-tag',
+    name: 'Recipe Eight (tagged)',
+    slug: 'recipe-8-tag',
     ingredients: [
       { name: 'ingredient-6', amount: '1' },
       { name: 'ingredient-7', amount: '2ml' },
@@ -120,7 +128,8 @@ const recipes = [
     isVegetarian: true,
   },
   {
-    name: 'recipe-9-tag',
+    name: 'Recipe Nine (tagged)',
+    slug: 'recipe-9-tag',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-3', amount: '2g' },
@@ -132,7 +141,8 @@ const recipes = [
     isVegetarian: false,
   },
   {
-    name: 'recipe-10-tag',
+    name: 'Recipe Ten (tagged)',
+    slug: 'recipe-10-tag',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-2', amount: '2ml' },

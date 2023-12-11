@@ -1,6 +1,7 @@
 const recipes = [
   {
     name: 'Chicken, Leek and Bacon Pie',
+    slug: 'chicken-leek-and-bacon-pie',
     ingredients: [
       { name: 'Chicken Breasts', amount: '2' },
       { name: 'Leeks', amount: '1' },
@@ -31,6 +32,7 @@ const recipes = [
   },
   {
     name: 'Penne & Cheese',
+    slug: 'penne-and-cheese',
     ingredients: [
       { name: 'Shallot', amount: '1' },
       { name: 'Garlic Cloves', amount: '1' },
@@ -58,6 +60,7 @@ const recipes = [
   },
   {
     name: 'Beef Kebab',
+    slug: 'beef-kebab',
     ingredients: [
       { name: 'Red Onions', amount: '1' },
       { name: 'Tomatoes', amount: '1' },
@@ -88,6 +91,7 @@ const recipes = [
   },
   {
     name: 'Crispy Fried Chicken Burger',
+    slug: 'crispy-fried-chicken-burger',
     ingredients: [
       { name: 'Tomatoes', amount: '1' },
       { name: 'Gem Lettuce', amount: '1' },
@@ -118,6 +122,7 @@ const recipes = [
   },
   {
     name: 'Garlicky Chicken Kiev',
+    slug: 'garlicky-chicken-kiev',
     ingredients: [
       { name: 'Lemons', amount: '1' },
       { name: 'Eggs', amount: '1' },

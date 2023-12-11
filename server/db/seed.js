@@ -6,25 +6,26 @@ async function seed({ recipes, users }) {
   /* util functions */
   /******************/
 
-  const getId = async (name, table) => {
+  const getId = async (value, field, table) => {
     const { rows } = await pool.query(
       format(
         `
           SELECT id FROM %s
-          WHERE name = %L;
+          WHERE %s = %L;
         `,
         table,
-        name
+        field,
+        value
       )
     );
 
     return rows[0].id;
   };
 
-  const getIdList = async (names, table) => {
+  const getIdList = async (values, field, table) => {
     return await Promise.all(
-      names.map(async (name) => {
-        return await getId(name, table);
+      values.map(async (value) => {
+        return await getId(value, field, table);
       })
     );
   };
@@ -59,7 +60,8 @@ async function seed({ recipes, users }) {
     `
       CREATE TABLE recipes (
         id SERIAL PRIMARY KEY,
-        name VARCHAR UNIQUE NOT NULL,
+        name VARCHAR NOT NULL,
+        slug VARCHAR UNIQUE NOT NULL,
         steps VARCHAR[],
         is_vegetarian BOOLEAN
       );
@@ -147,13 +149,19 @@ async function seed({ recipes, users }) {
     `
       INSERT INTO recipes (
         name,
+        slug,
         steps,
         is_vegetarian
       )
       VALUES %L;
     `,
     recipes.map((recipe) => {
-      return [recipe.name, arrToSqlArr(recipe.steps), recipe.isVegetarian];
+      return [
+        recipe.name,
+        recipe.slug,
+        arrToSqlArr(recipe.steps),
+        recipe.isVegetarian,
+      ];
     })
   );
 
@@ -177,9 +185,9 @@ async function seed({ recipes, users }) {
         return [
           user.name,
           user.password,
-          arrToSqlArr(await getIdList(user.favourites, 'recipes')),
-          arrToSqlArr(await getIdList(user.list, 'recipes')),
-          arrToSqlArr(await getIdList(user.done, 'recipes')),
+          arrToSqlArr(await getIdList(user.favourites, 'slug', 'recipes')),
+          arrToSqlArr(await getIdList(user.list, 'slug', 'recipes')),
+          arrToSqlArr(await getIdList(user.done, 'slug', 'recipes')),
         ];
       })
     )
@@ -192,10 +200,10 @@ async function seed({ recipes, users }) {
   const recipesIngredientsData = [];
 
   for (const recipe of recipes) {
-    const recipeId = await getId(recipe.name, 'recipes');
+    const recipeId = await getId(recipe.slug, 'slug', 'recipes');
 
     for (const ingredient of recipe.ingredients) {
-      const ingredientId = await getId(ingredient.name, 'ingredients');
+      const ingredientId = await getId(ingredient.name, 'name', 'ingredients');
 
       recipesIngredientsData.push([
         recipeId,
@@ -224,10 +232,10 @@ async function seed({ recipes, users }) {
   const recipeLikesData = [];
 
   for (const user of users) {
-    const userId = await getId(user.name, 'users');
+    const userId = await getId(user.name, 'name', 'users');
 
-    for (const recipeName of user.likes) {
-      const recipeId = await getId(recipeName, 'recipes');
+    for (const recipeSlug of user.likes) {
+      const recipeId = await getId(recipeSlug, 'slug', 'recipes');
 
       recipeLikesData.push([
         recipeId,
