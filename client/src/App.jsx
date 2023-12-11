@@ -1,7 +1,7 @@
 import './App.css';
 import Navbar from './components/Navbar';
 import Header from './components/Header';
-import Recipes from './components/Recipes';
+import AllRecipes from './components/AllRecipes';
 import Footer from './components/Footer';
 
 export default function App() {
@@ -10,7 +10,7 @@ export default function App() {
       <Navbar />
 
       <Header title="Browse Recipes" />
-      <Recipes />
+      <AllRecipes />
 
       <Footer />
     </div>

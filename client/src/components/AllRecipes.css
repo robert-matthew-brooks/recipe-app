@@ -1,7 +1,7 @@
-#Recipes {
+#AllRecipes {
 }
 
-#Recipes--inner {
+#AllRecipes--inner {
   display: flex;
   flex-direction: column;
   gap: 2rem;
