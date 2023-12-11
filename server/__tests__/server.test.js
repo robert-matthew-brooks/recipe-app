@@ -142,7 +142,7 @@ describe('GET /recipes', () => {
   });
 });
 
-describe.only('GET /users/:user_name', () => {
+describe('GET /users/:user_name', () => {
   it('200: should return a user object with correct properties', async () => {
     const { body } = await supertest(server).get('/users/user-3').expect(200);
 
