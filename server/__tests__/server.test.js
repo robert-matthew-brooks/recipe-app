@@ -26,11 +26,14 @@ describe('GET /health', () => {
 
 describe('GET /recipes/:recipe_id', () => {
   it('200: should return a recipe object with correct properties', async () => {
-    const { body } = await supertest(server).get('/recipes/1').expect(200);
+    const { body } = await supertest(server)
+      .get('/recipes/recipe-1')
+      .expect(200);
 
     expect(body.recipe).toMatchObject({
       id: expect.any(Number),
       name: expect.any(String),
+      slug: expect.any(String),
       ingredients: expect.any(Array),
       steps: expect.any(Array),
       is_vegetarian: expect.any(Boolean),
@@ -51,12 +54,8 @@ describe('GET /recipes/:recipe_id', () => {
   });
 
   describe('error handling', () => {
-    it('400: should return an error if recipe_id is not a number', async () => {
-      await supertest(server).get('/recipes/invalid').expect(400);
-    });
-
     it('404: should return an error if recipe_id is not in database', async () => {
-      await supertest(server).get('/recipes/999').expect(404);
+      await supertest(server).get('/recipes/recipe-999').expect(404);
     });
   });
 });
@@ -74,6 +73,7 @@ describe('GET /recipes', () => {
       expect(recipe).toMatchObject({
         id: expect.any(Number),
         name: expect.any(String),
+        slug: expect.any(String),
         likes: expect.any(Number),
       });
     }
@@ -141,3 +141,23 @@ describe('GET /recipes', () => {
     });
   });
 });
+
+describe('GET /users/:user_name', () => {
+  it('200: should return a user object with correct properties', async () => {
+    const { body } = await supertest(server).get('/users/user-3').expect(200);
+
+    expect(body.user).toMatchObject({
+      id: expect.any(Number),
+      name: expect.any(String),
+      favourites: expect.any(Array),
+      list: expect.any(Array),
+      done: expect.any(Array),
+    });
+  });
+});
+
+// TODO filter recipes by user_id
+
+// TODO order recipe results by likes / date (add created_at field)
+
+// TODO comments

@@ -1,10 +1,10 @@
 const recipesModel = require('../models/recipes-model');
 
 async function getOne(req, res, next) {
-  const { recipe_id: recipeId } = req.params;
+  const { recipe_slug: recipeSlug } = req.params;
 
   try {
-    const { recipe } = await recipesModel.getOne(recipeId);
+    const { recipe } = await recipesModel.getOne(recipeSlug);
     res.send({ recipe });
   } catch (err) {
     next(err);

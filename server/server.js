@@ -1,10 +1,13 @@
 const express = require('express');
 const recipesRouter = require('./routers/recipes-router');
+const usersRouter = require('./routers/users-router');
 const errHandlers = require('./error-handlers/error-handlers');
 
 const server = express();
 
 server.set('json spaces', 2);
+
+// TODO sign in middleware
 
 server.get('/health', (_req, res) => {
   res.send('Server OK');
@@ -15,6 +18,7 @@ server.get('/health', (_req, res) => {
 /**********/
 
 server.use('/recipes', recipesRouter);
+server.use('/users', usersRouter);
 
 /******************/
 /* error handling */
