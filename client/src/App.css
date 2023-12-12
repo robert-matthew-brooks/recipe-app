@@ -1,11 +1,15 @@
 :root {
-  --global-max-width: 1000px;
-  --nav-height: 50px;
+  --global-max-width: 1200px;
+  --nav-height: 60px;
   --mobile-menu-width: 250px;
+
+  --ff-primary: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  --ff-titles: Georgia, 'Times New Roman', Times, serif;
+  --ff-clear: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: var(--ff-primary);
 }
 
 .noscroll {
@@ -13,7 +17,7 @@ body {
 }
 
 #App {
-  min-height: 100vh;
+  min-height: calc(100vh - var(--nav-height));
   margin-top: var(--nav-height);
   display: flex;
   flex-direction: column;

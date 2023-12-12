@@ -14,8 +14,11 @@
   gap: 0.5rem;
 }
 
-#Navbar--inner > a {
+#Navbar--desktop-links {
   display: none;
+}
+
+#Navbar a {
   position: relative;
   margin-right: 2rem;
   color: inherit;
@@ -24,7 +27,7 @@
   text-decoration: none;
   text-transform: uppercase;
 }
-#Navbar--inner > a::after {
+#Navbar a::after {
   content: '';
   position: absolute;
   opacity: 0;
@@ -35,7 +38,7 @@
   background: lightskyblue;
   transition: opacity 0.3s ease;
 }
-#Navbar--inner > a:hover::after {
+#Navbar a:hover::after {
   opacity: 1;
 }
 
@@ -83,7 +86,7 @@
     display: none;
   }
 
-  #Navbar--inner > a {
+  #Navbar--desktop-links {
     display: block;
   }
 }

@@ -9,7 +9,7 @@
 .RecipeFilter--search-box,
 .RecipeFilter--dropdown {
   padding: 0.3rem;
-  font-family: inherit;
+  font-family: var(--ff-clear);
   font-size: 1.1rem;
   background-color: #f0f0f0;
 }
@@ -17,6 +17,12 @@
 .RecipeFilter--search-box:focus,
 .RecipeFilter--dropdown:focus {
   outline: none;
+}
+.RecipeFilter--search-box:focus {
+  background-color: #ebfad7;
+}
+.RecipeFilter--dropdown:focus {
+  border-color: black;
 }
 
 .RecipeFilter--search-box {
@@ -42,6 +48,12 @@
 .RecipeFilter--dropdown {
   width: 40%;
   border: 1px solid grey;
+  appearance: none;
+
+  background-image: url('../assets/dropdown.svg');
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: 1rem;
 }
 
 #RecipeFilter--ingredients-list {

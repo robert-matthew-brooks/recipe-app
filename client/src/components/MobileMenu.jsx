@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import closeImg from '../assets/close.svg';
 import './MobileMenu.css';
 
@@ -21,7 +22,9 @@ export default function MobileMenu({ links, isMenuOpen, toggleMenu }) {
           {links.map((link, i) => {
             return (
               <li key={i}>
-                <a href={link.href}>{link.text}</a>
+                <Link to={link.href} onClick={toggleMenu}>
+                  {link.text}
+                </Link>
               </li>
             );
           })}
