@@ -22,6 +22,7 @@
 .RecipeCard--title {
   width: fit-content;
   margin-top: 1rem;
+  font-family: var(--ff-titles);
   font-size: 1.5rem;
   text-align: center;
 }

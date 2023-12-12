@@ -1,0 +1,58 @@
+#Login {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#Login--inner {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+#Login--title {
+  margin-bottom: 1rem;
+  font-family: var(--ff-titles);
+  font-size: 1.8rem;
+  font-weight: normal;
+  color: darkcyan;
+}
+
+#Login--username,
+#Login--password,
+#Login--submit {
+  width: 100%;
+  padding: 0.7rem;
+  font-family: var(--ff-clear);
+  font-size: 1.1rem;
+  border: 1px solid grey;
+  border-radius: 4px;
+}
+
+#Login--username:focus,
+#Login--password:focus {
+  background-color: #ebfad7;
+  border-color: black;
+  outline: none;
+}
+
+#Login--submit {
+  background-color: rgb(191, 208, 224);
+  cursor: pointer;
+}
+
+#Login--msg {
+  align-self: flex-end;
+  font-size: 0.8rem;
+  color: grey;
+}
+#Login--msg > a {
+  color: blue;
+  text-decoration: none;
+}
+#Login--msg > a:hover {
+  text-decoration: underline;
+}

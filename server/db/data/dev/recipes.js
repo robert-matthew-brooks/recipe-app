@@ -146,6 +146,36 @@ const recipes = [
     ],
     isVegetarian: false,
   },
+  {
+    name: 'Beef Meatballs with Tomato Sauce & Linguine',
+    slug: 'beef-meatballs-with-tomato-sauce-and-linguine',
+    ingredients: [
+      { name: 'Red Onions', amount: '1' },
+      { name: 'Cheddar Cheese', amount: '40g' },
+      { name: 'Oregano', amount: '1tbsp' },
+      { name: 'Baby Leaf Spinach', amount: '80g' },
+      { name: 'Balsamic Vinegar', amount: '15ml' },
+      { name: 'Linguine', amount: '200g' },
+      { name: 'Beef Mince', amount: '250g' },
+      { name: 'Tomato Paste', amount: '20g' },
+      { name: 'Chopped Tomatoes', amount: '400g' },
+      { name: 'Cheddar Cheese', amount: '40g' },
+      { name: 'Panko Breadcrumbs', amount: '30g' },
+      { name: 'Beef Stock Cubes', amount: '1' },
+    ],
+    steps: [
+      'Preheat the oven to 200°C and boil a kettle.',
+      'Mix the beef mince, panko breadcrumbs and salt and pepper in a bowl, then roll into meatballs.',
+      'Peel and dice the red onion, and put in an oven-proof dish with the meatballs. Cook for 5mins.',
+      'Dissolve the beef stock in 200ml of boiling water. Mix in the tomato paste, oregano, vinegar, chopped tomatoes and a pinch of sugar.',
+      'Add the tomato sauce to the oven-proof dish, and cook for 25mins.',
+      'Grate all the cheddar cheese.',
+      'Once the meatballs have cooked for 10mins, add the linguine to a pan of boiling water. Cook for 10mins, then drain.',
+      'Add the spinach to the meatballs and sauce, and cook for a further 5mins.',
+      'Serve the meatballs in sauce over the drained linguine. Top with grated cheese and black pepper.',
+    ],
+    isVegetarian: false,
+  },
 ];
 
 module.exports = recipes;
