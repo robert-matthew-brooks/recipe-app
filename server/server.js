@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const recipesRouter = require('./routers/recipes-router');
 const usersRouter = require('./routers/users-router');
-const userController = require('./controllers/users-controller');
 const errHandlers = require('./error-handlers/error-handlers');
 
 setEnvVars();
@@ -16,9 +15,6 @@ server.set('json spaces', 2);
 server.get('/status', (_req, res) => {
   res.send('Server OK');
 });
-
-server.post('/register', userController.register);
-server.post('/login', userController.login);
 
 /**********/
 /* routes */
