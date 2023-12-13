@@ -1,9 +1,11 @@
 const { Pool } = require('pg');
-const dotenv = require('dotenv');
+const { setEnvVars } = require('../env');
 
-const ENV = process.env.NODE_ENV || 'dev';
-const dbNameFilepath = `${__dirname}/../.env.${ENV}`;
+if (!process.env.PGDATABASE) setEnvVars(); // read .env if called before server started
+if (!process.env.PGDATABASE) {
+  console.log('database environment variable not set');
+}
 
-dotenv.config({ path: dbNameFilepath });
+// TODO if process.env.NODE_ENV === prod, set pool config
 
 module.exports = new Pool();

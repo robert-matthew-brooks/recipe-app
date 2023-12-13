@@ -1,8 +1,11 @@
 const express = require('express');
+const { setEnvVars } = require('./env');
 const recipesRouter = require('./routers/recipes-router');
 const usersRouter = require('./routers/users-router');
 const userController = require('./controllers/users-controller');
 const errHandlers = require('./error-handlers/error-handlers');
+
+setEnvVars();
 
 const server = express();
 

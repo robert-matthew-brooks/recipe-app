@@ -142,7 +142,7 @@ describe('GET /recipes', () => {
   });
 });
 
-describe.only('POST /register', () => {
+describe('POST /register', () => {
   it('200: should return a user object with correct properties', async () => {
     const { body } = await supertest(server)
       .post('/register')

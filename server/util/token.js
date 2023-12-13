@@ -1,7 +1,11 @@
 const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
+const { setEnvVars } = require('../env');
 
-dotenv.config();
+if (!process.env.TOKEN_SECRET) setEnvVars(); // read .env if called before server started
+if (!process.env.TOKEN_SECRET) {
+  console.log('token secret environment variable not set');
+}
+
 const tokenSecret = process.env.TOKEN_SECRET;
 
 function createToken(user) {
