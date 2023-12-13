@@ -34,7 +34,7 @@ async function rejectIfNotInDb(value, field, table) {
 function rejectIfInvalidUsername(username) {
   if (username) {
     if (username.length >= 3 && username.length <= 20) {
-      if (/^[\w\d]+$/.test(username) && /^\w/.test(username)) {
+      if (/^[A-z\d]+$/.test(username) && /^[A-z]/.test(username)) {
         return;
       }
     }
@@ -46,7 +46,7 @@ function rejectIfInvalidUsername(username) {
 function rejectIfInvalidPassword(password) {
   if (password) {
     if (password.length >= 3 && password.length <= 20) {
-      if (/\w/.test(password) && /\d/.test(password)) {
+      if (/[A-z]/.test(password) && /\d/.test(password)) {
         return;
       }
     }
