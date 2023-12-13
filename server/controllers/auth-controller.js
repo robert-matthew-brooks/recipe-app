@@ -13,9 +13,13 @@ async function register(req, res, next) {
 
 async function login(req, res, next) {
   const { username, password } = req.body;
-  const token = req.headers?.authorization?.split(' ')[1];
 
-  // return {id, username, token}
+  try {
+    const { user } = await authModel.login(username, password);
+    res.send({ user });
+  } catch (err) {
+    next(err);
+  }
 }
 
 module.exports = { register, login };

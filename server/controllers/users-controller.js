@@ -11,4 +11,6 @@ async function getAvailability(req, res, next) {
   }
 }
 
+// const token = req.headers?.authorization?.split(' ')[1];
+
 module.exports = { getAvailability };
