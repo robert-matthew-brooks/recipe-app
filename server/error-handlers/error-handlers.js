@@ -8,11 +8,23 @@ function customErrHandler(err, _req, res, next) {
   }
 }
 
+// psql errors
+
+function psqlErrHandler(err, req, res, next) {
+  if (err.code === '23505') {
+    res.status(409).send('PSQL - unique key already exists');
+  } else if (err.code) {
+    res.status(500).send({ unhandled_psql_err: { err } });
+  } else {
+    next(err);
+  }
+}
+
 // catch-all
 
 function serverErrHandler(err, _req, res, _next) {
   console.log(err);
-  res.status(500).send(err);
+  res.status(500).send({ unhandled_server_err: { err } });
 }
 
-module.exports = { customErrHandler, serverErrHandler };
+module.exports = { customErrHandler, psqlErrHandler, serverErrHandler };

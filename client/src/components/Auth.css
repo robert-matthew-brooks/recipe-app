@@ -12,6 +12,9 @@
   align-items: center;
   gap: 0.8rem;
 }
+#Auth--inner > div {
+  width: 100%;
+}
 
 #Auth--title {
   margin-bottom: 1rem;
@@ -34,7 +37,6 @@
 
 .Auth--username__error,
 .Auth--password__error {
-  background-color: lightcoral !important;
   border-color: red !important;
 }
 
@@ -63,14 +65,11 @@
   text-decoration: underline;
 }
 
-#Auth--errors {
+.Auth--errors {
   width: 100%;
-  margin-top: 2rem;
-  padding: 0.3rem 0.5rem;
+  padding: 0.2rem;
   font-size: 0.8rem;
-  line-height: 1.6rem;
   color: darkred;
-  background-color: lightcoral;
 }
 
 .Auth--errors__hidden {

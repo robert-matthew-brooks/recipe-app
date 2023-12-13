@@ -43,6 +43,13 @@ describe('POST /auth/register', () => {
   });
 
   describe('error handing', () => {
+    it.only('409: should return an error if username already exists', async () => {
+      await supertest(server)
+        .post('/auth/register')
+        .send({ username: 'user1', password: 'password1!' })
+        .expect(409);
+    });
+
     it('400: should return an error if credentials missing', async () => {
       await supertest(server)
         .post('/auth/register')
