@@ -1,38 +1,62 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Auth.css';
-import {
-  validateUsername as getUsernameErrors,
-  validatePassword as getPasswordErrors,
-  checkUsernameAvailability,
-} from '../../util/validate';
+import { getUsernameErr, getPasswordErr } from '../util/validate';
+import { checkUsernameAvailability } from '../util/api';
 
 export default function AuthRegister() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [usernameErrors, setUsernameErrors] = useState([]);
-  const [passwordErrors, setPasswordErrors] = useState([]);
+  const [usernameErr, setUsernameErr] = useState('');
+  const [passwordErr, setPasswordErr] = useState('');
+  const [isValidateOnChange, setIsValidateOnChange] = useState(false);
 
-  const handleSubmit = async (evt) => {
+  const validateUsername = (username) => {
+    let currentUsernameErr = getUsernameErr(username);
+    setUsernameErr(currentUsernameErr);
+
+    return currentUsernameErr === null;
+  };
+
+  const validatePassword = (password) => {
+    const currentPasswordErr = getPasswordErr(password);
+    setPasswordErr(currentPasswordErr);
+
+    return currentPasswordErr === null;
+  };
+
+  const handleUsernameChange = (evt) => {
+    const value = evt.target.value;
+    setUsername(value);
+    if (isValidateOnChange) validateUsername(value);
+  };
+
+  const handlePasswordChange = (evt) => {
+    const value = evt.target.value;
+    setPassword(value);
+    if (isValidateOnChange) validatePassword(value);
+  };
+
+  const handleFormSubmit = async (evt) => {
     evt.preventDefault();
 
-    const usernameErrors = getUsernameErrors(username);
-    const passwordErrors = getPasswordErrors(password);
+    const isValidUsername = await validateUsername(username);
+    const isValidPassword = validatePassword(password);
 
-    // check username is available only if format is valid
-    if (usernameErrors.length === 0) {
+    if (isValidUsername && isValidPassword) {
       const { user } = await checkUsernameAvailability(username);
       if (!user.isAvailable) {
-        usernameErrors.push('Username not available');
+        setUsernameErr('Username not available');
+      } else {
+        console.log('Tregister');
+        // TODO register
+        // lock input boxes/button
+        // loading wheel on button
+        // update localstorgae, context, and redirect on response
       }
+    } else if (!isValidateOnChange) {
+      setIsValidateOnChange(true);
     }
-
-    if ([...usernameErrors, ...passwordErrors].length === 0) {
-      console.log('TODO register');
-    }
-
-    setUsernameErrors(usernameErrors);
-    setPasswordErrors(passwordErrors);
   };
 
   return (
@@ -41,50 +65,50 @@ export default function AuthRegister() {
         id="Auth--inner"
         className="inner"
         onSubmit={async (evt) => {
-          await handleSubmit(evt);
+          await handleFormSubmit(evt);
         }}
       >
         <h1 id="Auth--title">Register</h1>
-        <input
-          id="Auth--username"
-          type="text"
-          value={username}
-          placeholder="Username"
-          className={
-            usernameErrors.length > 0 ? 'Auth--username__error' : undefined
-          }
-          onChange={(evt) => {
-            setUsername(evt.target.value);
-          }}
-        />
-        <input
-          id="Auth--password"
-          type="password"
-          value={password}
-          placeholder="Password"
-          className={
-            passwordErrors.length > 0 ? 'Auth--password__error' : undefined
-          }
-          onChange={(evt) => {
-            setPassword(evt.target.value);
-          }}
-        />
+
+        <div>
+          <input
+            id="Auth--username"
+            type="text"
+            value={username}
+            placeholder="Username"
+            className={usernameErr ? 'Auth--username__error' : undefined}
+            onChange={(evt) => {
+              handleUsernameChange(evt);
+            }}
+          />
+          <p
+            className={`Auth--errors ${!usernameErr && 'Auth--errors__hidden'}`}
+          >
+            &#9888; {usernameErr}
+          </p>
+        </div>
+
+        <div>
+          <input
+            id="Auth--password"
+            type="password"
+            value={password}
+            placeholder="Password"
+            className={passwordErr ? 'Auth--password__error' : undefined}
+            onChange={(evt) => {
+              handlePasswordChange(evt);
+            }}
+          />
+          <p
+            className={`Auth--errors ${!passwordErr && 'Auth--errors__hidden'}`}
+          >
+            &#9888; {passwordErr}
+          </p>
+        </div>
+
         <input id="Auth--submit" type="submit" value="Register" />
         <p id="Auth--msg">
           Already have an account? <Link to="/login">Login here</Link>
-        </p>
-
-        <p
-          id="Auth--errors"
-          className={
-            [...usernameErrors, ...passwordErrors].length === 0
-              ? 'Auth--errors__hidden'
-              : undefined
-          }
-        >
-          {[...usernameErrors, ...passwordErrors].map((error, i) => {
-            return <div key={i}>&#9888; {error}</div>;
-          })}
         </p>
       </form>
     </div>
