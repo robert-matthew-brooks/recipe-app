@@ -169,6 +169,14 @@ describe('GET /users/availability/:username', () => {
 
     expect(body.user.is_available).toBe(true);
   });
+
+  it('200: should be case insensitive', async () => {
+    const { body } = await supertest(server)
+      .get('/users/availability/UsEr1')
+      .expect(200);
+
+    expect(body.user.is_available).toBe(false);
+  });
 });
 
 describe('POST /users/register', () => {

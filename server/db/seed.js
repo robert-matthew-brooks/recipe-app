@@ -184,7 +184,7 @@ async function seed({ recipes, users }) {
     await Promise.all(
       users.map(async (user) => {
         return [
-          user.username,
+          user.username.toLowerCase(),
           hash(user.password),
           arrToSqlArr(await getIdList(user.favourites, 'slug', 'recipes')),
           arrToSqlArr(await getIdList(user.list, 'slug', 'recipes')),
