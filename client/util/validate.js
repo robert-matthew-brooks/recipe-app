@@ -4,31 +4,59 @@ import axios from 'axios';
 
 const api = axios.create({ baseURL: 'http://localhost:9090' });
 
-export function isUsernameValid(username) {
-  if (username) {
-    if (username.length >= 3 && username.length <= 20) {
-      if (/^[A-z\d]+$/.test(username) && /^[A-z]/.test(username)) {
-        return true;
-      }
+export function validateUsername(username) {
+  const errors = [];
+
+  if (!username) {
+    errors.push('Username required');
+  } else {
+    if (username.length < 3) {
+      errors.push('Username must have at least 3 characters');
+    }
+    if (username.length > 20) {
+      errors.push('Username must not have more than 20 characters');
+    }
+    if (!/^[A-z\d]+$/.test(username)) {
+      errors.push('Username must only use letters and numbers');
+    }
+    if (!/^[A-z]/.test(username)) {
+      errors.push('Username must start with a letter');
     }
   }
 
-  return false;
+  return errors;
 }
 
-export function isPasswordValid(password) {
-  if (password) {
-    if (password.length >= 3 && password.length <= 20) {
-      if (/[A-z]/.test(password) && /\d/.test(password)) {
-        return true;
-      }
+export function validatePassword(password) {
+  const errors = [];
+
+  if (!password) {
+    errors.push('Password required');
+  } else {
+    if (password.length < 3) {
+      errors.push('Password must have at least 3 characters');
+    }
+    if (password.length > 20) {
+      errors.push('Password must not have more than 20 characters');
+    }
+    if (!/[A-z]/.test(password)) {
+      errors.push('Password must contain a letter');
+    }
+    if (!/\d/.test(password)) {
+      errors.push('Password must contain a number');
     }
   }
 
-  return false;
+  return errors;
 }
 
-export async function isUsernameAvailable(username) {
-  const data = await api.get('/recipes');
-  console.log(data);
+export async function checkUsernameAvailability(username) {
+  const { data } = await api.get('/users/availability/hey');
+
+  const user = {
+    username: data.user.username,
+    isAvailable: data.user.is_available,
+  };
+
+  return { user };
 }
