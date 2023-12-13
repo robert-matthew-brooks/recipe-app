@@ -34,6 +34,7 @@ server.all('*', (_req, _res, next) => {
 });
 
 server.use(errHandlers.customErrHandler);
+server.use(errHandlers.psqlErrHandler);
 server.use(errHandlers.serverErrHandler);
 
 module.exports = server;
