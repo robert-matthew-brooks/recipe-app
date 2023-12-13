@@ -2,7 +2,7 @@
 
 function customErrHandler(err, _req, res, next) {
   if (err.status) {
-    res.status(err.status).send({ serverError: err });
+    res.status(err.status).send(err);
   } else {
     next(err);
   }
@@ -12,7 +12,7 @@ function customErrHandler(err, _req, res, next) {
 
 function serverErrHandler(err, _req, res, _next) {
   console.log(err);
-  res.status(500).send({ serverError: err });
+  res.status(500).send(err);
 }
 
 module.exports = { customErrHandler, serverErrHandler };

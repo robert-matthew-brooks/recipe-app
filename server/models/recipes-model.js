@@ -1,9 +1,9 @@
 const pool = require('../db/pool');
 const format = require('pg-format');
-const { rejectIfFailsRegex, rejectIfNotInDb } = require('../util/validate');
+const validate = require('../util/validate');
 
 async function getOne(recipeSlug) {
-  await rejectIfNotInDb(recipeSlug, 'slug', 'recipes');
+  await validate.rejectIfNotInDb(recipeSlug, 'slug', 'recipes');
 
   const { rows } = await pool.query(
     `
@@ -41,9 +41,9 @@ async function getAll(searchTerm, ingredientIdsStr, isVegetarianStr) {
   const ingredientIds = ingredientIdsStr ? JSON.parse(ingredientIdsStr) : [];
   const isVegetarian = !!isVegetarianStr;
 
-  rejectIfFailsRegex({ searchTerm }, '^[\\w\\s%]*$');
+  validate.rejectIfFailsRegex({ searchTerm }, '^[\\w\\s%]*$');
   ingredientIds.forEach((ingredientId) => {
-    rejectIfFailsRegex({ ingredientId }, '^\\d+$');
+    validate.rejectIfFailsRegex({ ingredientId }, '^\\d+$');
   });
 
   // optional sql query strings

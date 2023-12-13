@@ -1,5 +1,6 @@
 const pool = require('./pool');
 const format = require('pg-format');
+const { hash } = require('../util/encrypt');
 
 async function seed({ recipes, users }) {
   /******************/
@@ -72,8 +73,8 @@ async function seed({ recipes, users }) {
     `
       CREATE TABLE users (
         id SERIAL PRIMARY KEY,
-        name VARCHAR UNIQUE NOT NULL,
-        password VARCHAR NOT NULL,
+        username VARCHAR UNIQUE NOT NULL,
+        hashed_password VARCHAR NOT NULL,
         favourites INT[],
         list INT[],
         done INT[]
@@ -172,8 +173,8 @@ async function seed({ recipes, users }) {
   const insertUsersSql = format(
     `
       INSERT INTO users (
-        name,
-        password,
+        username,
+        hashed_password,
         favourites,
         list,
         done
@@ -183,8 +184,8 @@ async function seed({ recipes, users }) {
     await Promise.all(
       users.map(async (user) => {
         return [
-          user.name,
-          user.password,
+          user.username,
+          hash(user.password),
           arrToSqlArr(await getIdList(user.favourites, 'slug', 'recipes')),
           arrToSqlArr(await getIdList(user.list, 'slug', 'recipes')),
           arrToSqlArr(await getIdList(user.done, 'slug', 'recipes')),
@@ -232,7 +233,7 @@ async function seed({ recipes, users }) {
   const recipeLikesData = [];
 
   for (const user of users) {
-    const userId = await getId(user.name, 'name', 'users');
+    const userId = await getId(user.username, 'username', 'users');
 
     for (const recipeSlug of user.likes) {
       const recipeId = await getId(recipeSlug, 'slug', 'recipes');
