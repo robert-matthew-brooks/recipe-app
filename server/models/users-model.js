@@ -44,7 +44,7 @@ async function getAvailability(username) {
   const { rows } = await pool.query(
     `
       SELECT username FROM users
-      WHERE username = $1;
+      WHERE username = LOWER($1);
     `,
     [username]
   );
