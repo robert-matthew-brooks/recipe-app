@@ -32,6 +32,12 @@
   border-radius: 4px;
 }
 
+.Auth--username__error,
+.Auth--password__error {
+  background-color: lightcoral !important;
+  border-color: red !important;
+}
+
 #Auth--username:focus,
 #Auth--password:focus {
   background-color: #ebfad7;
@@ -55,4 +61,18 @@
 }
 #Auth--msg > a:hover {
   text-decoration: underline;
+}
+
+#Auth--errors {
+  width: 100%;
+  margin-top: 2rem;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1.6rem;
+  color: darkred;
+  background-color: lightcoral;
+}
+
+.Auth--errors__hidden {
+  display: none;
 }

@@ -19,7 +19,7 @@ export default function App() {
 
         <Route path="/recipes" element={<Recipes />} />
 
-        <Route path="*" element={<p>404 HERE</p>} />
+        <Route path="*" element={<p>&#9785; 404 HERE</p>} />
       </Routes>
 
       <Footer />
