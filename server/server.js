@@ -1,17 +1,20 @@
 const express = require('express');
 const recipesRouter = require('./routers/recipes-router');
 const usersRouter = require('./routers/users-router');
+const userController = require('./controllers/users-controller');
 const errHandlers = require('./error-handlers/error-handlers');
 
 const server = express();
 
+server.use(express.json());
 server.set('json spaces', 2);
 
-// TODO sign in middleware
-
-server.get('/health', (_req, res) => {
+server.get('/status', (_req, res) => {
   res.send('Server OK');
 });
+
+server.post('/register', userController.register);
+server.post('/login', userController.login);
 
 /**********/
 /* routes */
@@ -24,8 +27,8 @@ server.use('/users', usersRouter);
 /* error handling */
 /******************/
 
-server.all('*', (_req, res) => {
-  res.status(404).send('endpoint not found');
+server.all('*', (_req, _res, next) => {
+  next({ status: 404, msg: 'endpoint not found' });
 });
 
 server.use(errHandlers.customErrHandler);

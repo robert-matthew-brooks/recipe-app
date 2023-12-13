@@ -18,9 +18,9 @@ describe('ALL endpoint not found', () => {
   });
 });
 
-describe('GET /health', () => {
+describe('GET /status', () => {
   it('200: should confirm server is up', async () => {
-    await supertest(server).get('/health').expect(200);
+    await supertest(server).get('/status').expect(200);
   });
 });
 
@@ -142,16 +142,79 @@ describe('GET /recipes', () => {
   });
 });
 
-describe('GET /users/:user_name', () => {
+describe.only('POST /register', () => {
   it('200: should return a user object with correct properties', async () => {
-    const { body } = await supertest(server).get('/users/user-3').expect(200);
+    const { body } = await supertest(server)
+      .post('/register')
+      .send({ username: 'new_user', password: 'password123' })
+      .expect(200);
 
     expect(body.user).toMatchObject({
       id: expect.any(Number),
-      name: expect.any(String),
-      favourites: expect.any(Array),
-      list: expect.any(Array),
-      done: expect.any(Array),
+      username: expect.any(String),
+      token: expect.any(String),
+    });
+  });
+
+  describe('error handing', () => {
+    it('400: should return an error if credentials missing', async () => {
+      await supertest(server)
+        .post('/register')
+        .send({ username: 'no_password' })
+        .expect(400);
+
+      await supertest(server)
+        .post('/register')
+        .send({ password: 'n0-us3rnam3!' })
+        .expect(400);
+    });
+
+    it('400: should return an error if strings are too short', async () => {
+      await supertest(server)
+        .post('/register')
+        .send({ username: 'x', password: 'password123' })
+        .expect(400);
+
+      await supertest(server)
+        .post('/register')
+        .send({ username: 'new_user', password: 'x' })
+        .expect(400);
+    });
+
+    it('400: should return an error if strings are too long', async () => {
+      await supertest(server)
+        .post('/register')
+        .send({
+          username: 'this_is_a_very_long_username',
+          password: 'password123',
+        })
+        .expect(400);
+
+      await supertest(server)
+        .post('/register')
+        .send({
+          username: 'new_user',
+          password: 'th1s-1s-@-v3ry-l0ng-p@ssw0rd!',
+        })
+        .expect(400);
+    });
+
+    it('400: should return an error if strings are invalid', async () => {
+      await supertest(server)
+        .post('/register')
+        .send({
+          username: 'i*n*v*a*l*i*d',
+          password: 'password123',
+        })
+        .expect(400);
+
+      await supertest(server)
+        .post('/register')
+        .send({
+          username: 'new_user',
+          password: 'must_have_a_number',
+        })
+        .expect(400);
     });
   });
 });

@@ -63,4 +63,12 @@ describe('util/validate.js', () => {
       expect(returnedError.status).toBe(404);
     });
   });
+
+  describe('rejectIfInvalidUsername()', () => {
+    // TODO
+  });
+
+  describe('rejectIfInvalidPassword()', () => {
+    // TODO
+  });
 });

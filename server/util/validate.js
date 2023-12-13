@@ -31,4 +31,33 @@ async function rejectIfNotInDb(value, field, table) {
   }
 }
 
-module.exports = { rejectIfFailsRegex, rejectIfNotInDb };
+function rejectIfInvalidUsername(username) {
+  if (username) {
+    if (username.length >= 3 && username.length <= 20) {
+      if (/^[\w\d]+$/.test(username) && /^\w/.test(username)) {
+        return;
+      }
+    }
+  }
+
+  throw { status: 400, msg: 'invalid username' };
+}
+
+function rejectIfInvalidPassword(password) {
+  if (password) {
+    if (password.length >= 3 && password.length <= 20) {
+      if (/\w/.test(password) && /\d/.test(password)) {
+        return;
+      }
+    }
+  }
+
+  throw { status: 400, msg: 'invalid password' };
+}
+
+module.exports = {
+  rejectIfFailsRegex,
+  rejectIfNotInDb,
+  rejectIfInvalidUsername,
+  rejectIfInvalidPassword,
+};
