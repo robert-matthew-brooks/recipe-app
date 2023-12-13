@@ -4,6 +4,8 @@ const usersController = require('../controllers/users-controller');
 
 const usersRouter = express.Router();
 
-usersRouter.use('/:username', usersController.getOne);
+usersRouter.get('/availability/:username', usersController.getAvailability);
+usersRouter.post('/register', usersController.register);
+usersRouter.post('/login', usersController.login);
 
 module.exports = usersRouter;

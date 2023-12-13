@@ -19,17 +19,15 @@ async function login(req, res, next) {
   // return {user without password, + token}
 }
 
-async function getOne(req, res, next) {
+async function getAvailability(req, res, next) {
   const { username } = req.params;
 
   try {
-    const x = await verifyToken(req, next);
-
-    const { user } = await usersModel.getOne(username);
+    const { user } = await usersModel.getAvailability(username);
     res.send({ user });
   } catch (err) {
     next(err);
   }
 }
 
-module.exports = { register, login, getOne };
+module.exports = { register, login, getAvailability };
