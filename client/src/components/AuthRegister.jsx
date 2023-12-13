@@ -1,13 +1,21 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Auth.css';
+import {
+  isPasswordValid,
+  isUsernameAvailable,
+  isUsernameValid,
+} from '../../util/validate';
 
 export default function AuthRegister() {
   const [username, setUsername] = useState([]);
   const [password, setPassword] = useState([]);
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
+
+    console.log(isUsernameValid(username), isPasswordValid(password));
+    await isUsernameAvailable();
 
     // TODO send to server call
   };
