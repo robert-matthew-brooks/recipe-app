@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Login.css';
+import './Auth.css';
 
-export default function Login() {
+export default function AuthAuth() {
   const [username, setUsername] = useState([]);
   const [password, setPassword] = useState([]);
 
@@ -13,17 +13,17 @@ export default function Login() {
   };
 
   return (
-    <div id="Login">
+    <div id="Auth">
       <form
-        id="Login--inner"
+        id="Auth--inner"
         className="inner"
         onSubmit={(evt) => {
           handleSubmit(evt);
         }}
       >
-        <h1 id="Login--title">Sign In</h1>
+        <h1 id="Auth--title">Sign In</h1>
         <input
-          id="Login--username"
+          id="Auth--username"
           type="text"
           placeholder="Username"
           value={username}
@@ -32,7 +32,7 @@ export default function Login() {
           }}
         />
         <input
-          id="Login--password"
+          id="Auth--password"
           type="password"
           placeholder="Password"
           value={password}
@@ -40,8 +40,8 @@ export default function Login() {
             setPassword(evt.target.value);
           }}
         />
-        <input id="Login--submit" type="submit" value="Sign In" />
-        <p id="Login--msg">
+        <input id="Auth--submit" type="submit" value="Sign In" />
+        <p id="Auth--msg">
           Don't have an account? <Link to="/register">Register here</Link>
         </p>
       </form>

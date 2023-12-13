@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import menuImg from '../assets/menu.svg';
 import MobileMenu from './MobileMenu';
 import './Navbar.css';
@@ -14,7 +14,18 @@ const links = [
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoginScreen, setIsLoginScreen] = useState(false);
+
+  // show back button only on login/register screens
+  useEffect(() => {
+    if (['/login', '/register'].includes(location.pathname)) {
+      setIsLoginScreen(true);
+    } else {
+      setIsLoginScreen(false);
+    }
+  }, [location]);
 
   const toggleMenu = () => {
     if (isMenuOpen) {
@@ -26,46 +37,56 @@ export default function Navbar() {
     }
   };
 
-  return (
-    <>
-      <MobileMenu {...{ links, isMenuOpen, toggleMenu }} />
-
+  if (isLoginScreen) {
+    return (
       <nav id="Navbar">
         <div id="Navbar--inner" className="inner">
-          <button id="Navbar--menu-btn" onClick={toggleMenu}>
-            <img src={menuImg} />
-          </button>
-
-          <div id="Navbar--desktop-links">
-            {links.map((link, i) => {
-              return (
-                <Link key={i} to={link.href}>
-                  {link.text}
-                </Link>
-              );
-            })}
-          </div>
-
-          <button
-            id="Navbar--register-btn"
-            className="Navbar--btn"
-            onClick={() => {
-              navigate('/register');
-            }}
-          >
-            Register
-          </button>
-          <button
-            id="Navbar--sign-in-btn"
-            className="Navbar--btn"
-            onClick={() => {
-              navigate('/login');
-            }}
-          >
-            Sign in
-          </button>
+          <Link to={'/'}>&larr; Back to site</Link>
         </div>
       </nav>
-    </>
-  );
+    );
+  } else {
+    return (
+      <>
+        <MobileMenu {...{ links, isMenuOpen, toggleMenu }} />
+
+        <nav id="Navbar">
+          <div id="Navbar--inner" className="inner">
+            <button id="Navbar--menu-btn" onClick={toggleMenu}>
+              <img src={menuImg} />
+            </button>
+
+            <div id="Navbar--desktop-links">
+              {links.map((link, i) => {
+                return (
+                  <Link key={i} to={link.href}>
+                    {link.text}
+                  </Link>
+                );
+              })}
+            </div>
+
+            <button
+              id="Navbar--register-btn"
+              className="Navbar--btn"
+              onClick={() => {
+                navigate('/register');
+              }}
+            >
+              Register
+            </button>
+            <button
+              id="Navbar--sign-in-btn"
+              className="Navbar--btn"
+              onClick={() => {
+                navigate('/login');
+              }}
+            >
+              Sign in
+            </button>
+          </div>
+        </nav>
+      </>
+    );
+  }
 }

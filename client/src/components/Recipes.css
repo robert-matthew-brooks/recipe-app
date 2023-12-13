@@ -1,8 +1,8 @@
-#AllRecipes {
+#Recipes {
   flex: 1;
 }
 
-#AllRecipes--inner {
+#Recipes--inner {
   display: flex;
   flex-direction: column;
   gap: 2rem;
