@@ -104,3 +104,94 @@ describe('POST /auth/register', () => {
     });
   });
 });
+
+describe('POST /auth/login', () => {
+  it('200: should return a user object with correct properties', async () => {
+    const { body } = await supertest(server)
+      .post('/auth/login')
+      .send({ username: 'user1', password: 'password1!' })
+      .expect(200);
+
+    expect(body.user).toMatchObject({
+      id: expect.any(Number),
+      username: expect.any(String),
+      token: expect.any(String),
+    });
+  });
+
+  it('404: should return an error if username not found', async () => {
+    await supertest(server)
+      .post('/auth/login')
+      .send({ username: 'not_a_user', password: 'password1!' })
+      .expect(404);
+  });
+
+  it('403: should return an error if password is incorrect', async () => {
+    await supertest(server)
+      .post('/auth/login')
+      .send({ username: 'user1', password: 'incorrect-password1!' })
+      .expect(403);
+  });
+
+  describe('error handing', () => {
+    it('400: should return an error if credentials missing', async () => {
+      await supertest(server)
+        .post('/auth/login')
+        .send({ username: 'no_password' })
+        .expect(400);
+
+      await supertest(server)
+        .post('/auth/login')
+        .send({ password: 'n0-us3rnam3!' })
+        .expect(400);
+    });
+
+    it('400: should return an error if strings are too short', async () => {
+      await supertest(server)
+        .post('/auth/login')
+        .send({ username: 'x', password: 'password1!' })
+        .expect(400);
+
+      await supertest(server)
+        .post('/auth/login')
+        .send({ username: 'user1', password: 'x' })
+        .expect(400);
+    });
+
+    it('400: should return an error if strings are too long', async () => {
+      await supertest(server)
+        .post('/auth/login')
+        .send({
+          username: 'this_is_a_very_long_username',
+          password: 'password1!',
+        })
+        .expect(400);
+
+      await supertest(server)
+        .post('/auth/login')
+        .send({
+          username: 'user1',
+          password: 'th1s-1s-@-v3ry-l0ng-p@ssw0rd!',
+        })
+        .expect(400);
+    });
+
+    it('400: should return an error if strings are invalid', async () => {
+      await supertest(server)
+        .post('/auth/login')
+        .send({
+          username: 'i*n*v*a*l*i*d',
+          password: 'password1!',
+        })
+        .expect(400);
+
+      await supertest(server)
+        .post('/auth/login')
+        .send({
+          username: 'user1',
+          password: 'must_have_a_number',
+        })
+        .expect(400);
+    });
+  });
+});
