@@ -1,5 +1,6 @@
-const express = require('express');
 const { setEnvVars } = require('./env');
+const express = require('express');
+const cors = require('cors');
 const recipesRouter = require('./routers/recipes-router');
 const usersRouter = require('./routers/users-router');
 const userController = require('./controllers/users-controller');
@@ -8,7 +9,7 @@ const errHandlers = require('./error-handlers/error-handlers');
 setEnvVars();
 
 const server = express();
-
+server.use(cors({ origin: process.env.CORS_ORIGIN }));
 server.use(express.json());
 server.set('json spaces', 2);
 
