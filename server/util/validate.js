@@ -1,6 +1,8 @@
 const pool = require('../db/pool');
 const format = require('pg-format');
 
+// this should match the CLIENT file in client/util/validate.js
+
 function rejectIfFailsRegex(values, regexStr) {
   const regex = new RegExp(regexStr, 'i');
   for (const key in values) {
