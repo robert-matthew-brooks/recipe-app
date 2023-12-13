@@ -1,11 +1,11 @@
-#Login {
+#Auth {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#Login--inner {
+#Auth--inner {
   width: 400px;
   display: flex;
   flex-direction: column;
@@ -13,7 +13,7 @@
   gap: 0.8rem;
 }
 
-#Login--title {
+#Auth--title {
   margin-bottom: 1rem;
   font-family: var(--ff-titles);
   font-size: 1.8rem;
@@ -21,9 +21,9 @@
   color: darkcyan;
 }
 
-#Login--username,
-#Login--password,
-#Login--submit {
+#Auth--username,
+#Auth--password,
+#Auth--submit {
   width: 100%;
   padding: 0.7rem;
   font-family: var(--ff-clear);
@@ -32,27 +32,27 @@
   border-radius: 4px;
 }
 
-#Login--username:focus,
-#Login--password:focus {
+#Auth--username:focus,
+#Auth--password:focus {
   background-color: #ebfad7;
   border-color: black;
   outline: none;
 }
 
-#Login--submit {
+#Auth--submit {
   background-color: rgb(191, 208, 224);
   cursor: pointer;
 }
 
-#Login--msg {
+#Auth--msg {
   align-self: flex-end;
   font-size: 0.8rem;
   color: grey;
 }
-#Login--msg > a {
+#Auth--msg > a {
   color: blue;
   text-decoration: none;
 }
-#Login--msg > a:hover {
+#Auth--msg > a:hover {
   text-decoration: underline;
 }
