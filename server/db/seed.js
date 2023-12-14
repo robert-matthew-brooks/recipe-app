@@ -59,18 +59,6 @@ async function seed({ recipes, users }) {
 
   await pool.query(
     `
-      CREATE TABLE recipes (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR NOT NULL,
-        slug VARCHAR UNIQUE NOT NULL,
-        steps VARCHAR[],
-        is_vegetarian BOOLEAN
-      );
-    `
-  );
-
-  await pool.query(
-    `
       CREATE TABLE users (
         id SERIAL PRIMARY KEY,
         username VARCHAR UNIQUE NOT NULL,
@@ -78,6 +66,19 @@ async function seed({ recipes, users }) {
         favourites INT[],
         list INT[],
         done INT[]
+      );
+    `
+  );
+
+  await pool.query(
+    `
+      CREATE TABLE recipes (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR NOT NULL,
+        slug VARCHAR UNIQUE NOT NULL,
+        author_id INT REFERENCES users(id) NOT NULL,
+        steps VARCHAR[],
+        is_vegetarian BOOLEAN
       );
     `
   );
@@ -109,6 +110,12 @@ async function seed({ recipes, users }) {
   /*****************/
   /* insert values */
   /*****************/
+
+  // **user.favourites** references **recipe.id**, and
+  // **recipe.id** references **user.id**
+  // so:
+  // create empty users with ids, then recipes with ids,
+  // then populate user favourites
 
   // ingredients
 
@@ -144,6 +151,23 @@ async function seed({ recipes, users }) {
 
   await pool.query(insertIngredientsSql);
 
+  // empty users
+
+  const insertUsersSql = format(
+    `
+        INSERT INTO users (
+          username,
+          hashed_password
+        )
+        VALUES %L;
+      `,
+    users.map((user) => {
+      return [user.username, hash(user.password)];
+    })
+  );
+
+  await pool.query(insertUsersSql);
+
   // recipes
 
   const insertRecipesSql = format(
@@ -151,50 +175,47 @@ async function seed({ recipes, users }) {
       INSERT INTO recipes (
         name,
         slug,
+        author_id,
         steps,
         is_vegetarian
       )
       VALUES %L;
     `,
-    recipes.map((recipe) => {
-      return [
-        recipe.name,
-        recipe.slug,
-        arrToSqlArr(recipe.steps),
-        recipe.isVegetarian,
-      ];
-    })
-  );
-
-  await pool.query(insertRecipesSql);
-
-  // users
-
-  const insertUsersSql = format(
-    `
-      INSERT INTO users (
-        username,
-        hashed_password,
-        favourites,
-        list,
-        done
-      )
-      VALUES %L;
-    `,
     await Promise.all(
-      users.map(async (user) => {
+      recipes.map(async (recipe) => {
         return [
-          user.username.toLowerCase(),
-          hash(user.password),
-          arrToSqlArr(await getIdList(user.favourites, 'slug', 'recipes')),
-          arrToSqlArr(await getIdList(user.list, 'slug', 'recipes')),
-          arrToSqlArr(await getIdList(user.done, 'slug', 'recipes')),
+          recipe.name,
+          recipe.slug,
+          await getId(recipe.author, 'username', 'users'),
+          arrToSqlArr(recipe.steps),
+          recipe.isVegetarian,
         ];
       })
     )
   );
 
-  await pool.query(insertUsersSql);
+  await pool.query(insertRecipesSql);
+
+  // populate user details (favourites, meal list, done list)
+
+  for (const user of users) {
+    const insertUserDetailsSql = format(
+      `
+      UPDATE users
+      SET
+        favourites = %L,
+        list = %L,
+        done = %L
+      WHERE LOWER(username) = LOWER(%L);
+    `,
+      arrToSqlArr(await getIdList(user.favourites, 'slug', 'recipes')),
+      arrToSqlArr(await getIdList(user.list, 'slug', 'recipes')),
+      arrToSqlArr(await getIdList(user.done, 'slug', 'recipes')),
+      user.username
+    );
+
+    await pool.query(insertUserDetailsSql);
+  }
 
   // recipes-ingredients junction
 

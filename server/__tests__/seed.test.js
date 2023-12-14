@@ -47,6 +47,7 @@ describe('recipes table', () => {
         id: expect.any(Number),
         name: expect.any(String),
         slug: expect.any(String),
+        author_id: expect.any(Number),
         steps: expect.any(Array),
         is_vegetarian: expect.any(Boolean),
       });

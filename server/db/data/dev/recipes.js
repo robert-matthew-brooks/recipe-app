@@ -2,6 +2,7 @@ const recipes = [
   {
     name: 'Chicken, Leek and Bacon Pie',
     slug: 'chicken-leek-and-bacon-pie',
+    author: 'Bob',
     ingredients: [
       { name: 'Chicken Breasts', amount: '2' },
       { name: 'Leeks', amount: '1' },
@@ -33,6 +34,7 @@ const recipes = [
   {
     name: 'Penne & Cheese',
     slug: 'penne-and-cheese',
+    author: 'Bob',
     ingredients: [
       { name: 'Shallot', amount: '1' },
       { name: 'Garlic Cloves', amount: '1' },
@@ -61,6 +63,7 @@ const recipes = [
   {
     name: 'Beef Kebab',
     slug: 'beef-kebab',
+    author: 'Bob',
     ingredients: [
       { name: 'Red Onions', amount: '1' },
       { name: 'Tomatoes', amount: '1' },
@@ -92,6 +95,7 @@ const recipes = [
   {
     name: 'Crispy Fried Chicken Burger',
     slug: 'crispy-fried-chicken-burger',
+    author: 'Bob',
     ingredients: [
       { name: 'Tomatoes', amount: '1' },
       { name: 'Gem Lettuce', amount: '1' },
@@ -123,6 +127,7 @@ const recipes = [
   {
     name: 'Garlicky Chicken Kiev',
     slug: 'garlicky-chicken-kiev',
+    author: 'Bob',
     ingredients: [
       { name: 'Lemons', amount: '1' },
       { name: 'Eggs', amount: '1' },
@@ -149,6 +154,7 @@ const recipes = [
   {
     name: 'Beef Meatballs with Tomato Sauce & Linguine',
     slug: 'beef-meatballs-with-tomato-sauce-and-linguine',
+    author: 'Bob',
     ingredients: [
       { name: 'Red Onions', amount: '1' },
       { name: 'Cheddar Cheese', amount: '40g' },

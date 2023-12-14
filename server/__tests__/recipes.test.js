@@ -22,6 +22,7 @@ describe('GET /recipes/:recipe_id', () => {
       id: expect.any(Number),
       name: expect.any(String),
       slug: expect.any(String),
+      author: expect.any(String),
       ingredients: expect.any(Array),
       steps: expect.any(Array),
       is_vegetarian: expect.any(Boolean),
@@ -62,6 +63,7 @@ describe('GET /recipes', () => {
         id: expect.any(Number),
         name: expect.any(String),
         slug: expect.any(String),
+        author: expect.any(String),
         likes: expect.any(Number),
       });
     }

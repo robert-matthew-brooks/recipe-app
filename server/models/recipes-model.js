@@ -11,6 +11,7 @@ async function getOne(recipeSlug) {
         r.id,
         r.name,
         r.slug,
+        u.username AS author,
         JSON_AGG (
           DISTINCT JSONB_BUILD_OBJECT (
             'name', i.name,
@@ -22,14 +23,18 @@ async function getOne(recipeSlug) {
         r.is_vegetarian,
         COUNT(DISTINCT l)::INT AS likes
       FROM recipes r
+      INNER JOIN users u
+        ON r.author_id = u.id
       INNER JOIN recipes_ingredients ri
         ON r.id = ri.recipe_id
         AND r.slug = $1
       INNER JOIN ingredients i
-        ON i.id = ri.ingredient_id
+        ON ri.ingredient_id = i.id
       LEFT OUTER JOIN recipe_likes l
         ON r.id = l.recipe_id
-      GROUP BY r.id;
+      GROUP BY
+        r.id,
+        u.username;
     `,
     [recipeSlug]
   );
@@ -64,16 +69,21 @@ async function getAll(searchTerm, ingredientIdsStr, isVegetarianStr) {
         r.id,
         r.name,
         r.slug,
+        u.username AS author,
         COUNT(DISTINCT l)::INT AS likes
-      FROM recipes_ingredients ri
-      INNER JOIN recipes r
+      FROM recipes r
+      INNER JOIN users u
+        ON r.author_id = u.id
+      INNER JOIN recipes_ingredients ri
         ON r.id = ri.recipe_id
         ${searchTerm ? searchTermQueryStr : ''}
         ${ingredientIds.length > 0 ? ingredientsQueryStr : ''}
         ${isVegetarian ? vegetarianQueryStr : ''}
       LEFT OUTER JOIN recipe_likes l
         ON r.id = l.recipe_id
-      GROUP BY r.id;
+      GROUP BY
+        r.id,
+        u.username;
     `
   );
 
