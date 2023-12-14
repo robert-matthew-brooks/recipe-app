@@ -47,6 +47,8 @@ describe('recipes table', () => {
         id: expect.any(Number),
         name: expect.any(String),
         slug: expect.any(String),
+        author_id: expect.any(Number),
+        img_url: expect.any(String),
         steps: expect.any(Array),
         is_vegetarian: expect.any(Boolean),
       });
@@ -85,8 +87,8 @@ describe('recipes_ingredients junction table', () => {
   it('should return objects with correct properties', async () => {
     const { rows } = await pool.query('SELECT * FROM recipes_ingredients;');
 
-    for (const junction of rows) {
-      expect(junction).toMatchObject({
+    for (const row of rows) {
+      expect(row).toMatchObject({
         id: expect.any(Number),
         recipe_id: expect.any(Number),
         ingredient_id: expect.any(Number),
@@ -97,7 +99,7 @@ describe('recipes_ingredients junction table', () => {
 });
 
 describe('recipes_likes table', () => {
-  it('should contain 13 junctions', async () => {
+  it('should contain 13 entries', async () => {
     const { rows } = await pool.query('SELECT * FROM recipe_likes;');
     expect(rows).toHaveLength(13);
   });
@@ -105,8 +107,8 @@ describe('recipes_likes table', () => {
   it('should return objects with correct properties', async () => {
     const { rows } = await pool.query('SELECT * FROM recipe_likes;');
 
-    for (const junction of rows) {
-      expect(junction).toMatchObject({
+    for (const row of rows) {
+      expect(row).toMatchObject({
         id: expect.any(Number),
         recipe_id: expect.any(Number),
         user_id: expect.any(Number),

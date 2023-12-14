@@ -2,6 +2,8 @@ const recipes = [
   {
     name: 'Recipe One',
     slug: 'recipe-1',
+    imgUrl: 'http://www.recipe-img.com/recipe-img.jpeg',
+    author: 'user1',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-2', amount: '2ml' },
@@ -15,6 +17,8 @@ const recipes = [
   {
     name: 'Recipe Two',
     slug: 'recipe-2',
+    imgUrl: 'http://www.recipe-img.com/recipe-img.jpeg',
+    author: 'user2',
     ingredients: [
       { name: 'ingredient-6', amount: '1' },
       { name: 'ingredient-7', amount: '2ml' },
@@ -36,6 +40,8 @@ const recipes = [
   {
     name: 'Recipe Three',
     slug: 'recipe-3',
+    imgUrl: 'http://www.recipe-img.com/recipe-img.jpeg',
+    author: 'user3',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-3', amount: '2g' },
@@ -49,6 +55,8 @@ const recipes = [
   {
     name: 'Recipe Four',
     slug: 'recipe-4',
+    imgUrl: 'http://www.recipe-img.com/recipe-img.jpeg',
+    author: 'user4',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-2', amount: '2ml' },
@@ -62,6 +70,8 @@ const recipes = [
   {
     name: 'Recipe Five',
     slug: 'recipe-5',
+    imgUrl: 'http://www.recipe-img.com/recipe-img.jpeg',
+    author: 'user5',
     ingredients: [
       { name: 'ingredient-6', amount: '1' },
       { name: 'ingredient-7', amount: '2ml' },
@@ -83,6 +93,8 @@ const recipes = [
   {
     name: 'Recipe Six (tagged)',
     slug: 'recipe-6-tag',
+    imgUrl: 'http://www.recipe-img.com/recipe-img.jpeg',
+    author: 'user1',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-3', amount: '2g' },
@@ -96,6 +108,8 @@ const recipes = [
   {
     name: 'Recipe Seven (tagged)',
     slug: 'recipe-7-tag',
+    imgUrl: 'http://www.recipe-img.com/recipe-img.jpeg',
+    author: 'user2',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-2', amount: '2ml' },
@@ -109,6 +123,8 @@ const recipes = [
   {
     name: 'Recipe Eight (tagged)',
     slug: 'recipe-8-tag',
+    imgUrl: 'http://www.recipe-img.com/recipe-img.jpeg',
+    author: 'user3',
     ingredients: [
       { name: 'ingredient-6', amount: '1' },
       { name: 'ingredient-7', amount: '2ml' },
@@ -130,6 +146,8 @@ const recipes = [
   {
     name: 'Recipe Nine (tagged)',
     slug: 'recipe-9-tag',
+    imgUrl: 'http://www.recipe-img.com/recipe-img.jpeg',
+    author: 'user4',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-3', amount: '2g' },
@@ -143,6 +161,8 @@ const recipes = [
   {
     name: 'Recipe Ten (tagged)',
     slug: 'recipe-10-tag',
+    imgUrl: 'http://www.recipe-img.com/recipe-img.jpeg',
+    author: 'user5',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
       { name: 'ingredient-2', amount: '2ml' },
