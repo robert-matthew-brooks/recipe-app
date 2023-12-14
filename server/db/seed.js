@@ -12,7 +12,7 @@ async function seed({ recipes, users }) {
       format(
         `
           SELECT id FROM %s
-          WHERE %s = %L;
+          WHERE LOWER(%s) = LOWER(%L);
         `,
         table,
         field,
