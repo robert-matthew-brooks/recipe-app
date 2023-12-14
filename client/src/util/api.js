@@ -13,4 +13,12 @@ export async function checkUsernameAvailability(username) {
   return { user };
 }
 
-export async function register(username, password) {}
+export async function register(username, password) {
+  const { data } = await api.post('/auth/register', { username, password });
+  return { user: data.user };
+}
+
+export async function login(username, password) {
+  const { data } = await api.post('/auth/login', { username, password });
+  return { user: data.user };
+}

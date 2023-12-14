@@ -1,15 +1,23 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './Auth.css';
+import { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserContext } from '../UserContext';
+import { checkUsernameAvailability, register } from '../util/api';
 import { getUsernameErr, getPasswordErr } from '../util/validate';
-import { checkUsernameAvailability } from '../util/api';
+import loadingImg from '../assets/loading.svg';
+import './Auth.css';
 
 export default function AuthRegister() {
+  const { setActiveUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [usernameErr, setUsernameErr] = useState('');
   const [passwordErr, setPasswordErr] = useState('');
+  const [apiErr, setApiErr] = useState('');
+
   const [isValidateOnChange, setIsValidateOnChange] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateUsername = (username) => {
     let currentUsernameErr = getUsernameErr(username);
@@ -39,8 +47,9 @@ export default function AuthRegister() {
 
   const handleFormSubmit = async (evt) => {
     evt.preventDefault();
+    setIsLoading(true);
 
-    const isValidUsername = await validateUsername(username);
+    const isValidUsername = validateUsername(username);
     const isValidPassword = validatePassword(password);
 
     if (isValidUsername && isValidPassword) {
@@ -48,15 +57,22 @@ export default function AuthRegister() {
       if (!user.isAvailable) {
         setUsernameErr('Username not available');
       } else {
-        console.log('Tregister');
-        // TODO register
-        // lock input boxes/button
-        // loading wheel on button
-        // update localstorgae, context, and redirect on response
+        try {
+          const { user } = await register(username, password);
+
+          localStorage.setItem('user', JSON.stringify(user));
+          setActiveUser(user);
+          navigate('/recipes');
+        } catch (err) {
+          console.log(err);
+          setApiErr('Something went wrong, please try again');
+        }
       }
     } else if (!isValidateOnChange) {
       setIsValidateOnChange(true);
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -76,14 +92,13 @@ export default function AuthRegister() {
             type="text"
             value={username}
             placeholder="Username"
-            className={usernameErr ? 'Auth--username__error' : undefined}
+            className={usernameErr ? 'Auth--username__err' : undefined}
             onChange={(evt) => {
               handleUsernameChange(evt);
             }}
+            disabled={isLoading}
           />
-          <p
-            className={`Auth--errors ${!usernameErr && 'Auth--errors__hidden'}`}
-          >
+          <p className={`Auth--err ${!usernameErr && 'Auth--err__hidden'}`}>
             &#9888; {usernameErr}
           </p>
         </div>
@@ -94,21 +109,25 @@ export default function AuthRegister() {
             type="password"
             value={password}
             placeholder="Password"
-            className={passwordErr ? 'Auth--password__error' : undefined}
+            className={passwordErr ? 'Auth--password__err' : undefined}
             onChange={(evt) => {
               handlePasswordChange(evt);
             }}
+            disabled={isLoading}
           />
-          <p
-            className={`Auth--errors ${!passwordErr && 'Auth--errors__hidden'}`}
-          >
+          <p className={`Auth--err ${!passwordErr && 'Auth--err__hidden'}`}>
             &#9888; {passwordErr}
           </p>
         </div>
 
-        <input id="Auth--submit" type="submit" value="Register" />
+        <button id="Auth--submit" type="submit" disabled={isLoading}>
+          {!isLoading ? 'Register' : <img src={loadingImg} />}
+        </button>
         <p id="Auth--msg">
           Already have an account? <Link to="/login">Login here</Link>
+        </p>
+        <p className={`Auth--err ${!apiErr && 'Auth--err__hidden'}`}>
+          &#9888; {apiErr}
         </p>
       </form>
     </div>
