@@ -35,7 +35,7 @@ async function login(username, password) {
         username,
         hashed_password
       FROM users
-      WHERE username = LOWER($1);
+      WHERE LOWER(username) = LOWER($1);
     `,
     [username]
   );
@@ -45,8 +45,9 @@ async function login(username, password) {
   } else if (!compare(password, rows[0].hashed_password)) {
     throw { status: 401, msg: 'Incorrect password' };
   } else {
-    const token = createToken(rows[0]);
-    const user = { ...rows[0], token };
+    const user = { id: rows[0].id, username: rows[0].username };
+    const token = createToken(user);
+    user.token = token;
 
     return { user };
   }
