@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { UserContext } from '../UserContext';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import menuImg from '../assets/menu.svg';
 import MobileMenu from './MobileMenu';
@@ -13,6 +15,8 @@ const links = [
 ];
 
 export default function Navbar() {
+  const { activeUser } = useContext(UserContext);
+
   const navigate = useNavigate();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,7 +60,7 @@ export default function Navbar() {
               <img src={menuImg} />
             </button>
 
-            <div id="Navbar--desktop-links">
+            <div id="Navbar--links-wrapper">
               {links.map((link, i) => {
                 return (
                   <Link key={i} to={link.href}>
@@ -66,24 +70,29 @@ export default function Navbar() {
               })}
             </div>
 
-            <button
-              id="Navbar--register-btn"
-              className="Navbar--btn"
-              onClick={() => {
-                navigate('/register');
-              }}
-            >
-              Register
-            </button>
-            <button
-              id="Navbar--sign-in-btn"
-              className="Navbar--btn"
-              onClick={() => {
-                navigate('/login');
-              }}
-            >
-              Sign in
-            </button>
+            <div id="Navbar--btn-wrapper">
+              {!activeUser && (
+                <button
+                  id="Navbar--register-btn"
+                  className="Navbar--btn"
+                  onClick={() => {
+                    navigate('/register');
+                  }}
+                >
+                  Register
+                </button>
+              )}
+
+              <button
+                id="Navbar--auth-btn"
+                className="Navbar--btn"
+                onClick={() => {
+                  activeUser ? navigate('/logout') : navigate('/login');
+                }}
+              >
+                {activeUser ? 'Sign out' : 'Sign in'}
+              </button>
+            </div>
           </div>
         </nav>
       </>

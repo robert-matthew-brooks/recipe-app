@@ -14,7 +14,7 @@
   gap: 0.5rem;
 }
 
-#Navbar--desktop-links {
+#Navbar--links-wrapper {
   display: none;
 }
 
@@ -54,31 +54,39 @@
   aspect-ratio: 1;
 }
 
+#Navbar--btn-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
 .Navbar--btn {
-  padding: 0.4rem;
+  padding: 0.4rem 1rem;
   font-family: inherit;
   font-size: 0.8rem;
   text-transform: uppercase;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: all 0.5s ease;
 }
 
 #Navbar--register-btn {
-  margin-left: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
   font-weight: bold;
   background-color: darkseagreen;
-  transition: all 0.5s ease;
 }
 #Navbar--register-btn:hover {
   color: white;
   background-color: black;
 }
 
-#Navbar--sign-in-btn {
+#Navbar--auth-btn {
   background-color: transparent;
+  border: 1px solid antiquewhite;
+}
+#Navbar--auth-btn:hover {
+  background-color: lightgrey;
+  border: 1px solid grey;
 }
 
 @media screen and (min-width: 768px) {
@@ -86,7 +94,7 @@
     display: none;
   }
 
-  #Navbar--desktop-links {
+  #Navbar--links-wrapper {
     display: block;
   }
 }
