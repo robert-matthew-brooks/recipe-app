@@ -1,4 +1,4 @@
-const seedImgFolder = `${process.env.CLIENT_ORIGIN}/public`;
+const seedImgFolder = `${process.env.CLIENT_ORIGIN}/public/recipe-imgs`;
 
 const recipes = [
   {
