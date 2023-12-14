@@ -22,3 +22,8 @@ export async function login(username, password) {
   const { data } = await api.post('/auth/login', { username, password });
   return { user: data.user };
 }
+
+export async function getRecipes() {
+  const { data } = await api.get('/recipes');
+  return { recipes: data.recipes };
+}

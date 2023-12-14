@@ -11,9 +11,21 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  animation: popup 0.2s linear;
 }
 #Auth--inner > div {
   width: 100%;
+}
+
+@keyframes popup {
+  from {
+    transform: scale(0.9) translateY(3rem);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
 }
 
 #Auth--title {
