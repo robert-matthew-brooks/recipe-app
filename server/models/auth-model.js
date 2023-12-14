@@ -41,9 +41,9 @@ async function login(username, password) {
   );
 
   if (rows.length === 0) {
-    throw { status: 404, msg: 'Username not found' };
+    throw { status: 401, msg: 'Username not found' };
   } else if (!compare(password, rows[0].hashed_password)) {
-    throw { status: 403, msg: 'Incorrect password' };
+    throw { status: 401, msg: 'Incorrect password' };
   } else {
     const token = createToken(rows[0]);
     const user = { ...rows[0], token };

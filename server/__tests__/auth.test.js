@@ -43,7 +43,7 @@ describe('POST /auth/register', () => {
   });
 
   describe('error handing', () => {
-    it.only('409: should return an error if username already exists', async () => {
+    it('409: should return an error if username already exists', async () => {
       await supertest(server)
         .post('/auth/register')
         .send({ username: 'user1', password: 'password1!' })
@@ -130,14 +130,14 @@ describe('POST /auth/login', () => {
     await supertest(server)
       .post('/auth/login')
       .send({ username: 'not_a_user', password: 'password1!' })
-      .expect(404);
+      .expect(401);
   });
 
   it('403: should return an error if password is incorrect', async () => {
     await supertest(server)
       .post('/auth/login')
       .send({ username: 'user1', password: 'incorrect-password1!' })
-      .expect(403);
+      .expect(401);
   });
 
   describe('error handing', () => {
