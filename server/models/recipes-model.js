@@ -12,6 +12,7 @@ async function getOne(recipeSlug) {
         r.name,
         r.slug,
         u.username AS author,
+        r.img_url,
         JSON_AGG (
           DISTINCT JSONB_BUILD_OBJECT (
             'name', i.name,
@@ -70,6 +71,7 @@ async function getAll(searchTerm, ingredientIdsStr, isVegetarianStr) {
         r.name,
         r.slug,
         u.username AS author,
+        r.img_url,
         COUNT(DISTINCT l)::INT AS likes
       FROM recipes r
       INNER JOIN users u

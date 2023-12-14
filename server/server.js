@@ -9,7 +9,7 @@ const errHandlers = require('./error-handlers/error-handlers');
 setEnvVars();
 
 const server = express();
-server.use(cors({ origin: process.env.CORS_ORIGIN }));
+server.use(cors({ origin: process.env.CLIENT_ORIGIN }));
 server.use(express.json());
 server.set('json spaces', 2);
 

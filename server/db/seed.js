@@ -41,21 +41,13 @@ async function seed({ recipes, users }) {
 
   await pool.query('DROP TABLE IF EXISTS recipe_likes CASCADE;');
   await pool.query('DROP TABLE IF EXISTS recipes_ingredients CASCADE;');
-  await pool.query('DROP TABLE IF EXISTS ingredients CASCADE;');
   await pool.query('DROP TABLE IF EXISTS recipes CASCADE;');
+  await pool.query('DROP TABLE IF EXISTS ingredients CASCADE;');
   await pool.query('DROP TABLE IF EXISTS users CASCADE;');
 
   /*****************/
   /* create tables */
   /*****************/
-
-  await pool.query(`
-    CREATE TABLE ingredients (
-      id SERIAL PRIMARY KEY,
-      name VARCHAR UNIQUE NOT NULL,
-      units VARCHAR
-    );
-  `);
 
   await pool.query(
     `
@@ -70,12 +62,21 @@ async function seed({ recipes, users }) {
     `
   );
 
+  await pool.query(`
+    CREATE TABLE ingredients (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR UNIQUE NOT NULL,
+      units VARCHAR
+    );
+  `);
+
   await pool.query(
     `
       CREATE TABLE recipes (
         id SERIAL PRIMARY KEY,
         name VARCHAR NOT NULL,
         slug VARCHAR UNIQUE NOT NULL,
+        img_url VARCHAR,
         author_id INT REFERENCES users(id) NOT NULL,
         steps VARCHAR[],
         is_vegetarian BOOLEAN
@@ -117,6 +118,23 @@ async function seed({ recipes, users }) {
   // create empty users with ids, then recipes with ids,
   // then populate user favourites
 
+  // empty users
+
+  const insertUsersSql = format(
+    `
+      INSERT INTO users (
+        username,
+        hashed_password
+      )
+      VALUES %L;
+    `,
+    users.map((user) => {
+      return [user.username, hash(user.password)];
+    })
+  );
+
+  await pool.query(insertUsersSql);
+
   // ingredients
 
   const ingredientsData = [];
@@ -151,23 +169,6 @@ async function seed({ recipes, users }) {
 
   await pool.query(insertIngredientsSql);
 
-  // empty users
-
-  const insertUsersSql = format(
-    `
-        INSERT INTO users (
-          username,
-          hashed_password
-        )
-        VALUES %L;
-      `,
-    users.map((user) => {
-      return [user.username, hash(user.password)];
-    })
-  );
-
-  await pool.query(insertUsersSql);
-
   // recipes
 
   const insertRecipesSql = format(
@@ -176,6 +177,7 @@ async function seed({ recipes, users }) {
         name,
         slug,
         author_id,
+        img_url,
         steps,
         is_vegetarian
       )
@@ -187,6 +189,7 @@ async function seed({ recipes, users }) {
           recipe.name,
           recipe.slug,
           await getId(recipe.author, 'username', 'users'),
+          recipe.imgUrl,
           arrToSqlArr(recipe.steps),
           recipe.isVegetarian,
         ];
@@ -201,13 +204,13 @@ async function seed({ recipes, users }) {
   for (const user of users) {
     const insertUserDetailsSql = format(
       `
-      UPDATE users
-      SET
-        favourites = %L,
-        list = %L,
-        done = %L
-      WHERE LOWER(username) = LOWER(%L);
-    `,
+        UPDATE users
+        SET
+          favourites = %L,
+          list = %L,
+          done = %L
+        WHERE LOWER(username) = LOWER(%L);
+      `,
       arrToSqlArr(await getIdList(user.favourites, 'slug', 'recipes')),
       arrToSqlArr(await getIdList(user.list, 'slug', 'recipes')),
       arrToSqlArr(await getIdList(user.done, 'slug', 'recipes')),

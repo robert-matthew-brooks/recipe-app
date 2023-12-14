@@ -1,7 +1,10 @@
+const seedImgFolder = `${process.env.CLIENT_ORIGIN}/public`;
+
 const recipes = [
   {
     name: 'Chicken, Leek and Bacon Pie',
     slug: 'chicken-leek-and-bacon-pie',
+    imgUrl: `${seedImgFolder}/chicken-leek-and-bacon-pie.jpeg`,
     author: 'Bob',
     ingredients: [
       { name: 'Chicken Breasts', amount: '2' },
@@ -34,6 +37,7 @@ const recipes = [
   {
     name: 'Penne & Cheese',
     slug: 'penne-and-cheese',
+    imgUrl: `${seedImgFolder}/penne-and-cheese.jpeg`,
     author: 'Bob',
     ingredients: [
       { name: 'Shallot', amount: '1' },
@@ -63,6 +67,7 @@ const recipes = [
   {
     name: 'Beef Kebab',
     slug: 'beef-kebab',
+    imgUrl: `${seedImgFolder}/beef-kebab.jpeg`,
     author: 'Bob',
     ingredients: [
       { name: 'Red Onions', amount: '1' },
@@ -95,6 +100,7 @@ const recipes = [
   {
     name: 'Crispy Fried Chicken Burger',
     slug: 'crispy-fried-chicken-burger',
+    imgUrl: `${seedImgFolder}/crispy-fried-chicken-burger.jpeg`,
     author: 'Bob',
     ingredients: [
       { name: 'Tomatoes', amount: '1' },
@@ -127,6 +133,7 @@ const recipes = [
   {
     name: 'Garlicky Chicken Kiev',
     slug: 'garlicky-chicken-kiev',
+    imgUrl: `${seedImgFolder}/garlicky-chicken-kiev.jpeg`,
     author: 'Bob',
     ingredients: [
       { name: 'Lemons', amount: '1' },
@@ -154,6 +161,7 @@ const recipes = [
   {
     name: 'Beef Meatballs with Tomato Sauce & Linguine',
     slug: 'beef-meatballs-with-tomato-sauce-and-linguine',
+    imgUrl: `${seedImgFolder}/beef-meatballs-with-tomato-sauce-and-linguine.jpeg`,
     author: 'Bob',
     ingredients: [
       { name: 'Red Onions', amount: '1' },
