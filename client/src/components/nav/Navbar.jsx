@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useContext } from 'react';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../context/UserContext';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import menuImg from '../assets/menu.svg';
+import menuImg from '../../assets/menu.svg';
 import MobileMenu from './MobileMenu';
 import './Navbar.css';
 

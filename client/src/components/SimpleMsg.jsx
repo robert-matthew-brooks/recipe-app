@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserContext } from '../UserContext';
+import { UserContext } from './context/UserContext';
 import Header from './Header';
 import './SimpleMsg.css';
 

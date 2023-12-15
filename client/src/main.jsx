@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { UserContextProvider } from './UserContext.jsx';
+import { UserContextProvider } from './components/context/UserContext.jsx';
 import App from './App.jsx';
 import './index.css';
 
