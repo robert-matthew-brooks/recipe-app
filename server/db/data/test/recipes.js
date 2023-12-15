@@ -17,7 +17,6 @@ const recipes = [
   {
     name: 'Recipe Two',
     slug: 'recipe-2',
-    imgUrl: 'http://www.recipe-img.com/recipe-img.jpeg',
     author: 'user2',
     ingredients: [
       { name: 'ingredient-6', amount: '1' },
@@ -146,7 +145,6 @@ const recipes = [
   {
     name: 'Recipe Nine (tagged)',
     slug: 'recipe-9-tag',
-    imgUrl: 'http://www.recipe-img.com/recipe-img.jpeg',
     author: 'user4',
     ingredients: [
       { name: 'ingredient-1', amount: '1' },
