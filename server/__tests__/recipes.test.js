@@ -54,11 +54,6 @@ describe('GET /recipes/:recipe_id', () => {
 });
 
 describe('GET /recipes', () => {
-  it('should return 10 recipe objects', async () => {
-    const { body } = await supertest(server).get('/recipes').expect(200);
-    expect(body.recipes).toHaveLength(10);
-  });
-
   it('should return an array of recipe objects with the correct properties', async () => {
     const { body } = await supertest(server).get('/recipes').expect(200);
 
@@ -72,6 +67,11 @@ describe('GET /recipes', () => {
         likes: expect.any(Number),
       });
     }
+  });
+
+  it('should return 10 recipes', async () => {
+    const { body } = await supertest(server).get('/recipes').expect(200);
+    expect(body.recipes).toHaveLength(10);
   });
 
   it('should filter 5 tagged recipe names', async () => {

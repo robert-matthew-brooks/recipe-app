@@ -1,9 +1,10 @@
 const { setEnvVars } = require('./env');
 const express = require('express');
 const cors = require('cors');
-const recipesRouter = require('./routers/recipes-router');
 const authRouter = require('./routers/auth-router');
 const usersRouter = require('./routers/users-router');
+const ingredientsRouter = require('./routers/ingredients-router');
+const recipesRouter = require('./routers/recipes-router');
 const errHandlers = require('./error-handlers/error-handlers');
 
 setEnvVars();
@@ -21,9 +22,10 @@ server.get('/status', (_req, res) => {
 /* routes */
 /**********/
 
-server.use('/recipes', recipesRouter);
 server.use('/auth', authRouter);
 server.use('/users', usersRouter);
+server.use('/ingredients', ingredientsRouter);
+server.use('/recipes', recipesRouter);
 
 /******************/
 /* error handling */
