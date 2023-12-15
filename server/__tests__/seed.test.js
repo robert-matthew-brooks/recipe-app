@@ -1,6 +1,9 @@
+const matchers = require('jest-extended');
 const pool = require('../db/pool');
 const seed = require('../db/seed');
 data = require('../db/data/test');
+
+expect.extend(matchers);
 
 beforeEach(async () => {
   await seed(data);
@@ -48,7 +51,7 @@ describe('recipes table', () => {
         name: expect.any(String),
         slug: expect.any(String),
         author_id: expect.any(Number),
-        img_url: expect.any(String),
+        img_url: expect.toBeOneOf([expect.any(String), null]),
         steps: expect.any(Array),
         is_vegetarian: expect.any(Boolean),
       });
