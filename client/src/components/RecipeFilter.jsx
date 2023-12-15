@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getIngredients } from '../util/api';
 import closeImg from '../assets/close.svg';
 import './RecipeFilter.css';
 
@@ -12,6 +13,13 @@ export default function RecipeFilter({
     { id: 10, name: 'Corn' },
     { id: 29, name: 'Broccoli' },
   ]);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getIngredients();
+      console.log(data);
+    })();
+  }, []);
 
   const addIngredient = (ingredientId) => {
     const ingredientName = allIngredients.filter((el) => {

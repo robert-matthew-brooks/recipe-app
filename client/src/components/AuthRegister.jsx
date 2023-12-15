@@ -9,7 +9,6 @@ import './Auth.css';
 export default function AuthRegister() {
   const { setActiveUser } = useContext(UserContext);
   const navigate = useNavigate();
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [usernameErr, setUsernameErr] = useState('');
@@ -68,9 +67,9 @@ export default function AuthRegister() {
           setApiErr('Something went wrong, please try again');
         }
       }
-    } else if (!isValidateOnChange) {
-      setIsValidateOnChange(true);
     }
+
+    if (!isValidateOnChange) setIsValidateOnChange(true);
 
     setIsLoading(false);
   };

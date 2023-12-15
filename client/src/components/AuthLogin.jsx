@@ -9,7 +9,6 @@ import './Auth.css';
 export default function AuthLogin() {
   const { setActiveUser } = useContext(UserContext);
   const navigate = useNavigate();
-
   const [username, setUsername] = useState('bob'); // TODO remove these when finished dev testing
   const [password, setPassword] = useState('password123!');
   const [usernameErr, setUsernameErr] = useState('');
@@ -65,9 +64,9 @@ export default function AuthLogin() {
           err.response?.data?.msg || 'Something went wrong, please try again'
         );
       }
-    } else if (!isValidateOnChange) {
-      setIsValidateOnChange(true);
     }
+
+    if (!isValidateOnChange) setIsValidateOnChange(true);
 
     setIsLoading(false);
   };
