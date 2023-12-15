@@ -1,9 +1,9 @@
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserContext } from '../UserContext';
-import { checkUsernameAvailability, register } from '../util/api';
-import { getUsernameErr, getPasswordErr } from '../util/validate';
-import loadingImg from '../assets/loading.svg';
+import { UserContext } from '../context/UserContext';
+import { checkUsernameAvailability, register } from '../../util/api';
+import { getUsernameErr, getPasswordErr } from '../../util/validate';
+import loadingImg from '../../assets/loading.svg';
 import './Auth.css';
 
 export default function AuthRegister() {
@@ -52,12 +52,12 @@ export default function AuthRegister() {
     const isValidPassword = validatePassword(password);
 
     if (isValidUsername && isValidPassword) {
-      const { user } = await checkUsernameAvailability(username);
+      const user = await checkUsernameAvailability(username);
       if (!user.isAvailable) {
         setUsernameErr('Username not available');
       } else {
         try {
-          const { user } = await register(username, password);
+          const user = await register(username, password);
 
           localStorage.setItem('user', JSON.stringify(user));
           setActiveUser(user);
@@ -90,11 +90,11 @@ export default function AuthRegister() {
             id="Auth--username"
             type="text"
             value={username}
-            placeholder="Username"
-            className={usernameErr ? 'Auth--username__err' : undefined}
             onChange={(evt) => {
               handleUsernameChange(evt);
             }}
+            placeholder="Username"
+            className={usernameErr ? 'Auth--username__err' : undefined}
             disabled={isLoading}
           />
           <p className={`Auth--err ${!usernameErr && 'Auth--err__hidden'}`}>
@@ -107,11 +107,11 @@ export default function AuthRegister() {
             id="Auth--password"
             type="password"
             value={password}
-            placeholder="Password"
-            className={passwordErr ? 'Auth--password__err' : undefined}
             onChange={(evt) => {
               handlePasswordChange(evt);
             }}
+            placeholder="Password"
+            className={passwordErr ? 'Auth--password__err' : undefined}
             disabled={isLoading}
           />
           <p className={`Auth--err ${!passwordErr && 'Auth--err__hidden'}`}>

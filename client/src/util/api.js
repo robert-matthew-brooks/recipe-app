@@ -10,26 +10,27 @@ export async function checkUsernameAvailability(username) {
     isAvailable: data.user.is_available,
   };
 
-  return { user };
+  return user;
 }
 
 export async function register(username, password) {
   const { data } = await api.post('/auth/register', { username, password });
-  return { user: data.user };
+  return data.user;
 }
 
 export async function login(username, password) {
   const { data } = await api.post('/auth/login', { username, password });
-  return { user: data.user };
+  return data.user;
 }
 
 export async function getIngredients() {
   const { data } = await api.get('/ingredients');
-  console.log(data);
+  return data.ingredients;
 }
 
 export async function getRecipes() {
   const { data } = await api.get('/recipes');
+  // TODO set max 6
 
   const recipes = data.recipes.map((recipe) => {
     recipe.imgUrl = recipe.img_url;
@@ -37,5 +38,5 @@ export async function getRecipes() {
     return recipe;
   });
 
-  return { recipes };
+  return recipes;
 }

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import closeImg from '../assets/close.svg';
+import closeImg from '../../assets/close.svg';
 import './MobileMenu.css';
 
 export default function MobileMenu({ links, isMenuOpen, toggleMenu }) {

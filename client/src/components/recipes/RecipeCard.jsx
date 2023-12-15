@@ -1,4 +1,4 @@
-import recipePlaceholderImg from '../assets/recipe-placeholder.jpeg';
+import recipePlaceholderImg from '../../assets/recipe-placeholder.jpeg';
 import './RecipeCard.css';
 
 export default function RecipeCard({ recipe }) {
