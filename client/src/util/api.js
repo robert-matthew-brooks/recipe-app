@@ -23,7 +23,19 @@ export async function login(username, password) {
   return { user: data.user };
 }
 
+export async function getIngredients() {
+  const { data } = await api.get('/ingredients');
+  console.log(data);
+}
+
 export async function getRecipes() {
   const { data } = await api.get('/recipes');
-  return { recipes: data.recipes };
+
+  const recipes = data.recipes.map((recipe) => {
+    recipe.imgUrl = recipe.img_url;
+    delete recipe.img_url;
+    return recipe;
+  });
+
+  return { recipes };
 }

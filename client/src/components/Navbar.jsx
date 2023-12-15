@@ -16,7 +16,6 @@ const links = [
 
 export default function Navbar() {
   const { activeUser } = useContext(UserContext);
-
   const navigate = useNavigate();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);

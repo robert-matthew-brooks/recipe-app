@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import Recipes from './components/Recipes';
 import AuthRegister from './components/AuthRegister';
 import AuthLogin from './components/AuthLogin';
-import AuthLogout from './components/AuthLogout';
+import SimpleMsg from './components/SimpleMsg';
 import Footer from './components/Footer';
 
 export default function App() {
@@ -17,11 +17,31 @@ export default function App() {
 
         <Route path="/register" element={<AuthRegister />} />
         <Route path="/login" element={<AuthLogin />} />
-        <Route path="/logout" element={<AuthLogout />} />
+        <Route
+          path="/logout"
+          element={
+            <SimpleMsg
+              title="Signed Out"
+              msg="Hope to see you again soon!"
+              linkText="Back to Recipes"
+              linkHref="/recipes"
+            />
+          }
+        />
 
         <Route path="/recipes" element={<Recipes />} />
 
-        <Route path="*" element={<p>&#9785; 404 HERE</p>} />
+        <Route
+          path="*"
+          element={
+            <SimpleMsg
+              title="Oops!"
+              msg="Sorry, the page you're looking for doesn't exist! &#9785;"
+              linkText="Back to Recipes"
+              linkHref="/recipes"
+            />
+          }
+        />
       </Routes>
 
       <Footer />
