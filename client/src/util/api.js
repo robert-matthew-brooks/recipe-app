@@ -10,20 +10,42 @@ export async function checkUsernameAvailability(username) {
     isAvailable: data.user.is_available,
   };
 
-  return { user };
+  return user;
 }
 
 export async function register(username, password) {
   const { data } = await api.post('/auth/register', { username, password });
-  return { user: data.user };
+  return data.user;
 }
 
 export async function login(username, password) {
   const { data } = await api.post('/auth/login', { username, password });
-  return { user: data.user };
+  return data.user;
 }
 
-export async function getRecipes() {
-  const { data } = await api.get('/recipes');
-  return { recipes: data.recipes };
+export async function getIngredients() {
+  const { data } = await api.get('/ingredients');
+  return data.ingredients;
+}
+
+export async function getRecipes(filterName, filterOrderBy, filterIngredients) {
+  const { data } = await api.get('/recipes', {
+    params: {
+      search_term: filterName,
+      ingredient_ids: JSON.stringify(filterIngredients.map((el) => el.id)),
+    },
+  });
+  // TODO set max 6
+  // TODO vegetarian
+  // TODO sort by
+
+  console.log(filterIngredients.map((el) => el.id));
+
+  const recipes = data.recipes.map((recipe) => {
+    recipe.imgUrl = recipe.img_url;
+    delete recipe.img_url;
+    return recipe;
+  });
+
+  return recipes;
 }

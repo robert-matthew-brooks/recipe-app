@@ -1,3 +1,4 @@
+import recipePlaceholderImg from '../../assets/recipe-placeholder.jpeg';
 import './RecipeCard.css';
 
 export default function RecipeCard({ recipe }) {
@@ -6,7 +7,7 @@ export default function RecipeCard({ recipe }) {
       <div
         className="RecipeCard--img-box"
         style={{
-          backgroundImage: `url('${recipe.imgUrl}')`,
+          backgroundImage: `url('${recipe.imgUrl || recipePlaceholderImg}')`,
         }}
       ></div>
       <h3 className="RecipeCard--title">{recipe.name}</h3>

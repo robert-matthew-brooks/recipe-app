@@ -1,4 +1,4 @@
-const seedImgFolder = `${process.env.CLIENT_ORIGIN}/public`;
+const seedImgFolder = `${process.env.CLIENT_ORIGIN}/public/recipe-imgs`;
 
 const recipes = [
   {
@@ -37,7 +37,6 @@ const recipes = [
   {
     name: 'Penne & Cheese',
     slug: 'penne-and-cheese',
-    imgUrl: `${seedImgFolder}/penne-and-cheese.jpeg`,
     author: 'Bob',
     ingredients: [
       { name: 'Shallot', amount: '1' },

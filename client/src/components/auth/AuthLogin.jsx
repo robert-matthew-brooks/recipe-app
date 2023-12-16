@@ -1,15 +1,14 @@
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserContext } from '../UserContext';
-import { checkUsernameAvailability, login } from '../util/api';
-import { getUsernameErr, getPasswordErr } from '../util/validate';
-import loadingImg from '../assets/loading.svg';
+import { UserContext } from '../context/UserContext';
+import { login } from '../../util/api';
+import { getUsernameErr, getPasswordErr } from '../../util/validate';
+import loadingImg from '../../assets/loading.svg';
 import './Auth.css';
 
 export default function AuthLogin() {
   const { setActiveUser } = useContext(UserContext);
   const navigate = useNavigate();
-
   const [username, setUsername] = useState('bob'); // TODO remove these when finished dev testing
   const [password, setPassword] = useState('password123!');
   const [usernameErr, setUsernameErr] = useState('');
@@ -54,7 +53,7 @@ export default function AuthLogin() {
 
     if (isValidUsername && isValidPassword) {
       try {
-        const { user } = await login(username, password);
+        const user = await login(username, password);
 
         localStorage.setItem('user', JSON.stringify(user));
         setActiveUser(user);
@@ -65,9 +64,9 @@ export default function AuthLogin() {
           err.response?.data?.msg || 'Something went wrong, please try again'
         );
       }
-    } else if (!isValidateOnChange) {
-      setIsValidateOnChange(true);
     }
+
+    if (!isValidateOnChange) setIsValidateOnChange(true);
 
     setIsLoading(false);
   };
@@ -88,11 +87,11 @@ export default function AuthLogin() {
             id="Auth--username"
             type="text"
             value={username}
-            placeholder="Username"
-            className={usernameErr ? 'Auth--username__err' : undefined}
             onChange={(evt) => {
               handleUsernameChange(evt);
             }}
+            placeholder="Username"
+            className={usernameErr ? 'Auth--username__err' : undefined}
             disabled={isLoading}
           />
           <p className={`Auth--err ${!usernameErr && 'Auth--err__hidden'}`}>
@@ -105,11 +104,11 @@ export default function AuthLogin() {
             id="Auth--password"
             type="password"
             value={password}
-            placeholder="Password"
-            className={passwordErr ? 'Auth--password__err' : undefined}
             onChange={(evt) => {
               handlePasswordChange(evt);
             }}
+            placeholder="Password"
+            className={passwordErr ? 'Auth--password__err' : undefined}
             disabled={isLoading}
           />
           <p className={`Auth--err ${!passwordErr && 'Auth--err__hidden'}`}>

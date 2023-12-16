@@ -1,8 +1,11 @@
 const supertest = require('supertest');
+const matchers = require('jest-extended');
 const server = require('../server');
 const pool = require('../db/pool');
 const seed = require('../db/seed');
 const data = require('../db/data/test');
+
+expect.extend(matchers);
 
 beforeEach(async () => {
   await seed(data);
@@ -23,7 +26,7 @@ describe('GET /recipes/:recipe_id', () => {
       name: expect.any(String),
       slug: expect.any(String),
       author: expect.any(String),
-      img_url: expect.any(String),
+      img_url: expect.toBeOneOf([expect.any(String), null]),
       ingredients: expect.any(Array),
       steps: expect.any(Array),
       is_vegetarian: expect.any(Boolean),
@@ -51,11 +54,6 @@ describe('GET /recipes/:recipe_id', () => {
 });
 
 describe('GET /recipes', () => {
-  it('should return 10 recipe objects', async () => {
-    const { body } = await supertest(server).get('/recipes').expect(200);
-    expect(body.recipes).toHaveLength(10);
-  });
-
   it('should return an array of recipe objects with the correct properties', async () => {
     const { body } = await supertest(server).get('/recipes').expect(200);
 
@@ -65,10 +63,15 @@ describe('GET /recipes', () => {
         name: expect.any(String),
         slug: expect.any(String),
         author: expect.any(String),
-        img_url: expect.any(String),
+        img_url: expect.toBeOneOf([expect.any(String), null]),
         likes: expect.any(Number),
       });
     }
+  });
+
+  it('should return 10 recipes', async () => {
+    const { body } = await supertest(server).get('/recipes').expect(200);
+    expect(body.recipes).toHaveLength(10);
   });
 
   it('should filter 5 tagged recipe names', async () => {
