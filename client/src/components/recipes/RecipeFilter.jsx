@@ -10,14 +10,33 @@ export default function RecipeFilter({
   setFilterOrderBy,
   filterIngredients,
   setFilterIngredients,
+  setIsLoading,
 }) {
   const [allIngredients, setAllIngredients] = useState([]);
+  const [searchBoxValue, setSearchBoxValue] = useState('');
 
   useEffect(() => {
     (async () => {
       setAllIngredients(await getIngredients());
     })();
   }, []);
+
+  useEffect(() => {
+    // debounce search box input
+    // update typed value immediately
+    // but wait a bit (for user to stop typing)
+    // before updating the value that triggers api call in Recipes.jsx
+
+    setIsLoading(true);
+
+    const filterNameDebounce = setTimeout(() => {
+      setFilterName(searchBoxValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(filterNameDebounce);
+    };
+  }, [searchBoxValue]);
 
   const addIngredient = (ingredientId) => {
     const ingredientName = allIngredients.filter((el) => {
@@ -43,9 +62,9 @@ export default function RecipeFilter({
       <input
         className="RecipeFilter--search-box"
         type="text"
-        value={filterName}
+        value={searchBoxValue}
         onChange={(evt) => {
-          setFilterName(evt.target.value);
+          setSearchBoxValue(evt.target.value);
         }}
         placeholder="Recipe name..."
       />

@@ -11,24 +11,19 @@ export default function AllRecipes() {
   const [filterOrderBy, setFilterOrderBy] = useState('');
   const [filterIngredients, setFilterIngredients] = useState([]);
 
-  // TODO replace this single call with dynamic call below
+  const [isLoading, setIsLoading] = useState(false);
+  const [isErr, setIsErr] = useState(false); // TODO - string? contain err msg?
+
   useEffect(() => {
     (async () => {
-      setRecipes(await getRecipes());
+      if (!isLoading) setIsLoading(true);
+      try {
+        setRecipes(
+          await getRecipes(filterName, filterOrderBy, filterIngredients)
+        );
+      } catch (err) {}
+      setIsLoading(false);
     })();
-  }, []);
-
-  // TODO
-  useEffect(() => {
-    console.log('show loading');
-    const getRecipesDebounce = setTimeout(() => {
-      console.log('changed', filterName, filterOrderBy, filterIngredients);
-      console.log('hide loading');
-    }, 1000);
-
-    return () => {
-      clearTimeout(getRecipesDebounce);
-    };
   }, [filterName, filterOrderBy, filterIngredients]);
 
   return (
@@ -37,6 +32,7 @@ export default function AllRecipes() {
 
       <section id="Recipes">
         <div id="Recipes--inner" className="inner">
+          {isLoading && 'loading'}
           <RecipeFilter
             {...{
               filterName,
@@ -45,9 +41,14 @@ export default function AllRecipes() {
               setFilterOrderBy,
               filterIngredients,
               setFilterIngredients,
+              setIsLoading,
             }}
           />
-          <RecipeCards {...{ recipes }} />
+          {recipes.length > 0 ? (
+            <RecipeCards {...{ recipes }} />
+          ) : (
+            <p>No recipes :(</p>
+          )}
         </div>
       </section>
     </>
