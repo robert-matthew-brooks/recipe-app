@@ -28,9 +28,18 @@ export async function getIngredients() {
   return data.ingredients;
 }
 
-export async function getRecipes() {
-  const { data } = await api.get('/recipes');
+export async function getRecipes(filterName, filterOrderBy, filterIngredients) {
+  const { data } = await api.get('/recipes', {
+    params: {
+      search_term: filterName,
+      ingredient_ids: JSON.stringify(filterIngredients.map((el) => el.id)),
+    },
+  });
   // TODO set max 6
+  // TODO vegetarian
+  // TODO sort by
+
+  console.log(filterIngredients.map((el) => el.id));
 
   const recipes = data.recipes.map((recipe) => {
     recipe.imgUrl = recipe.img_url;
