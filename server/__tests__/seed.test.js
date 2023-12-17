@@ -37,9 +37,9 @@ describe('ingredients table', () => {
 });
 
 describe('recipes table', () => {
-  it('should contain 10 recipes', async () => {
+  it('should contain 30 recipes', async () => {
     const { rows: recipes } = await pool.query('SELECT * FROM recipes;');
-    expect(recipes).toHaveLength(10);
+    expect(recipes).toHaveLength(30);
   });
 
   it('should return objects with correct properties', async () => {
@@ -54,6 +54,7 @@ describe('recipes table', () => {
         img_url: expect.toBeOneOf([expect.any(String), null]),
         steps: expect.any(Array),
         is_vegetarian: expect.any(Boolean),
+        created_at: expect.any(Date),
       });
     }
   });
@@ -82,9 +83,9 @@ describe('users table', () => {
 });
 
 describe('recipes_ingredients junction table', () => {
-  it('should contain 50 junctions (10 recipes * 5 ingredients)', async () => {
+  it('should contain 50 junctions (30 recipes * 5 ingredients)', async () => {
     const { rows } = await pool.query('SELECT * FROM recipes_ingredients;');
-    expect(rows).toHaveLength(50);
+    expect(rows).toHaveLength(150);
   });
 
   it('should return objects with correct properties', async () => {

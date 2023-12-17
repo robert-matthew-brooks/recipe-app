@@ -14,6 +14,7 @@ function psqlErrHandler(err, req, res, next) {
   if (err.code === '23505') {
     res.status(409).send('PSQL - unique key already exists');
   } else if (err.code) {
+    console.log(err);
     res.status(500).send({ unhandled_psql_err: { err } });
   } else {
     next(err);
