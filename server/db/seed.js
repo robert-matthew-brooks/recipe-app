@@ -79,7 +79,8 @@ async function seed({ recipes, users }) {
         img_url VARCHAR,
         author_id INT REFERENCES users(id) NOT NULL,
         steps VARCHAR[],
-        is_vegetarian BOOLEAN
+        is_vegetarian BOOLEAN,
+        created_at TIMESTAMP DEFAULT NOW() 
       );
     `
   );
@@ -170,34 +171,40 @@ async function seed({ recipes, users }) {
   await pool.query(insertIngredientsSql);
 
   // recipes
+  // nb. mapping individual queries vs bulk insert gives a few ms delay
+  // allowing testing of sorting by timestamp
 
-  const insertRecipesSql = format(
-    `
-      INSERT INTO recipes (
-        name,
-        slug,
-        author_id,
-        img_url,
-        steps,
-        is_vegetarian
-      )
-      VALUES %L;
-    `,
-    await Promise.all(
-      recipes.map(async (recipe) => {
-        return [
+  const insertRecipesSqlArr = await Promise.all(
+    recipes.map(async (recipe) => {
+      return format(
+        `
+          INSERT INTO recipes (
+            name,
+            slug,
+            author_id,
+            img_url,
+            steps,
+            is_vegetarian
+          )
+          VALUES (%L);
+        `,
+        await Promise.all([
           recipe.name,
           recipe.slug,
           await getId(recipe.author, 'username', 'users'),
           recipe.imgUrl,
           arrToSqlArr(recipe.steps),
           recipe.isVegetarian,
-        ];
-      })
-    )
+        ])
+      );
+    })
   );
 
-  await pool.query(insertRecipesSql);
+  await Promise.all(
+    insertRecipesSqlArr.map((str) => {
+      return pool.query(str);
+    })
+  );
 
   // populate user details (favourites, meal list, done list)
 

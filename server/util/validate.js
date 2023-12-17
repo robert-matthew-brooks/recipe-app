@@ -33,6 +33,14 @@ async function rejectIfNotInDb(value, field, table) {
   }
 }
 
+function rejectIfNotInList(values, list) {
+  for (const key in values) {
+    if (!list.includes(values[key])) {
+      throw { status: 400, msg: `${key} not in allowlist` };
+    }
+  }
+}
+
 function rejectIfInvalidUsername(username) {
   if (username) {
     if (username.length >= 3 && username.length <= 20) {
@@ -60,6 +68,7 @@ function rejectIfInvalidPassword(password) {
 module.exports = {
   rejectIfFailsRegex,
   rejectIfNotInDb,
+  rejectIfNotInList,
   rejectIfInvalidUsername,
   rejectIfInvalidPassword,
 };

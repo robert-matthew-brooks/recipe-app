@@ -11,18 +11,24 @@ async function getOne(req, res, next) {
   }
 }
 
-async function getAll(req, res, next) {
+async function getMany(req, res, next) {
   const {
     search_term: searchTerm,
     ingredient_ids: ingredientIdsStr,
     is_vegetarian: isVegetarianStr,
+    sort: sortStr,
+    limit,
+    page,
   } = req.query;
 
   try {
-    const { recipes } = await recipesModel.getAll(
+    const { recipes } = await recipesModel.getMany(
       searchTerm,
       ingredientIdsStr,
-      isVegetarianStr
+      isVegetarianStr,
+      sortStr,
+      limit,
+      page
     );
     res.send({ recipes });
   } catch (err) {
@@ -30,4 +36,4 @@ async function getAll(req, res, next) {
   }
 }
 
-module.exports = { getOne, getAll };
+module.exports = { getOne, getMany };

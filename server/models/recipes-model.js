@@ -22,6 +22,7 @@ async function getOne(recipeSlug) {
         ) AS ingredients,
         r.steps,
         r.is_vegetarian,
+        r.created_at,
         COUNT(DISTINCT l)::INT AS likes
       FROM recipes r
       INNER JOIN users u
@@ -43,14 +44,30 @@ async function getOne(recipeSlug) {
   return { recipe: rows[0] };
 }
 
-async function getAll(searchTerm = '', ingredientIdsStr, isVegetarianStr) {
+async function getMany(
+  searchTerm = '',
+  ingredientIdsStr,
+  isVegetarianStr,
+  sortStr = 'new',
+  limit = 10,
+  page = 1
+) {
   const ingredientIds = ingredientIdsStr ? JSON.parse(ingredientIdsStr) : [];
   const isVegetarian = !!isVegetarianStr;
+  const offset = limit * (page - 1);
+  const lookupSort = {
+    new: 'r.created_at DESC',
+    top: 'likes DESC',
+    az: 'r.name',
+    za: 'r.name DESC',
+  };
 
   validate.rejectIfFailsRegex({ searchTerm }, '^[\\w\\s%]*$');
   ingredientIds.forEach((ingredientId) => {
     validate.rejectIfFailsRegex({ ingredientId }, '^\\d+$');
   });
+  validate.rejectIfNotInList({ sortStr }, Object.keys(lookupSort));
+  validate.rejectIfFailsRegex({ limit, page }, '^\\d+$');
 
   // optional sql query strings
 
@@ -79,6 +96,8 @@ async function getAll(searchTerm = '', ingredientIdsStr, isVegetarianStr) {
 
   const vegetarianQueryStr = isVegetarian ? 'AND r.is_vegetarian IS TRUE' : '';
 
+  const orderByQueryStr = lookupSort[sortStr];
+
   const { rows } = await pool.query(
     `
       SELECT
@@ -87,6 +106,7 @@ async function getAll(searchTerm = '', ingredientIdsStr, isVegetarianStr) {
       r.slug,
       u.username AS author,
       r.img_url,
+      r.created_at,
       COUNT(DISTINCT l)::INT AS likes
     FROM (
       SELECT * FROM recipes r
@@ -103,12 +123,15 @@ async function getAll(searchTerm = '', ingredientIdsStr, isVegetarianStr) {
       r.name,
       r.slug,
       u.username,
-      r.img_url;
+      r.img_url,
+      r.created_at
+    ORDER BY ${orderByQueryStr}
+    LIMIT $2 OFFSET $3;
     `,
-    [`%${searchTerm}%`]
+    [`%${searchTerm}%`, limit, offset]
   );
 
   return { recipes: rows };
 }
 
-module.exports = { getOne, getAll };
+module.exports = { getOne, getMany };
