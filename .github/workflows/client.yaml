@@ -44,6 +44,6 @@ jobs:
           working-directory: client
           browser: chrome
           start: >
-            npm --prefix ../server run listen
-            npx vite --host
+            node ../server/listen
+            npm start
           wait-on: 'http://localhost:5173'
