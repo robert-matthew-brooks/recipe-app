@@ -45,5 +45,5 @@ jobs:
           browser: chrome
           start: >
             npm --prefix ../server run listen
-            npm run start
-          wait-on: 'http://localhost:5173'
+            npm start
+          wait-on: 'http://127.0.0.1:5173'
