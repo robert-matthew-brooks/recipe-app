@@ -4,31 +4,34 @@ on:
   push:
     paths:
       - server/**
+      - .github/workflows/server.yaml
+
+env:
+  PGDATABASE: recipe_app_test
+  PGUSER: test_user
+  PGPASSWORD: test_password
+
+defaults:
+  run:
+    working-directory: server
 
 jobs:
   test:
-    name: run unit tests
+    name: run jest unit tests
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: use node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
       - name: use psql
         uses: harmon758/postgresql-action@v1
         with:
-          postgresql db: 'test_db'
-          postgresql user: 'test_user'
-          postgresql password: 'test_password'
+          postgresql db: recipe_app_test
+          postgresql user: test_user
+          postgresql password: test_password
 
       - name: install dependencies
-        working-directory: server
         run: npm ci
 
       - name: run jest
-        working-directory: server
-        run: PGDATABASE=test_db PGUSER=test_user PGPASSWORD=test_password npm test
+        run: npm run test
