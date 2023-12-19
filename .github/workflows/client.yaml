@@ -41,8 +41,9 @@ jobs:
       - name: run cypress
         uses: cypress-io/github-action@v3
         with:
+          working-directory: client
           browser: chrome
           start: >
-            npm --prefix server run listen
-            npm --prefix client run start
+            npm --prefix ../server run listen
+            npm run start
           wait-on: 'http://localhost:5173'
