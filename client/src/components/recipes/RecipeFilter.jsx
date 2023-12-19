@@ -4,7 +4,6 @@ import closeImg from '../../assets/close.svg';
 import './RecipeFilter.css';
 
 export default function RecipeFilter({
-  filterName,
   setFilterName,
   filterOrderBy,
   setFilterOrderBy,
@@ -81,7 +80,6 @@ export default function RecipeFilter({
         >
           <option value="new">Newest First</option>
           <option value="top">Top Rated</option>
-          <option value="fav">My Favourites</option>
           <option value="az">Alphabetical A-Z</option>
           <option value="za">Alphabetical Z-A</option>
         </select>

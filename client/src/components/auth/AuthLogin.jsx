@@ -54,6 +54,7 @@ export default function AuthLogin() {
     if (isValidUsername && isValidPassword) {
       try {
         const user = await login(username, password);
+        console.log(user);
 
         localStorage.setItem('user', JSON.stringify(user));
         setActiveUser(user);
@@ -85,6 +86,7 @@ export default function AuthLogin() {
         <div>
           <input
             id="Auth--username"
+            data-test="username-box"
             type="text"
             value={username}
             onChange={(evt) => {
@@ -102,6 +104,7 @@ export default function AuthLogin() {
         <div>
           <input
             id="Auth--password"
+            data-test="password-box"
             type="password"
             value={password}
             onChange={(evt) => {
@@ -116,13 +119,21 @@ export default function AuthLogin() {
           </p>
         </div>
 
-        <button id="Auth--submit" type="submit" disabled={isLoading}>
+        <button
+          id="Auth--submit"
+          data-test="login-btn"
+          type="submit"
+          disabled={isLoading}
+        >
           {!isLoading ? 'Sign In' : <img src={loadingImg} />}
         </button>
         <p id="Auth--msg">
           Don't have an account? <Link to="/register">Register here</Link>
         </p>
-        <p className={`Auth--err ${!apiErr && 'Auth--err__hidden'}`}>
+        <p
+          data-test="login-err-msg"
+          className={`Auth--err ${!apiErr && 'Auth--err__hidden'}`}
+        >
           &#9888; {apiErr}
         </p>
       </form>

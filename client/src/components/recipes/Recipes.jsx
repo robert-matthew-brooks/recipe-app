@@ -21,7 +21,9 @@ export default function AllRecipes() {
         setRecipes(
           await getRecipes(filterName, filterOrderBy, filterIngredients)
         );
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
       setIsLoading(false);
     })();
   }, [filterName, filterOrderBy, filterIngredients]);

@@ -28,18 +28,27 @@ export async function getIngredients() {
   return data.ingredients;
 }
 
-export async function getRecipes(filterName, filterOrderBy, filterIngredients) {
-  const { data } = await api.get('/recipes', {
-    params: {
-      search_term: filterName,
-      ingredient_ids: JSON.stringify(filterIngredients.map((el) => el.id)),
-    },
-  });
-  // TODO set max 6
-  // TODO vegetarian
-  // TODO sort by
+export async function getRecipes(
+  filterName,
+  filterOrderBy,
+  filterIngredients,
+  filterIsVegetarian
+) {
+  const params = {
+    search_term: filterName,
+    ingredient_ids: JSON.stringify(filterIngredients.map((el) => el.id)),
+    is_vegetarian: filterIsVegetarian || null,
+    sort: filterOrderBy || null,
+    limit: 6,
+    page: 1,
+  };
 
-  console.log(filterIngredients.map((el) => el.id));
+  // remove empty params
+  Object.keys(params).forEach((key) => {
+    [null, '', '[]'].includes(params[key]) && delete params[key];
+  });
+
+  const { data } = await api.get('/recipes', { params });
 
   const recipes = data.recipes.map((recipe) => {
     recipe.imgUrl = recipe.img_url;
