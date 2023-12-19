@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - client/**
+      - .github/workflows/client.yaml
 
 env:
   CLIENT_ORIGIN: http://localhost:5173
