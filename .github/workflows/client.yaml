@@ -43,6 +43,5 @@ jobs:
         with:
           working-directory: client
           browser: chrome
-          start: >
-            npm start
-          wait-on: 'http://localhost:5173'
+          start: npm prefix ../server run listen, npm start
+          wait-on: 'http://localhost:9090, http://localhost:5173'
