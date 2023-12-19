@@ -1,0 +1,48 @@
+name: client testing
+
+on:
+  push:
+    paths:
+      - client/**
+
+jobs:
+  test:
+    name: run cypress tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      
+      -name: use node
+        uses: actions/setup-node@v3
+      
+      - name: use psql
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql db: 'recipe_app_test'
+          postgresql user: 'test_user'
+          postgresql password: 'test_password'
+      
+      - name: install client dependencies
+        working-directory: client
+        run: npm ci
+      
+      - name: install server dependencies
+        working-directory: server
+        run: npm ci
+
+      - name: seed database
+        working-directory: server
+        run: npm seed
+      
+      - name: run cypress
+        uses: cypress-io/github-action@v3
+        with:
+          working-directory: client
+          browser: chrome
+          start: node ../server/listen, npm start
+          wait-on: 'http://localhost:5173'
+        env:
+          CLIENT_ORIGIN=http://localhost:5173
+          PGDATABASE=recipe_app_test
+          TOKEN_SECRET=abcde12345

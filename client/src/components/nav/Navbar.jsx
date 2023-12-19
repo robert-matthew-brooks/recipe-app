@@ -84,6 +84,7 @@ export default function Navbar() {
 
               <button
                 id="Navbar--auth-btn"
+                data-test={activeUser ? 'logout-btn' : 'login-btn'}
                 className="Navbar--btn"
                 onClick={() => {
                   activeUser ? navigate('/logout') : navigate('/login');
