@@ -38,7 +38,7 @@ jobs:
 
       - name: seed database
         working-directory: server
-        run: npm seed
+        run: npm run seed
 
       - name: run cypress
         uses: cypress-io/github-action@v3
