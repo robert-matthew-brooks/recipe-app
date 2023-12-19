@@ -4,11 +4,15 @@ on:
   push:
     paths:
       - client/**
+      - .github/workflows/client.yaml
 
 env:
+  NODE_ENV: test
   CLIENT_ORIGIN: http://localhost:5173
-  PGDATABASE: recipe_app_test
   TOKEN_SECRET: abcde12345
+  PGDATABASE: recipe_app_test
+  PGUSER: test_user
+  PGPASSWORD: test_password
 
 jobs:
   test:
@@ -24,9 +28,9 @@ jobs:
       - name: use psql
         uses: harmon758/postgresql-action@v1
         with:
-          postgresql db: 'recipe_app_test'
-          postgresql user: 'test_user'
-          postgresql password: 'test_password'
+          postgresql db: recipe_app_test
+          postgresql user: test_user
+          postgresql password: test_password
 
       - name: install client dependencies
         working-directory: client
@@ -45,5 +49,5 @@ jobs:
         with:
           working-directory: client
           browser: chrome
-          start: node ../server/listen, npm start
+          start: node ../server/listen, npm run start
           wait-on: 'http://localhost:5173'
