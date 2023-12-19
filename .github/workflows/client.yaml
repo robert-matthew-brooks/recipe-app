@@ -9,7 +9,6 @@ on:
 env:
   NODE_ENV: test
   CLIENT_ORIGIN: http://localhost:5173
-  PGDATABASE: recipe_app_test
   TOKEN_SECRET: abcde12345
   PGDATABASE: recipe_app_test
   PGUSER: test_user
