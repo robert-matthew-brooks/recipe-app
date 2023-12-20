@@ -90,18 +90,18 @@ export default function RecipeFilter({
   return (
     <div id="RecipeFilter">
       <div
-        id="RecipeFilter--accordion"
-        className={isFilterHidden ? '' : 'RecipeFilter--accordion--active'}
+        id="RecipeFilter__accordion"
+        className={isFilterHidden ? '' : 'RecipeFilter__accordion--active'}
         onClick={toggleFilter}
       >
         Filter
       </div>
 
-      <div id="RecipeFilter--panel--wrapper" ref={filterRef}>
-        <div id="RecipeFilter--panel">
-          <div id="RecipeFilter--search-box--wrapper">
+      <div id="RecipeFilter__panel__wrapper" ref={filterRef}>
+        <div id="RecipeFilter__panel">
+          <div id="RecipeFilter__search-box__wrapper">
             <input
-              id="RecipeFilter--search-box"
+              id="RecipeFilter__search-box"
               ref={searchRef}
               type="text"
               value={searchBoxValue}
@@ -124,7 +124,7 @@ export default function RecipeFilter({
                 evt.target.options[evt.target.selectedIndex].value
               );
             }}
-            className="RecipeFilter--dropdown"
+            className="RecipeFilter__dropdown"
           >
             <option value="new">Newest First</option>
             <option value="top">Top Rated</option>
@@ -133,7 +133,7 @@ export default function RecipeFilter({
           </select>
 
           <select
-            className="RecipeFilter--dropdown"
+            className="RecipeFilter__dropdown"
             defaultValue=""
             onChange={(evt) => {
               addIngredientToFilter(+evt.target.value);
@@ -159,10 +159,10 @@ export default function RecipeFilter({
           </select>
 
           <ul
-            id="RecipeFilter--ingredients-list"
+            id="RecipeFilter__ingredients-list"
             className={
               filterIngredients.length === 0
-                ? 'RecipeFilter--ingredients-list__hidden'
+                ? 'RecipeFilter__ingredients-list--hidden'
                 : undefined
             }
           >

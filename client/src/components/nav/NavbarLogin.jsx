@@ -4,7 +4,7 @@ import './Navbar.css';
 export default function NavbarLogin() {
   return (
     <nav id="Navbar">
-      <div id="Navbar--inner" className="inner">
+      <div id="Navbar__inner" className="inner">
         <Link to={'/'}>&larr; Back to site</Link>
       </div>
     </nav>

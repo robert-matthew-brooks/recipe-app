@@ -33,7 +33,7 @@ export default function AllRecipes() {
       <Header title="Browse Recipes" />
 
       <section id="Recipes">
-        <div id="Recipes--inner" className="inner">
+        <div id="Recipes__inner" className="inner">
           <RecipeFilter
             {...{
               filterName,

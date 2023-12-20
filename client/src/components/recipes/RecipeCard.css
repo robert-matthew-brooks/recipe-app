@@ -12,14 +12,14 @@
   z-index: 1;
 }
 
-.RecipeCard--img-box {
+.RecipeCard__img-box {
   width: 100%;
   aspect-ratio: 1;
   background-size: cover;
   background-position: center;
 }
 
-.RecipeCard--title {
+.RecipeCard__title {
   width: fit-content;
   margin-top: 1rem;
   font-family: var(--ff-titles);
@@ -27,7 +27,7 @@
   text-align: center;
 }
 
-.RecipeCard--author {
+.RecipeCard__author {
   color: gray;
   font-size: 0.8rem;
   font-style: italic;

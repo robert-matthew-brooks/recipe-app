@@ -2,35 +2,35 @@
   width: 600px;
 }
 
-#RecipeFilter--accordion {
+#RecipeFilter__accordion {
   padding: 1rem;
   background-color: lightgrey;
   cursor: pointer;
   transition: background-color 0.1s linear;
 }
-#RecipeFilter--accordion:after {
+#RecipeFilter__accordion:after {
   content: '\025bc';
   float: right;
 }
-#RecipeFilter--accordion:hover {
+#RecipeFilter__accordion:hover {
   background-color: grey;
 }
 
-.RecipeFilter--accordion--active {
+.RecipeFilter__accordion--active {
   background-color: grey !important;
 }
-.RecipeFilter--accordion--active::after {
+.RecipeFilter__accordion--active::after {
   content: '\025b2' !important;
 }
 
-#RecipeFilter--panel--wrapper {
+#RecipeFilter__panel__wrapper {
   /* for accordion animation */
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.5s ease;
 }
 
-#RecipeFilter--panel {
+#RecipeFilter__panel {
   display: grid;
   gap: 1rem;
   padding: 1rem;
@@ -39,31 +39,31 @@
   border-color: lightgrey;
 }
 
-#RecipeFilter--search-box,
-.RecipeFilter--dropdown {
+#RecipeFilter__search-box,
+.RecipeFilter__dropdown {
   padding: 0.3rem;
   font-family: var(--ff-clear);
   font-size: 1.1rem;
   background-color: #f0f0f0;
 }
 
-#RecipeFilter--search-box:focus,
-.RecipeFilter--dropdown:focus {
+#RecipeFilter__search-box:focus,
+.RecipeFilter__dropdown:focus {
   outline: none;
 }
-#RecipeFilter--search-box:focus {
+#RecipeFilter__search-box:focus {
   background-color: #ebfad7;
 }
-.RecipeFilter--dropdown:focus {
+.RecipeFilter__dropdown:focus {
   border-color: black;
 }
 
-#RecipeFilter--search-box--wrapper {
+#RecipeFilter__search-box__wrapper {
   display: flex;
   align-items: center;
 }
 
-#RecipeFilter--search-box {
+#RecipeFilter__search-box {
   width: 50%;
   padding-left: 1.8rem;
   padding-right: 1.8rem;
@@ -78,12 +78,12 @@
   border-width: 0 0 2px 0;
 }
 
-#RecipeFilter--search-box--wrapper > button {
+#RecipeFilter__search-box__wrapper > button {
   position: relative;
   left: -2.2rem;
 }
 
-.RecipeFilter--dropdown {
+.RecipeFilter__dropdown {
   width: 40%;
   border: 1px solid grey;
   appearance: none;
@@ -94,18 +94,18 @@
   background-size: 1rem;
 }
 
-#RecipeFilter--ingredients-list {
+#RecipeFilter__ingredients-list {
   display: flex;
   flex-wrap: wrap;
   padding: 0.2rem;
   list-style-type: none;
   background-color: #f0f0f0;
 }
-.RecipeFilter--ingredients-list__hidden {
+.RecipeFilter__ingredients-list--hidden {
   display: none !important;
 }
 
-#RecipeFilter--ingredients-list > li {
+#RecipeFilter__ingredients-list > li {
   margin: 0.2rem;
   padding: 0.2rem 0.5rem;
   border-radius: 0.3rem;
