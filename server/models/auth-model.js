@@ -11,11 +11,11 @@ async function register(username, password) {
 
   const { rows } = await pool.query(
     `
-      INSERT INTO users (username, hashed_password)
-      VALUES ($1, $2)
+      INSERT INTO users (username, lower_username, hashed_password)
+      VALUES ($1, $2, $3)
       RETURNING id, username;
     `,
-    [username, hashedPassword]
+    [username, username.toLowerCase(), hashedPassword]
   );
 
   const token = createToken(rows[0]);
