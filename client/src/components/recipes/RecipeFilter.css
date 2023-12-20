@@ -1,9 +1,42 @@
 #RecipeFilter {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 600px;
+}
+
+#RecipeFilter--accordion {
+  padding: 1rem;
+  background-color: lightgrey;
+  cursor: pointer;
+  transition: background-color 0.1s linear;
+}
+#RecipeFilter--accordion:after {
+  content: '\025bc';
+  float: right;
+}
+#RecipeFilter--accordion:hover {
+  background-color: grey;
+}
+
+.RecipeFilter--accordion--active {
+  background-color: grey !important;
+}
+.RecipeFilter--accordion--active::after {
+  content: '\025b2' !important;
+}
+
+#RecipeFilter--panel {
+  display: grid;
   gap: 1rem;
+  padding: 1rem;
+  border-width: 0 1px 1px 1px;
+  border-style: solid;
+  border-color: lightgrey;
+}
+
+#RecipeFilter--panel--wrapper {
+  /* for accordion animation */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
 }
 
 .RecipeFilter--search-box,
@@ -39,12 +72,6 @@
   border-width: 0 0 2px 0;
 }
 
-.RecipeFilter--dropdown-wrapper {
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
 .RecipeFilter--dropdown {
   width: 40%;
   border: 1px solid grey;
@@ -57,7 +84,6 @@
 }
 
 #RecipeFilter--ingredients-list {
-  width: 80%;
   display: flex;
   flex-wrap: wrap;
   padding: 0.2rem;

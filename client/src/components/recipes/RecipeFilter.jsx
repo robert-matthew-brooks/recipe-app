@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getIngredients } from '../../util/api';
 import closeImg from '../../assets/close.svg';
 import './RecipeFilter.css';
@@ -12,6 +12,8 @@ export default function RecipeFilter({
   setIsLoading,
 }) {
   const [allIngredients, setAllIngredients] = useState([]);
+  const filterRef = useRef(null);
+  const [isFilterHidden, setIsFilterHidden] = useState(true);
   const [searchBoxValue, setSearchBoxValue] = useState('');
 
   useEffect(() => {
@@ -19,6 +21,29 @@ export default function RecipeFilter({
       setAllIngredients(await getIngredients());
     })();
   }, []);
+
+  const toggleFilter = async () => {
+    const filterDiv = filterRef.current;
+    filterDiv.style.maxHeight = `${filterDiv.scrollHeight}px`; // set to absolute value, can't animate to zero from 'fit-content'
+    filterDiv.offsetHeight; // wait for next animation frame
+
+    if (isFilterHidden) {
+      setIsFilterHidden(false);
+    } else {
+      filterDiv.style.maxHeight = '0px';
+      setIsFilterHidden(true);
+    }
+
+    filterDiv.addEventListener(
+      'transitionend',
+      () => {
+        if (filterDiv.offsetHeight > 0) {
+          filterDiv.style.maxHeight = 'fit-content'; // allow content size to change if not closed
+        }
+      },
+      { once: true }
+    );
+  };
 
   useEffect(() => {
     // debounce search box input
@@ -37,7 +62,7 @@ export default function RecipeFilter({
     };
   }, [searchBoxValue]);
 
-  const addIngredient = (ingredientId) => {
+  const addIngredientToFilter = (ingredientId) => {
     const ingredientName = allIngredients.filter((el) => {
       return el.id === ingredientId;
     })[0].name;
@@ -58,83 +83,93 @@ export default function RecipeFilter({
 
   return (
     <div id="RecipeFilter">
-      <input
-        className="RecipeFilter--search-box"
-        type="text"
-        value={searchBoxValue}
-        onChange={(evt) => {
-          setSearchBoxValue(evt.target.value);
-        }}
-        placeholder="Recipe name..."
-      />
-
-      <div className="RecipeFilter--dropdown-wrapper">
-        <select
-          value={filterOrderBy}
-          onChange={(evt) => {
-            setFilterOrderBy(
-              evt.target.options[evt.target.selectedIndex].value
-            );
-          }}
-          className="RecipeFilter--dropdown"
-        >
-          <option value="new">Newest First</option>
-          <option value="top">Top Rated</option>
-          <option value="az">Alphabetical A-Z</option>
-          <option value="za">Alphabetical Z-A</option>
-        </select>
-
-        <select
-          className="RecipeFilter--dropdown"
-          defaultValue=""
-          onChange={(evt) => {
-            addIngredient(+evt.target.value);
-            evt.target.selectedIndex = 0;
-          }}
-        >
-          <option value="" disabled>
-            Ingredients:
-          </option>
-          {allIngredients
-            .filter((ingredient) => {
-              return !filterIngredients
-                .map((el) => el.id)
-                .includes(ingredient.id);
-            })
-            .map((ingredient) => {
-              return (
-                <option key={ingredient.id} value={ingredient.id}>
-                  {ingredient.name}
-                </option>
-              );
-            })}
-        </select>
+      <div
+        id="RecipeFilter--accordion"
+        className={isFilterHidden ? '' : 'RecipeFilter--accordion--active'}
+        onClick={toggleFilter}
+      >
+        Filter
       </div>
 
-      <ul
-        id="RecipeFilter--ingredients-list"
-        className={
-          filterIngredients.length === 0
-            ? 'RecipeFilter--ingredients-list__hidden'
-            : undefined
-        }
-      >
-        {filterIngredients.map((ingredient, i) => {
-          return (
-            <li key={i}>
-              {ingredient.name}
-              <button
-                className="RecipeFilter--ingredients-list--remove-btn"
-                onClick={() => {
-                  removeIngredient(i);
-                }}
-              >
-                <img src={closeImg} />
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+      <div id="RecipeFilter--panel--wrapper" ref={filterRef}>
+        <div id="RecipeFilter--panel">
+          <input
+            className="RecipeFilter--search-box"
+            type="text"
+            value={searchBoxValue}
+            onChange={(evt) => {
+              setSearchBoxValue(evt.target.value);
+            }}
+            placeholder="Recipe name..."
+          />
+
+          <select
+            value={filterOrderBy}
+            onChange={(evt) => {
+              setFilterOrderBy(
+                evt.target.options[evt.target.selectedIndex].value
+              );
+            }}
+            className="RecipeFilter--dropdown"
+          >
+            <option value="new">Newest First</option>
+            <option value="top">Top Rated</option>
+            <option value="az">Alphabetical A-Z</option>
+            <option value="za">Alphabetical Z-A</option>
+          </select>
+
+          <select
+            className="RecipeFilter--dropdown"
+            defaultValue=""
+            onChange={(evt) => {
+              addIngredientToFilter(+evt.target.value);
+              evt.target.selectedIndex = 0;
+            }}
+          >
+            <option value="" disabled>
+              Ingredients:
+            </option>
+            {allIngredients
+              .filter((ingredient) => {
+                return !filterIngredients
+                  .map((el) => el.id)
+                  .includes(ingredient.id);
+              })
+              .map((ingredient) => {
+                return (
+                  <option key={ingredient.id} value={ingredient.id}>
+                    {ingredient.name}
+                  </option>
+                );
+              })}
+          </select>
+
+          <ul
+            id="RecipeFilter--ingredients-list"
+            className={
+              filterIngredients.length === 0
+                ? 'RecipeFilter--ingredients-list__hidden'
+                : undefined
+            }
+          >
+            {filterIngredients.map((ingredient, i) => {
+              return (
+                <li key={i}>
+                  {ingredient.name}
+                  <button
+                    className="RecipeFilter--ingredients-list--remove-btn"
+                    onClick={() => {
+                      removeIngredient(i);
+                    }}
+                  >
+                    <img src={closeImg} />
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
