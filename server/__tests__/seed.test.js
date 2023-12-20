@@ -73,6 +73,7 @@ describe('users table', () => {
       expect(user).toMatchObject({
         id: expect.any(Number),
         username: expect.any(String),
+        lower_username: expect.any(String),
         hashed_password: expect.any(String),
         favourites: expect.any(Array),
         list: expect.any(Array),

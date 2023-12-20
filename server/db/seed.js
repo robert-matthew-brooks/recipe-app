@@ -49,11 +49,14 @@ async function seed({ recipes, users }) {
   /* create tables */
   /*****************/
 
+  // ("lower_username" is for keeping it unique)
+  // ("username" preserves case)
   await pool.query(
     `
       CREATE TABLE users (
         id SERIAL PRIMARY KEY,
-        username VARCHAR UNIQUE NOT NULL,
+        username VARCHAR NOT NULL,
+        lower_username VARCHAR UNIQUE NOT NULL,
         hashed_password VARCHAR NOT NULL,
         favourites INT[],
         list INT[],
@@ -125,12 +128,13 @@ async function seed({ recipes, users }) {
     `
       INSERT INTO users (
         username,
+        lower_username,
         hashed_password
       )
       VALUES %L;
     `,
     users.map((user) => {
-      return [user.username, hash(user.password)];
+      return [user.username, user.username.toLowerCase(), hash(user.password)];
     })
   );
 
