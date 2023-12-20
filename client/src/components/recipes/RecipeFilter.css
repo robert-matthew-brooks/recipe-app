@@ -1,23 +1,25 @@
 #RecipeFilter {
   width: 600px;
+  box-shadow: var(--subtle-box-shadow);
 }
 
 #RecipeFilter__accordion {
   padding: 1rem;
-  background-color: lightgrey;
+  background-color: var(--c-gs-300);
   cursor: pointer;
   transition: background-color 0.1s linear;
 }
 #RecipeFilter__accordion:after {
   content: '\025bc';
   float: right;
+  color: var(--c-gs-600);
 }
 #RecipeFilter__accordion:hover {
-  background-color: grey;
+  background-color: var(--c-gs-400);
 }
 
 .RecipeFilter__accordion--active {
-  background-color: grey !important;
+  background-color: var(--c-gs-400) !important;
 }
 .RecipeFilter__accordion--active::after {
   content: '\025b2' !important;
@@ -32,11 +34,11 @@
 
 #RecipeFilter__panel {
   display: grid;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 1.5rem;
+  padding: 1.5rem;
   border-width: 0 1px 1px 1px;
   border-style: solid;
-  border-color: lightgrey;
+  border-color: var(--c-gs-400);
 }
 
 #RecipeFilter__search-box,
@@ -44,7 +46,7 @@
   padding: 0.3rem;
   font-family: var(--ff-clear);
   font-size: 1.1rem;
-  background-color: #f0f0f0;
+  background-color: var(--c-gs-100);
 }
 
 #RecipeFilter__search-box:focus,
@@ -52,10 +54,10 @@
   outline: none;
 }
 #RecipeFilter__search-box:focus {
-  background-color: #ebfad7;
+  background-color: var(--c-filter-focus);
 }
 .RecipeFilter__dropdown:focus {
-  border-color: black;
+  border-color: var(--c-gs-str);
 }
 
 #RecipeFilter__search-box__wrapper {
@@ -73,7 +75,7 @@
   background-position: 0.3rem;
   background-size: 1rem;
 
-  border-color: black;
+  border-color: var(--c-gs-str);
   border-style: solid;
   border-width: 0 0 2px 0;
 }
@@ -99,7 +101,7 @@
   flex-wrap: wrap;
   padding: 0.2rem;
   list-style-type: none;
-  background-color: #f0f0f0;
+  background-color: var(--c-gs-200);
 }
 .RecipeFilter__ingredients-list--hidden {
   display: none !important;
@@ -108,6 +110,6 @@
 #RecipeFilter__ingredients-list > li {
   margin: 0.2rem;
   padding: 0.2rem 0.5rem;
-  border-radius: 0.3rem;
-  background-color: lightsteelblue;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--c-filter-ingredient-bg);
 }

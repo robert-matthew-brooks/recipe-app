@@ -4,11 +4,12 @@
   align-items: center;
   gap: 0.5rem;
   padding: 1rem;
-  outline: 1px solid lightslategray;
+  background-color: var(--c-gs-wk);
+  outline: 1px solid var(--c-gs-400);
 }
 
 .RecipeCard:hover {
-  outline-color: red;
+  outline-color: var(--c-recipe-outline);
   z-index: 1;
 }
 
@@ -28,7 +29,7 @@
 }
 
 .RecipeCard__author {
-  color: gray;
+  color: var(--c-gs-600);
   font-size: 0.8rem;
   font-style: italic;
 }

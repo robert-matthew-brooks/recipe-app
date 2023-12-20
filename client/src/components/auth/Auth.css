@@ -33,7 +33,7 @@
   font-family: var(--ff-titles);
   font-size: 1.8rem;
   font-weight: normal;
-  color: darkcyan;
+  color: var(--c-auth-title);
 }
 
 #Auth__username,
@@ -44,26 +44,34 @@
   padding: 0 0.7rem;
   font-family: var(--ff-clear);
   font-size: 1.1rem;
-  border: 1px solid grey;
-  border-radius: 4px;
+  border: 1px solid var(--c-gs-600);
+  border-radius: var(--border-radius-sm);
 }
 #Auth__username:focus,
 #Auth__password:focus {
-  background-color: #ebfad7;
-  border-color: black;
+  background-color: var(--c-auth-focus-bg);
+  border-color: var(--gs-str);
   outline: none;
+}
+
+#Auth__username,
+#Auth__password {
+  background-color: var(--c-gs-50);
 }
 
 #Auth__submit {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(191, 208, 224);
+  background-color: var(--c-auth-submit-bg);
   cursor: pointer;
 }
 #Auth__submit > img {
   height: 70%;
   animation: loadspin 2s linear infinite;
+}
+#Auth__submit:hover {
+  background-color: var(--c-auth-submit-hover-bg);
 }
 
 @keyframes loadspin {
@@ -78,10 +86,10 @@
 #Auth__msg {
   align-self: flex-end;
   font-size: 0.8rem;
-  color: grey;
+  color: var(--c-gs-600);
 }
 #Auth__msg > a {
-  color: blue;
+  color: var(--c-link-text);
   text-decoration: none;
 }
 #Auth__msg > a:hover {
@@ -92,7 +100,7 @@
   width: 100%;
   padding: 0.2rem;
   font-size: 0.8rem;
-  color: darkred;
+  color: var(--c-err-text);
 }
 
 .Auth__err--hidden {
