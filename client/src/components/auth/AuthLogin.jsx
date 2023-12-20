@@ -54,8 +54,6 @@ export default function AuthLogin() {
     if (isValidUsername && isValidPassword) {
       try {
         const user = await login(username, password);
-        console.log(user);
-
         localStorage.setItem('user', JSON.stringify(user));
         setActiveUser(user);
         navigate('/recipes');

@@ -34,7 +34,6 @@ export default function AllRecipes() {
 
       <section id="Recipes">
         <div id="Recipes--inner" className="inner">
-          {isLoading && 'loading'}
           <RecipeFilter
             {...{
               filterName,
@@ -46,6 +45,9 @@ export default function AllRecipes() {
               setIsLoading,
             }}
           />
+          {isLoading && 'loading'}
+          {/* TODO proper loading screen/wheel */}
+
           {recipes.length > 0 ? (
             <RecipeCards {...{ recipes }} />
           ) : (

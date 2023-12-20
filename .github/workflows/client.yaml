@@ -16,14 +16,11 @@ env:
 
 jobs:
   test:
-    name: run cypress tests
+    name: run cypress e2e tests
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v3
-
-      - name: use node
-        uses: actions/setup-node@v3
 
       - name: use psql
         uses: harmon758/postgresql-action@v1
@@ -32,13 +29,10 @@ jobs:
           postgresql user: test_user
           postgresql password: test_password
 
-      - name: install client dependencies
-        working-directory: client
-        run: npm ci
-
-      - name: install server dependencies
-        working-directory: server
-        run: npm ci
+      - name: install client & server dependencies
+        run: >
+          npm --prefix client ci
+          npm --prefix server ci
 
       - name: seed database
         working-directory: server
@@ -49,5 +43,5 @@ jobs:
         with:
           working-directory: client
           browser: chrome
-          start: node ../server/listen, npm run start
-          wait-on: 'http://localhost:5173'
+          start: node ../server/listen, npm start
+          wait-on: http://localhost:5173

@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/nav/Navbar';
 import Recipes from './components/recipes/Recipes';
@@ -8,6 +9,12 @@ import SimpleMsg from './components/SimpleMsg';
 import Footer from './components/Footer';
 
 export default function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [location]);
+
   return (
     <div id="App">
       <Navbar />
