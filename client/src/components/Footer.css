@@ -1,5 +1,6 @@
 #Footer {
   border-top: 1px solid lightslategray;
+  box-shadow: var(--subtle-box-shadow);
 }
 
 #Footer__inner {

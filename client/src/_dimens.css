@@ -1,0 +1,7 @@
+:root {
+  --global-max-width: 1200px;
+  --nav-height: 60px;
+  --mobile-menu-width: 250px;
+
+  --border-radius-sm: 4px;
+}

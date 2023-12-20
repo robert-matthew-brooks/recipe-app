@@ -16,5 +16,5 @@
   font-family: var(--ff-titles);
   font-size: 3rem;
   letter-spacing: 0.1rem;
-  background-color: white;
+  background-color: var(--c-gs-wk);
 }

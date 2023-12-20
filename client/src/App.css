@@ -1,15 +1,11 @@
-:root {
-  --global-max-width: 1200px;
-  --nav-height: 60px;
-  --mobile-menu-width: 250px;
-
-  --ff-primary: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  --ff-titles: Georgia, 'Times New Roman', Times, serif;
-  --ff-clear: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+@import './_dimens.css';
+@import './_colours.css';
+@import './_fonts.css';
 
 body {
   font-family: var(--ff-primary);
+  color: var(--gs-str);
+  background-color: var(--c-gs-wk);
 }
 
 .noscroll {

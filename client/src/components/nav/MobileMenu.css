@@ -16,8 +16,8 @@
   z-index: 99;
   min-width: var(--mobile-menu-width);
   height: 100vh;
-  background-color: white;
-  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--c-gs-wk);
+  box-shadow: var(--subtle-box-shadow);
   transition: left 0.3s ease;
 }
 .MobileMenu--hidden {

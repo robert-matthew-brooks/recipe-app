@@ -14,12 +14,12 @@
 }
 
 .CrossBtn--dark {
-  background-color: grey;
+  background-color: var(--c-gs-600);
 }
 .CrossBtn--dark > img {
   filter: invert(1);
 }
 
 .CrossBtn--light {
-  background-color: #f0f0f0;
+  background-color: var(--c-gs-200);
 }
