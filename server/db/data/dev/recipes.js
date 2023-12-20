@@ -1,10 +1,8 @@
-const seedImgFolder = `${process.env.CLIENT_ORIGIN}/public/recipe-imgs`;
-
 const recipes = [
   {
-    name: 'Chicken, Leek and Bacon Pie',
+    name: 'Chicken, Leek & Bacon Pie',
     slug: 'chicken-leek-and-bacon-pie',
-    imgUrl: `${seedImgFolder}/chicken-leek-and-bacon-pie.jpeg`,
+    imgUrl: '/recipe-imgs/chicken-leek-and-bacon-pie.jpeg',
     author: 'Bob',
     ingredients: [
       { name: 'Chicken Breasts', amount: '2' },
@@ -66,7 +64,7 @@ const recipes = [
   {
     name: 'Beef Kebab',
     slug: 'beef-kebab',
-    imgUrl: `${seedImgFolder}/beef-kebab.jpeg`,
+    imgUrl: '/recipe-imgs/beef-kebab.jpeg',
     author: 'Bob',
     ingredients: [
       { name: 'Red Onions', amount: '1' },
@@ -99,7 +97,7 @@ const recipes = [
   {
     name: 'Crispy Fried Chicken Burger',
     slug: 'crispy-fried-chicken-burger',
-    imgUrl: `${seedImgFolder}/crispy-fried-chicken-burger.jpeg`,
+    imgUrl: '/recipe-imgs/crispy-fried-chicken-burger.jpeg',
     author: 'Bob',
     ingredients: [
       { name: 'Tomatoes', amount: '1' },
@@ -132,7 +130,7 @@ const recipes = [
   {
     name: 'Garlicky Chicken Kiev',
     slug: 'garlicky-chicken-kiev',
-    imgUrl: `${seedImgFolder}/garlicky-chicken-kiev.jpeg`,
+    imgUrl: '/recipe-imgs/garlicky-chicken-kiev.jpeg',
     author: 'Bob',
     ingredients: [
       { name: 'Lemons', amount: '1' },
@@ -160,7 +158,7 @@ const recipes = [
   {
     name: 'Beef Meatballs with Tomato Sauce & Linguine',
     slug: 'beef-meatballs-with-tomato-sauce-and-linguine',
-    imgUrl: `${seedImgFolder}/beef-meatballs-with-tomato-sauce-and-linguine.jpeg`,
+    imgUrl: '/recipe-imgs/beef-meatballs-with-tomato-sauce-and-linguine.jpeg',
     author: 'Bob',
     ingredients: [
       { name: 'Red Onions', amount: '1' },
@@ -186,6 +184,30 @@ const recipes = [
       'Once the meatballs have cooked for 10mins, add the linguine to a pan of boiling water. Cook for 10mins, then drain.',
       'Add the spinach to the meatballs and sauce, and cook for a further 5mins.',
       'Serve the meatballs in sauce over the drained linguine. Top with grated cheese and black pepper.',
+    ],
+    isVegetarian: false,
+  },
+  {
+    name: 'Chicken & Pepper Chow Mein',
+    slug: 'chicken-and-pepper-chow-mein',
+    author: 'Bob',
+    ingredients: [
+      { name: 'Chicken Breasts', amount: '2' },
+      { name: 'Red Pepper', amount: '1' },
+      { name: 'Sugar Snap Peas', amount: '80g' },
+      { name: 'Toasted Sesame Oil', amount: '15ml' },
+      { name: 'Hoisin Sauce', amount: '40g' },
+      { name: 'Soy Sauce', amount: '30ml' },
+      { name: 'Medium Egg Noodles', amount: '250g' },
+    ],
+    steps: [
+      'Boil a kettle. Dice the chicken breasts, then cook in a pan with oil for 5mins.',
+      'Remove the seeds from the red pepper, then dice. Cut the sugar snap peas into smaller pieces.',
+      'Add the diced pepper to the pan and cook for a further for 5mins.',
+      'Add the egg noodles to a pan of boiling water and cook for 5mins, then drain.',
+      'Add the sliced peas to the pan with the chicken, and cook for 5 mins.',
+      'Add the soy sauce, hoisin sauce and toasted sesame oil to the pan and cook for a further 2mins.',
+      'Mix the drained noodles into the pan, then serve the chicken and pepper chow mein.',
     ],
     isVegetarian: false,
   },

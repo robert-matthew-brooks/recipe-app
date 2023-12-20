@@ -12,7 +12,7 @@ async function register(username, password) {
   const { rows } = await pool.query(
     `
       INSERT INTO users (username, hashed_password)
-      VALUES (LOWER($1), $2)
+      VALUES ($1, $2)
       RETURNING id, username;
     `,
     [username, hashedPassword]
