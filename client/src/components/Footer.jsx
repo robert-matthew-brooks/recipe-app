@@ -21,12 +21,12 @@ const smLinks = [
 export default function Footer() {
   return (
     <footer id="Footer">
-      <div id="Footer--inner" className="inner">
-        <ul className="Footer--list">
+      <div id="Footer__inner" className="inner">
+        <ul className="Footer__list">
           <li>Robert Matthew Brooks</li>
           <li>&copy; 2023</li>
         </ul>
-        <ul className="Footer--sm-links">
+        <ul className="Footer__sm-links">
           {smLinks.map((link, i) => {
             return (
               <li key={i}>

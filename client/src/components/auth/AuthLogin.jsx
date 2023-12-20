@@ -73,17 +73,17 @@ export default function AuthLogin() {
   return (
     <div id="Auth">
       <form
-        id="Auth--inner"
+        id="Auth__inner"
         className="inner"
         onSubmit={async (evt) => {
           await handleFormSubmit(evt);
         }}
       >
-        <h1 id="Auth--title">Sign In</h1>
+        <h1 id="Auth__title">Sign In</h1>
 
         <div>
           <input
-            id="Auth--username"
+            id="Auth__username"
             data-test="username-box"
             type="text"
             value={username}
@@ -91,17 +91,17 @@ export default function AuthLogin() {
               handleUsernameChange(evt);
             }}
             placeholder="Username"
-            className={usernameErr ? 'Auth--username__err' : undefined}
+            className={usernameErr ? 'Auth__username__err' : undefined}
             disabled={isLoading}
           />
-          <p className={`Auth--err ${!usernameErr && 'Auth--err__hidden'}`}>
+          <p className={`Auth__err ${!usernameErr && 'Auth__err--hidden'}`}>
             &#9888; {usernameErr}
           </p>
         </div>
 
         <div>
           <input
-            id="Auth--password"
+            id="Auth__password"
             data-test="password-box"
             type="password"
             value={password}
@@ -109,28 +109,28 @@ export default function AuthLogin() {
               handlePasswordChange(evt);
             }}
             placeholder="Password"
-            className={passwordErr ? 'Auth--password__err' : undefined}
+            className={passwordErr ? 'Auth__password__err' : undefined}
             disabled={isLoading}
           />
-          <p className={`Auth--err ${!passwordErr && 'Auth--err__hidden'}`}>
+          <p className={`Auth__err ${!passwordErr && 'Auth__err--hidden'}`}>
             &#9888; {passwordErr}
           </p>
         </div>
 
         <button
-          id="Auth--submit"
+          id="Auth__submit"
           data-test="login-btn"
           type="submit"
           disabled={isLoading}
         >
           {!isLoading ? 'Sign In' : <img src={loadingImg} />}
         </button>
-        <p id="Auth--msg">
+        <p id="Auth__msg">
           Don't have an account? <Link to="/register">Register here</Link>
         </p>
         <p
           data-test="login-err-msg"
-          className={`Auth--err ${!apiErr && 'Auth--err__hidden'}`}
+          className={`Auth__err ${!apiErr && 'Auth__err--hidden'}`}
         >
           &#9888; {apiErr}
         </p>

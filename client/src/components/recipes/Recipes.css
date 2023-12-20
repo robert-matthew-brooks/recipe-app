@@ -2,7 +2,7 @@
   flex: 1;
 }
 
-#Recipes--inner {
+#Recipes__inner {
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -7,14 +7,14 @@
   border-bottom: 1px solid lightsteelblue;
 }
 
-#Navbar--inner {
+#Navbar__inner {
   min-height: var(--nav-height);
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-#Navbar--links-wrapper {
+#Navbar__links-wrapper {
   display: none;
 }
 
@@ -42,25 +42,25 @@
   opacity: 1;
 }
 
-#Navbar--menu-btn {
+#Navbar__menu-btn {
   height: 2rem;
   background-color: transparent;
   border: none;
   cursor: pointer;
 }
 
-#Navbar--menu-btn > img {
+#Navbar__menu-btn > img {
   height: 100%;
   aspect-ratio: 1;
 }
 
-#Navbar--btn-wrapper {
+#Navbar__btn-wrapper {
   display: flex;
   gap: 0.5rem;
   margin-left: auto;
 }
 
-.Navbar--btn {
+.Navbar__btn {
   padding: 0.4rem 1rem;
   font-family: inherit;
   font-size: 0.8rem;
@@ -71,30 +71,30 @@
   transition: all 0.5s ease;
 }
 
-#Navbar--register-btn {
+#Navbar__register-btn {
   font-weight: bold;
   background-color: darkseagreen;
 }
-#Navbar--register-btn:hover {
+#Navbar__register-btn:hover {
   color: white;
   background-color: black;
 }
 
-#Navbar--auth-btn {
+#Navbar__auth-btn {
   background-color: transparent;
   border: 1px solid antiquewhite;
 }
-#Navbar--auth-btn:hover {
+#Navbar__auth-btn:hover {
   background-color: lightgrey;
   border: 1px solid grey;
 }
 
 @media screen and (min-width: 768px) {
-  #Navbar--menu-btn {
+  #Navbar__menu-btn {
     display: none;
   }
 
-  #Navbar--links-wrapper {
+  #Navbar__links-wrapper {
     display: block;
   }
 }

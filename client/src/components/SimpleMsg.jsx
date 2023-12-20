@@ -16,8 +16,8 @@ export default function SimpleMsg({ title, msg, linkText, linkHref }) {
     <>
       <Header title={title} />
       <section id="SimpleMsg">
-        <div id="SimpleMsg--inner" className="inner">
-          <p className="SimpleMsg--text">{msg}</p>
+        <div id="SimpleMsg__inner" className="inner">
+          <p className="SimpleMsg__text">{msg}</p>
           <Link to={linkHref}>{linkText}</Link>
         </div>
       </section>

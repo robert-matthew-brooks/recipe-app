@@ -6,19 +6,19 @@ export default function MobileMenu({ links, isMenuOpen, toggleMenu }) {
   return (
     <>
       <div
-        id="MobileMenu--overlay"
-        className={!isMenuOpen ? 'MobileMenu--overlay__hidden' : undefined}
+        id="MobileMenu__overlay"
+        className={!isMenuOpen ? 'MobileMenu__overlay--hidden' : undefined}
       ></div>
 
       <nav
         id="MobileMenu"
-        className={!isMenuOpen ? 'MobileMenu__hidden' : undefined}
+        className={!isMenuOpen ? 'MobileMenu--hidden' : undefined}
       >
-        <button id="MobileMenu--close-btn" onClick={toggleMenu}>
+        <button id="MobileMenu__close-btn" onClick={toggleMenu}>
           <img src={closeImg} />
         </button>
 
-        <ul id="MobileMenu--links">
+        <ul id="MobileMenu__links">
           {links.map((link, i) => {
             return (
               <li key={i}>

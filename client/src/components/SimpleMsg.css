@@ -4,20 +4,20 @@
   justify-content: center;
 }
 
-#SimpleMsg--inner {
+#SimpleMsg__inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3rem;
 }
 
-.SimpleMsg--text {
+.SimpleMsg__text {
   font-size: 1.6rem;
 
   letter-spacing: 0.03rem;
 }
 
-#SimpleMsg--inner > a {
+#SimpleMsg__inner > a {
   padding: 0.8rem 1.2rem;
   color: inherit;
   font-family: inherit;
@@ -30,7 +30,7 @@
   cursor: pointer;
   transition: all 0.5s ease;
 }
-#SimpleMsg--inner > a:hover {
+#SimpleMsg__inner > a:hover {
   color: white;
   background-color: black;
 }

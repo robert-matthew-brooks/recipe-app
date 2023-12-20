@@ -43,7 +43,7 @@ export default function Navbar() {
   if (isLoginScreen) {
     return (
       <nav id="Navbar">
-        <div id="Navbar--inner" className="inner">
+        <div id="Navbar__inner" className="inner">
           <Link to={'/'}>&larr; Back to site</Link>
         </div>
       </nav>
@@ -54,12 +54,12 @@ export default function Navbar() {
         <MobileMenu {...{ links, isMenuOpen, toggleMenu }} />
 
         <nav id="Navbar">
-          <div id="Navbar--inner" className="inner">
-            <button id="Navbar--menu-btn" onClick={toggleMenu}>
+          <div id="Navbar__inner" className="inner">
+            <button id="Navbar__menu-btn" onClick={toggleMenu}>
               <img src={menuImg} />
             </button>
 
-            <div id="Navbar--links-wrapper">
+            <div id="Navbar__links-wrapper">
               {links.map((link, i) => {
                 return (
                   <Link key={i} to={link.href}>
@@ -69,11 +69,11 @@ export default function Navbar() {
               })}
             </div>
 
-            <div id="Navbar--btn-wrapper">
+            <div id="Navbar__btn-wrapper">
               {!activeUser && (
                 <button
-                  id="Navbar--register-btn"
-                  className="Navbar--btn"
+                  id="Navbar__register-btn"
+                  className="Navbar__btn"
                   onClick={() => {
                     navigate('/register');
                   }}
@@ -83,9 +83,9 @@ export default function Navbar() {
               )}
 
               <button
-                id="Navbar--auth-btn"
+                id="Navbar__auth-btn"
                 data-test={activeUser ? 'logout-btn' : 'login-btn'}
-                className="Navbar--btn"
+                className="Navbar__btn"
                 onClick={() => {
                   activeUser ? navigate('/logout') : navigate('/login');
                 }}

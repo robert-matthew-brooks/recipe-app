@@ -77,55 +77,55 @@ export default function AuthRegister() {
   return (
     <div id="Auth">
       <form
-        id="Auth--inner"
+        id="Auth__inner"
         className="inner"
         onSubmit={async (evt) => {
           await handleFormSubmit(evt);
         }}
       >
-        <h1 id="Auth--title">Register</h1>
+        <h1 id="Auth__title">Register</h1>
 
         <div>
           <input
-            id="Auth--username"
+            id="Auth__username"
             type="text"
             value={username}
             onChange={(evt) => {
               handleUsernameChange(evt);
             }}
             placeholder="Username"
-            className={usernameErr ? 'Auth--username__err' : undefined}
+            className={usernameErr ? 'Auth__username__err' : undefined}
             disabled={isLoading}
           />
-          <p className={`Auth--err ${!usernameErr && 'Auth--err__hidden'}`}>
+          <p className={`Auth__err ${!usernameErr && 'Auth__err--hidden'}`}>
             &#9888; {usernameErr}
           </p>
         </div>
 
         <div>
           <input
-            id="Auth--password"
+            id="Auth__password"
             type="password"
             value={password}
             onChange={(evt) => {
               handlePasswordChange(evt);
             }}
             placeholder="Password"
-            className={passwordErr ? 'Auth--password__err' : undefined}
+            className={passwordErr ? 'Auth__password__err' : undefined}
             disabled={isLoading}
           />
-          <p className={`Auth--err ${!passwordErr && 'Auth--err__hidden'}`}>
+          <p className={`Auth__err ${!passwordErr && 'Auth__err--hidden'}`}>
             &#9888; {passwordErr}
           </p>
         </div>
 
-        <button id="Auth--submit" type="submit" disabled={isLoading}>
+        <button id="Auth__submit" type="submit" disabled={isLoading}>
           {!isLoading ? 'Register' : <img src={loadingImg} />}
         </button>
-        <p id="Auth--msg">
+        <p id="Auth__msg">
           Already have an account? <Link to="/login">Login here</Link>
         </p>
-        <p className={`Auth--err ${!apiErr && 'Auth--err__hidden'}`}>
+        <p className={`Auth__err ${!apiErr && 'Auth__err--hidden'}`}>
           &#9888; {apiErr}
         </p>
       </form>
