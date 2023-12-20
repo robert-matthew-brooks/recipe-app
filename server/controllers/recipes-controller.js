@@ -22,7 +22,7 @@ async function getMany(req, res, next) {
   } = req.query;
 
   try {
-    const { recipes } = await recipesModel.getMany(
+    const { recipes, total_recipes } = await recipesModel.getMany(
       searchTerm,
       ingredientIdsStr,
       isVegetarianStr,
@@ -30,7 +30,7 @@ async function getMany(req, res, next) {
       limit,
       page
     );
-    res.send({ recipes });
+    res.send({ recipes, total_recipes });
   } catch (err) {
     next(err);
   }

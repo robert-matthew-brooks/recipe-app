@@ -98,7 +98,9 @@ async function getMany(
 
   const orderByQueryStr = lookupSort[sortStr];
 
-  const { rows } = await pool.query(
+  // get paginated recipes
+
+  const { rows: recipes } = await pool.query(
     `
       SELECT
       r.id,
@@ -131,7 +133,27 @@ async function getMany(
     [`%${searchTerm}%`, limit, offset]
   );
 
-  return { recipes: rows };
+  // get total number of matches
+
+  const { rows } = await pool.query(
+    `
+      SELECT
+        COUNT(*)::INT AS total_recipes
+      FROM (
+        SELECT
+          r.id
+        FROM (
+          SELECT * FROM recipes r
+          WHERE LOWER(r.name) LIKE LOWER($1)
+          ${vegetarianQueryStr}
+        ) r
+        ${ingredientsQueryStr}
+      ) count;
+    `,
+    [`%${searchTerm}%`]
+  );
+
+  return { recipes, total_recipes: rows[0].total_recipes };
 }
 
 module.exports = { getOne, getMany };

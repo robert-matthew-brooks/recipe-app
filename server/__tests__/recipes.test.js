@@ -58,6 +58,11 @@ describe('GET /recipes', () => {
   it('200: should return an array of recipe objects with the correct properties', async () => {
     const { body } = await supertest(server).get('/recipes').expect(200);
 
+    expect(body).toMatchObject({
+      recipes: expect.any(Object),
+      total_recipes: expect.any(Number),
+    });
+
     for (const recipe of body.recipes) {
       expect(recipe).toMatchObject({
         id: expect.any(Number),
@@ -71,9 +76,10 @@ describe('GET /recipes', () => {
     }
   });
 
-  it('200: should return 10 recipes', async () => {
+  it('200: should return 10 recipes from 30 total ', async () => {
     const { body } = await supertest(server).get('/recipes').expect(200);
     expect(body.recipes).toHaveLength(10);
+    expect(body.total_recipes).toBe(30);
   });
 
   // TODO pagination
@@ -84,6 +90,7 @@ describe('GET /recipes', () => {
       .expect(200);
 
     expect(body.recipes).toHaveLength(5);
+    expect(body.total_recipes).toBe(5);
   });
 
   it('200: should allow URI encoded strings with % symbol', async () => {
@@ -106,6 +113,7 @@ describe('GET /recipes', () => {
       .expect(200);
 
     expect(body.recipes).toHaveLength(21);
+    expect(body.total_recipes).toBe(21);
   });
 
   it('200: should filter 9 vegetarian recipes', async () => {
@@ -114,6 +122,7 @@ describe('GET /recipes', () => {
       .expect(200);
 
     expect(body.recipes).toHaveLength(9);
+    expect(body.total_recipes).toBe(9);
   });
 
   it('200: should filter 9 vegetarian recipes for any provided value', async () => {
