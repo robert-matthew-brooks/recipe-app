@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { getIngredients } from '../../util/api';
-import closeImg from '../../assets/close.svg';
+import CrossBtn from '../CrossBtn';
 import './RecipeFilter.css';
 
 export default function RecipeFilter({
@@ -14,6 +14,7 @@ export default function RecipeFilter({
   const [allIngredients, setAllIngredients] = useState([]);
   const filterRef = useRef(null);
   const [isFilterHidden, setIsFilterHidden] = useState(true);
+  const searchRef = useRef(null);
   const [searchBoxValue, setSearchBoxValue] = useState('');
 
   useEffect(() => {
@@ -62,6 +63,11 @@ export default function RecipeFilter({
     };
   }, [searchBoxValue]);
 
+  const clearSearchbox = () => {
+    setSearchBoxValue('');
+    searchRef.current.focus();
+  };
+
   const addIngredientToFilter = (ingredientId) => {
     const ingredientName = allIngredients.filter((el) => {
       return el.id === ingredientId;
@@ -93,15 +99,23 @@ export default function RecipeFilter({
 
       <div id="RecipeFilter--panel--wrapper" ref={filterRef}>
         <div id="RecipeFilter--panel">
-          <input
-            className="RecipeFilter--search-box"
-            type="text"
-            value={searchBoxValue}
-            onChange={(evt) => {
-              setSearchBoxValue(evt.target.value);
-            }}
-            placeholder="Recipe name..."
-          />
+          <div id="RecipeFilter--search-box--wrapper">
+            <input
+              id="RecipeFilter--search-box"
+              ref={searchRef}
+              type="text"
+              value={searchBoxValue}
+              onChange={(evt) => {
+                setSearchBoxValue(evt.target.value);
+              }}
+              placeholder="Recipe name..."
+            />
+            <CrossBtn
+              size="1.2rem"
+              cb={clearSearchbox}
+              hidden={!searchBoxValue}
+            />
+          </div>
 
           <select
             value={filterOrderBy}
@@ -156,14 +170,13 @@ export default function RecipeFilter({
               return (
                 <li key={i}>
                   {ingredient.name}
-                  <button
-                    className="RecipeFilter--ingredients-list--remove-btn"
-                    onClick={() => {
+                  <CrossBtn
+                    light="true"
+                    size="1.1rem"
+                    cb={() => {
                       removeIngredient(i);
                     }}
-                  >
-                    <img src={closeImg} />
-                  </button>
+                  />
                 </li>
               );
             })}

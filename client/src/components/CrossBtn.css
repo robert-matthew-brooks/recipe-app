@@ -1,0 +1,25 @@
+.CrossBtn {
+  aspect-ratio: 1;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0.5rem;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.CrossBtn > img {
+  width: 60%;
+  aspect-ratio: 1;
+}
+
+.CrossBtn--dark {
+  background-color: grey;
+}
+.CrossBtn--dark > img {
+  filter: invert(1);
+}
+
+.CrossBtn--light {
+  background-color: #f0f0f0;
+}
