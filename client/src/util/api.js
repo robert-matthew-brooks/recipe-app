@@ -29,18 +29,20 @@ export async function getIngredients() {
 }
 
 export async function getRecipes(
-  filterName,
-  filterOrderBy,
-  filterIngredients,
-  filterIsVegetarian
+  searchTerm,
+  orderBy,
+  ingredients,
+  isVegetarian,
+  limit,
+  page
 ) {
   const params = {
-    search_term: filterName,
-    ingredient_ids: JSON.stringify(filterIngredients.map((el) => el.id)),
-    is_vegetarian: filterIsVegetarian || null,
-    sort: filterOrderBy || null,
-    limit: 6,
-    page: 1,
+    search_term: searchTerm,
+    ingredient_ids: JSON.stringify(ingredients.map((el) => el.id)),
+    is_vegetarian: isVegetarian || null,
+    sort: orderBy || null,
+    limit,
+    page,
   };
 
   // remove empty params
@@ -56,5 +58,5 @@ export async function getRecipes(
     return recipe;
   });
 
-  return recipes;
+  return { recipes, totalRecipes: data.total_recipes };
 }

@@ -110,11 +110,7 @@ export default function RecipeFilter({
               }}
               placeholder="Recipe name..."
             />
-            <CrossBtn
-              size="1.2rem"
-              cb={clearSearchbox}
-              hidden={!searchBoxValue}
-            />
+            <CrossBtn size={1.2} cb={clearSearchbox} hidden={!searchBoxValue} />
           </div>
 
           <select
@@ -171,8 +167,8 @@ export default function RecipeFilter({
                 <li key={i}>
                   {ingredient.name}
                   <CrossBtn
-                    light="true"
-                    size="1.1rem"
+                    light={true}
+                    size={1.1}
                     cb={() => {
                       removeIngredient(i);
                     }}

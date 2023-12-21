@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import menuImg from '../../assets/menu.svg';
+import TextBtn from '../TextBtn';
 import MobileMenu from './MobileMenu';
+import menuImg from '../../assets/menu.svg';
 import './Navbar.css';
 
 const links = [
@@ -71,27 +72,24 @@ export default function Navbar() {
 
             <div id="Navbar__btn-wrapper">
               {!activeUser && (
-                <button
-                  id="Navbar__register-btn"
-                  className="Navbar__btn"
-                  onClick={() => {
+                <TextBtn
+                  text="Register"
+                  size={2}
+                  cb={() => {
                     navigate('/register');
                   }}
-                >
-                  Register
-                </button>
+                />
               )}
 
-              <button
-                id="Navbar__auth-btn"
-                data-test={activeUser ? 'logout-btn' : 'login-btn'}
-                className="Navbar__btn"
-                onClick={() => {
+              <TextBtn
+                dataTest={activeUser ? 'logout-btn' : 'login-btn'}
+                light={true}
+                text={activeUser ? 'Sign out' : 'Sign in'}
+                size={2}
+                cb={() => {
                   activeUser ? navigate('/logout') : navigate('/login');
                 }}
-              >
-                {activeUser ? 'Sign out' : 'Sign in'}
-              </button>
+              />
             </div>
           </div>
         </nav>
