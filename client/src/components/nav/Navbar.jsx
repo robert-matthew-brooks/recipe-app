@@ -82,6 +82,7 @@ export default function Navbar() {
               )}
 
               <TextBtn
+                dataTest={activeUser ? 'logout-btn' : 'login-btn'}
                 light={true}
                 text={activeUser ? 'Sign out' : 'Sign in'}
                 size={2}
