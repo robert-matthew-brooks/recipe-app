@@ -91,6 +91,7 @@ export default function RecipeFilter({
     <div id="RecipeFilter">
       <div
         id="RecipeFilter__accordion"
+        data-test="RecipeFilter-accordion"
         className={isFilterHidden ? '' : 'RecipeFilter__accordion--active'}
         onClick={toggleFilter}
       >
@@ -98,10 +99,11 @@ export default function RecipeFilter({
       </div>
 
       <div id="RecipeFilter__panel__wrapper" ref={filterRef}>
-        <div id="RecipeFilter__panel">
+        <div id="RecipeFilter__panel" data-test="RecipeFilter-panel">
           <div id="RecipeFilter__search-box__wrapper">
             <input
               id="RecipeFilter__search-box"
+              data-test="RecipeFilter-search-box"
               ref={searchRef}
               type="text"
               value={searchBoxValue}
@@ -114,13 +116,14 @@ export default function RecipeFilter({
           </div>
 
           <select
+            data-test="RecipeFilter-orderby-dropdown"
+            className="RecipeFilter__dropdown"
             value={filterOrderBy}
             onChange={(evt) => {
               setFilterOrderBy(
                 evt.target.options[evt.target.selectedIndex].value
               );
             }}
-            className="RecipeFilter__dropdown"
           >
             <option value="new">Newest First</option>
             <option value="top">Top Rated</option>
@@ -129,6 +132,7 @@ export default function RecipeFilter({
           </select>
 
           <select
+            data-test="RecipeFilter-ingredients-dropdown"
             className="RecipeFilter__dropdown"
             defaultValue=""
             onChange={(evt) => {
@@ -156,6 +160,7 @@ export default function RecipeFilter({
 
           <ul
             id="RecipeFilter__ingredients-list"
+            data-test="RecipeFilter-ingredients-list"
             className={
               filterIngredients.length === 0
                 ? 'RecipeFilter__ingredients-list--hidden'
