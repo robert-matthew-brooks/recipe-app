@@ -1,5 +1,6 @@
 #Footer {
-  border-top: 1px solid lightslategray;
+  background-color: var(--c-gs-900);
+  border-top: 1px solid var(--c-section-border);
   box-shadow: var(--subtle-box-shadow);
 }
 
@@ -14,6 +15,7 @@
 }
 
 .Footer__list {
+  color: var(--c-gs-300);
   margin-left: 0;
   list-style-type: none;
 }

@@ -1,0 +1,36 @@
+.TextBtn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: inherit;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.TextBtn--dark {
+  background-color: var(--c-cta-bg);
+}
+.TextBtn--dark:hover:enabled {
+  color: var(--c-gs-wk);
+  background-color: var(--c-gs-str);
+}
+
+.TextBtn--light {
+  background-color: var(--c-gs-50);
+  border: 1px solid var(--c-gs-200);
+}
+.TextBtn--light:hover:enabled {
+  background-color: var(--c-gs-100);
+  border: 1px solid var(--c-gs-400);
+}
+
+.TextBtn > img {
+  position: absolute;
+  height: 70%;
+  animation: loadspin 2s linear infinite;
+}

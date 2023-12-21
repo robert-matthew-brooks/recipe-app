@@ -61,26 +61,6 @@
   margin-left: auto;
 }
 
-.Navbar__btn {
-  padding: 0.4rem 1rem;
-  font-family: inherit;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  border: none;
-  border-radius: var(--border-radius-sm);
-  cursor: pointer;
-  transition: all 0.5s ease;
-}
-
-#Navbar__register-btn {
-  font-weight: bold;
-  background-color: var(--c-cta-bg);
-}
-#Navbar__register-btn:hover {
-  color: var(--c-gs-wk);
-  background-color: var(--c-gs-str);
-}
-
 #Navbar__auth-btn {
   background-color: transparent;
   border: 1px solid var(--c-gs-200);
