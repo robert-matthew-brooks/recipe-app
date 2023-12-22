@@ -17,8 +17,7 @@ export default function ScrollTopBtn() {
     }
 
     setPrevScrollY(scrollY);
-    console.log(scrollY, '>', prevScrollY);
-  }, 200);
+  }, 100);
 
   useEffect(() => {
     document.addEventListener('scroll', handleScroll);

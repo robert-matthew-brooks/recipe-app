@@ -9,7 +9,7 @@ import RecipePagination from './RecipePagination';
 export default function AllRecipes() {
   const [recipes, setRecipes] = useState([]);
   const [totalRecipes, setTotalRecipes] = useState(0);
-  const [filterName, setFilterName] = useState('');
+  const [filterName, setFilterName] = useState('beef k');
   const [filterOrderBy, setFilterOrderBy] = useState('');
   const [filterIngredients, setFilterIngredients] = useState([]);
   const [filterIsVegetarian, setFilterIsVegetarian] = useState(false);

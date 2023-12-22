@@ -4,6 +4,7 @@ import CrossBtn from '../CrossBtn';
 import './RecipeFilter.css';
 
 export default function RecipeFilter({
+  filterName,
   setFilterName,
   filterOrderBy,
   setFilterOrderBy,
@@ -15,7 +16,7 @@ export default function RecipeFilter({
   const filterRef = useRef(null);
   const [isFilterHidden, setIsFilterHidden] = useState(true);
   const searchRef = useRef(null);
-  const [searchBoxValue, setSearchBoxValue] = useState('');
+  const [searchBoxValue, setSearchBoxValue] = useState(filterName);
 
   useEffect(() => {
     (async () => {
