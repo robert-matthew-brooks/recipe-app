@@ -42,7 +42,7 @@ jobs:
         uses: cypress-io/github-action@v3
         with:
           component: true
-          working-directory: client/component
+          working-directory: client
           browser: chrome
           start: node ../server/listen, npm start
           wait-on: http://localhost:5173
