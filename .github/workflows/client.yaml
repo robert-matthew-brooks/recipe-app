@@ -16,7 +16,7 @@ env:
 
 jobs:
   test:
-    name: run cypress e2e tests
+    name: run cypress tests
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -38,10 +38,19 @@ jobs:
         working-directory: server
         run: npm run seed
 
-      - name: run cypress
+      - name: run cypress component tests
+        uses: cypress-io/github-action@v3
+        with:
+          component: true
+          working-directory: client
+          browser: chrome
+          start: npm --prefix ../server listen, npm run dev
+          wait-on: http://localhost:5173
+
+      - name: run cypress e2e tests
         uses: cypress-io/github-action@v3
         with:
           working-directory: client
           browser: chrome
-          start: node ../server/listen, npm start
+          start: npm --prefix ../server listen, npm run dev
           wait-on: http://localhost:5173

@@ -6,7 +6,7 @@
   "scripts": {
     "create-dbs": "psql -f ./db/create-dbs.sql",
     "seed": "node ./db/run-seed.js",
-    "listen": "nodemon ./listen.js",
+    "listen": "node ./listen.js",
     "test": "jest --runInBand"
   },
   "keywords": [],
