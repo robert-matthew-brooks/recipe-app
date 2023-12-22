@@ -16,5 +16,8 @@ describe('ScrollTopBtn', () => {
 
     cy.get('@scrollTopBtn').click();
     cy.get('@scrollTopBtn').should('not.be.inViewport');
+    cy.window().then((window) => {
+      expect(window.scrollY).to.equal(0);
+    });
   });
 });
