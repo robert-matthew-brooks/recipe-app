@@ -2,12 +2,12 @@ import loadingImg from '../assets/loading.svg';
 import './TextBtn.css';
 
 export default function TextBtn({
+  dataTest,
   light,
   text,
   size = 1,
   cb,
   isLoading,
-  dataTest,
 }) {
   return (
     <button

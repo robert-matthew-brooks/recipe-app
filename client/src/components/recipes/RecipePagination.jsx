@@ -15,6 +15,7 @@ export default function RecipePagination({
       </p>
       {totalRecipes > recipesCount && (
         <TextBtn
+          dataTest="RecipePagination-load-btn"
           text="&#8595; Load More..."
           size={3}
           cb={cb}
