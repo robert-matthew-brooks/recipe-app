@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import ScrollTopBtn from './components/nav/ScrollTopBtn';
 import Navbar from './components/nav/Navbar';
 import Recipes from './components/recipes/Recipes';
 import AuthRegister from './components/auth/AuthRegister';
@@ -17,6 +18,7 @@ export default function App() {
 
   return (
     <div id="App">
+      <ScrollTopBtn />
       <Navbar />
 
       <Routes>

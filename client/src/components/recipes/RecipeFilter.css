@@ -90,10 +90,10 @@
   border: 1px solid grey;
   appearance: none;
 
-  background-image: url('../../assets/dropdown.svg');
+  background-image: url('../../assets/arrow-down.svg');
   background-repeat: no-repeat;
   background-position: right;
-  background-size: 1rem;
+  background-size: 1.5rem;
 }
 
 #RecipeFilter__ingredients-list {
