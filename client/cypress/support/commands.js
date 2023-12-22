@@ -1,9 +1,5 @@
-Cypress.Commands.add('getDataTest', (dataTestValue) => {
-  return cy.get(`[data-test="${dataTestValue}"]`);
-});
-
 Cypress.Commands.add('login', (username, password) => {
-  cy.getDataTest('username-box').clear().type(username);
-  cy.getDataTest('password-box').clear().type(password);
-  cy.getDataTest('login-btn').click();
+  cy.get('[data-test="username-box"]').clear().type(username);
+  cy.get('[data-test="password-box"]').clear().type(password);
+  cy.get('[data-test="login-btn"]').click();
 });

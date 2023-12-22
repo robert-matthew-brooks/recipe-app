@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import './App.css';
+import ScrollTopBtn from './components/nav/ScrollTopBtn';
 import Navbar from './components/nav/Navbar';
 import Recipes from './components/recipes/Recipes';
 import AuthRegister from './components/auth/AuthRegister';
 import AuthLogin from './components/auth/AuthLogin';
 import SimpleMsg from './components/SimpleMsg';
 import Footer from './components/Footer';
+import './App.css';
 
 export default function App() {
   const location = useLocation();
@@ -17,6 +18,7 @@ export default function App() {
 
   return (
     <div id="App">
+      <ScrollTopBtn />
       <Navbar />
 
       <Routes>
