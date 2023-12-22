@@ -28,10 +28,22 @@ export default function ScrollTopBtn() {
 
   const scrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.addEventListener(
+      'scrollend',
+      () => {
+        setPrevScrollY(0);
+        setIsVisible(false);
+      },
+      { once: true }
+    );
   };
 
   return (
-    <div id="ScrollTopBtn" className={!isVisible ? 'ScrollTopBtn--hidden' : ''}>
+    <div
+      id="ScrollTopBtn"
+      data-test="scroll-top-btn"
+      className={!isVisible ? 'ScrollTopBtn--hidden' : ''}
+    >
       <img src={arrowUpImg} onClick={scrollTop} />
     </div>
   );
