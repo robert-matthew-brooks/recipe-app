@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "create-dbs": "psql -f ./db/create-dbs.sql",
-    "seed-dev": "node ./db/run-seed.js",
+    "seed": "node ./db/run-seed.js",
     "listen": "node ./listen.js",
     "test": "jest --runInBand"
   },
