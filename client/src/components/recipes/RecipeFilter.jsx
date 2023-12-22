@@ -104,7 +104,7 @@ export default function RecipeFilter({
           <div id="RecipeFilter__search-box__wrapper">
             <input
               id="RecipeFilter__search-box"
-              data-test="RecipeFilter-search-box"
+              data-test="filter-search"
               ref={searchRef}
               type="text"
               value={searchBoxValue}
@@ -117,7 +117,7 @@ export default function RecipeFilter({
           </div>
 
           <select
-            data-test="RecipeFilter-orderby-dropdown"
+            data-test="filter-sort-dropdown"
             className="RecipeFilter__dropdown"
             value={filterOrderBy}
             onChange={(evt) => {
@@ -133,7 +133,7 @@ export default function RecipeFilter({
           </select>
 
           <select
-            data-test="RecipeFilter-ingredients-dropdown"
+            data-test="filter-ingredients-dropdown"
             className="RecipeFilter__dropdown"
             defaultValue=""
             onChange={(evt) => {
@@ -161,7 +161,7 @@ export default function RecipeFilter({
 
           <ul
             id="RecipeFilter__ingredients-list"
-            data-test="RecipeFilter-ingredients-list"
+            data-test="filter-ingredients-list"
             className={
               filterIngredients.length === 0
                 ? 'RecipeFilter__ingredients-list--hidden'
