@@ -29,7 +29,7 @@ beforeEach(() => {
 
   cy.get('[data-test="RecipeFilter-accordion"]').as('accordion');
   cy.get('[data-test="RecipeFilter-panel"]').as('panel');
-  cy.get('[data-test="RecipeFilter-search-box"]').as('searchBox');
+  cy.get('[data-test="filter-search"]').as('searchBox');
 });
 
 describe('RecipeFilter', () => {
@@ -65,7 +65,7 @@ describe('RecipeFilter', () => {
 
     cy.get('@setFilterOrderBy').its('callCount').should('eq', 0);
 
-    cy.get('[data-test="RecipeFilter-orderby-dropdown"]').select(1);
+    cy.get('[data-test="filter-sort-dropdown"]').select(1);
     cy.get('@setFilterOrderBy').its('callCount').should('eq', 1);
   });
 
@@ -73,24 +73,24 @@ describe('RecipeFilter', () => {
     cy.get('@accordion').click();
 
     // show correct ingredients
-    cy.get('[data-test="RecipeFilter-ingredients-dropdown"]').within(() => {
+    cy.get('[data-test="filter-ingredients-dropdown"]').within(() => {
       cy.get('option:enabled').should(
         'have.length',
         allIngredients.length - filterIngredients.length
       );
     });
 
-    cy.get('[data-test="RecipeFilter-ingredients-list"]').within(() => {
+    cy.get('[data-test="filter-ingredients-list"]').within(() => {
       cy.get('li').should('have.length', filterIngredients.length);
     });
 
     // selecting or removing ingredients calls setter
     cy.get('@setFilterIngredients').its('callCount').should('eq', 0);
 
-    cy.get('[data-test="RecipeFilter-ingredients-dropdown"]').select(1);
+    cy.get('[data-test="filter-ingredients-dropdown"]').select(1);
     cy.get('@setFilterIngredients').its('callCount').should('eq', 1);
 
-    cy.get('[data-test="RecipeFilter-ingredients-list"]').within(() => {
+    cy.get('[data-test="filter-ingredients-list"]').within(() => {
       cy.get('li')
         .first()
         .within(() => {

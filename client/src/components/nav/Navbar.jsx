@@ -75,7 +75,7 @@ export default function Navbar() {
                 <TextBtn
                   text="Register"
                   size={2}
-                  cb={() => {
+                  callback={() => {
                     navigate('/register');
                   }}
                 />
@@ -86,7 +86,7 @@ export default function Navbar() {
                 light={true}
                 text={activeUser ? 'Sign out' : 'Sign in'}
                 size={2}
-                cb={() => {
+                callback={() => {
                   activeUser ? navigate('/logout') : navigate('/login');
                 }}
               />

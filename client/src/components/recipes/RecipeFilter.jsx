@@ -4,18 +4,23 @@ import CrossBtn from '../CrossBtn';
 import './RecipeFilter.css';
 
 export default function RecipeFilter({
+  filterName,
   setFilterName,
   filterOrderBy,
   setFilterOrderBy,
   filterIngredients,
   setFilterIngredients,
+  filterIsFavourites,
+  setFilterIsFavourites,
+  filterIsVegetarian,
+  setFilterIsVegetarian,
   setIsLoading,
 }) {
   const [allIngredients, setAllIngredients] = useState([]);
   const filterRef = useRef(null);
   const [isFilterHidden, setIsFilterHidden] = useState(true);
   const searchRef = useRef(null);
-  const [searchBoxValue, setSearchBoxValue] = useState('');
+  const [searchBoxValue, setSearchBoxValue] = useState(filterName);
 
   useEffect(() => {
     (async () => {
@@ -79,7 +84,7 @@ export default function RecipeFilter({
     ]);
   };
 
-  const removeIngredient = (which) => {
+  const removeIngredientFromFilter = (which) => {
     setFilterIngredients(
       filterIngredients.filter((_el, i) => {
         return which !== i;
@@ -95,7 +100,7 @@ export default function RecipeFilter({
         className={isFilterHidden ? '' : 'RecipeFilter__accordion--active'}
         onClick={toggleFilter}
       >
-        Filter
+        Search Options
       </div>
 
       <div id="RecipeFilter__panel__wrapper" ref={filterRef}>
@@ -103,7 +108,7 @@ export default function RecipeFilter({
           <div id="RecipeFilter__search-box__wrapper">
             <input
               id="RecipeFilter__search-box"
-              data-test="RecipeFilter-search-box"
+              data-test="filter-search"
               ref={searchRef}
               type="text"
               value={searchBoxValue}
@@ -112,11 +117,15 @@ export default function RecipeFilter({
               }}
               placeholder="Recipe name..."
             />
-            <CrossBtn size={1.2} cb={clearSearchbox} hidden={!searchBoxValue} />
+            <CrossBtn
+              size={1.2}
+              callback={clearSearchbox}
+              hidden={!searchBoxValue}
+            />
           </div>
 
           <select
-            data-test="RecipeFilter-orderby-dropdown"
+            data-test="filter-sort-dropdown"
             className="RecipeFilter__dropdown"
             value={filterOrderBy}
             onChange={(evt) => {
@@ -132,7 +141,7 @@ export default function RecipeFilter({
           </select>
 
           <select
-            data-test="RecipeFilter-ingredients-dropdown"
+            data-test="filter-ingredients-dropdown"
             className="RecipeFilter__dropdown"
             defaultValue=""
             onChange={(evt) => {
@@ -158,9 +167,33 @@ export default function RecipeFilter({
               })}
           </select>
 
+          <label className="RecipeFilter__checkbox">
+            <input
+              type="checkbox"
+              checked={filterIsFavourites}
+              onChange={() => {
+                setFilterIsFavourites(!filterIsFavourites);
+              }}
+            />
+            <span></span>
+            Favourites Only
+          </label>
+
+          <label className="RecipeFilter__checkbox">
+            <input
+              type="checkbox"
+              checked={filterIsVegetarian}
+              onChange={() => {
+                setFilterIsVegetarian(!filterIsVegetarian);
+              }}
+            />
+            <span></span>
+            Vegetarian Only
+          </label>
+
           <ul
             id="RecipeFilter__ingredients-list"
-            data-test="RecipeFilter-ingredients-list"
+            data-test="filter-ingredients-list"
             className={
               filterIngredients.length === 0
                 ? 'RecipeFilter__ingredients-list--hidden'
@@ -174,8 +207,8 @@ export default function RecipeFilter({
                   <CrossBtn
                     light={true}
                     size={1.1}
-                    cb={() => {
-                      removeIngredient(i);
+                    callback={() => {
+                      removeIngredientFromFilter(i);
                     }}
                   />
                 </li>

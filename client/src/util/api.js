@@ -32,6 +32,7 @@ export async function getRecipes(
   searchTerm,
   orderBy,
   ingredients,
+  isFavourites,
   isVegetarian,
   limit,
   page
@@ -39,6 +40,7 @@ export async function getRecipes(
   const params = {
     search_term: searchTerm,
     ingredient_ids: JSON.stringify(ingredients.map((el) => el.id)),
+    is_favourites: isFavourites || null,
     is_vegetarian: isVegetarian || null,
     sort: orderBy || null,
     limit,

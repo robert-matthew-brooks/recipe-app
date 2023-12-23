@@ -3,9 +3,15 @@
   box-shadow: var(--subtle-box-shadow);
 }
 
+/* accordion / panel */
+
 #RecipeFilter__accordion {
   padding: 1rem;
   background-color: var(--c-gs-300);
+  font-size: 1.1rem;
+  font-weight: bold;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
   cursor: pointer;
   transition: background-color 0.1s linear;
 }
@@ -34,41 +40,63 @@
 
 #RecipeFilter__panel {
   display: grid;
-  gap: 1.5rem;
-  padding: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-flow: dense;
+  gap: 2rem;
+  padding: 2rem;
   border-width: 0 1px 1px 1px;
   border-style: solid;
   border-color: var(--c-gs-400);
 }
+#RecipeFilter__panel > * {
+  justify-self: center;
+  align-self: center;
+  font-family: var(--ff-clear);
+}
+
+/* shared input styles */
+
+#RecipeFilter__search-box,
+.RecipeFilter__dropdown,
+.RecipeFilter__checkbox > span {
+  background-color: var(--c-gs-100);
+}
+#RecipeFilter__search-box:hover,
+.RecipeFilter__dropdown:hover,
+.RecipeFilter__checkbox:hover > span {
+  background-color: var(--c-gs-200);
+}
 
 #RecipeFilter__search-box,
 .RecipeFilter__dropdown {
-  padding: 0.3rem;
-  font-family: var(--ff-clear);
-  font-size: 1.1rem;
-  background-color: var(--c-gs-100);
+  width: 100%;
+  padding: 0.5rem;
 }
 
 #RecipeFilter__search-box:focus,
 .RecipeFilter__dropdown:focus {
   outline: none;
 }
-#RecipeFilter__search-box:focus {
-  background-color: var(--c-filter-focus);
-}
-.RecipeFilter__dropdown:focus {
+
+.RecipeFilter__dropdown:focus,
+.RecipeFilter__checkbox > input[type='checkbox']:focus ~ span {
   border-color: var(--c-gs-str);
 }
 
+/* search box */
+
 #RecipeFilter__search-box__wrapper {
+  grid-column: 1 / -1;
+  width: 100%;
+  position: relative;
   display: flex;
   align-items: center;
 }
 
 #RecipeFilter__search-box {
-  width: 50%;
   padding-left: 1.8rem;
   padding-right: 1.8rem;
+  font-family: inherit;
 
   background-image: url('../../assets/search.svg');
   background-repeat: no-repeat;
@@ -79,24 +107,60 @@
   border-style: solid;
   border-width: 0 0 2px 0;
 }
-
-#RecipeFilter__search-box__wrapper > button {
-  position: relative;
-  left: -2.2rem;
+#RecipeFilter__search-box:focus {
+  background-color: var(--c-filter-focus);
 }
 
+#RecipeFilter__search-box__wrapper > button {
+  position: absolute;
+  right: 0.5rem;
+}
+
+/* dropdown */
+
 .RecipeFilter__dropdown {
-  width: 40%;
-  border: 1px solid grey;
+  grid-column: 1;
+  border: 1px solid var(--c-gs-500);
   appearance: none;
 
   background-image: url('../../assets/arrow-down.svg');
   background-repeat: no-repeat;
   background-position: right;
   background-size: 1.5rem;
+  cursor: pointer;
 }
 
+/* checkbox */
+
+.RecipeFilter__checkbox {
+  display: flex;
+  align-items: center;
+  font-family: var(--ff-clear);
+  cursor: pointer;
+}
+.RecipeFilter__checkbox > input[type='checkbox'] {
+  /* hide actual checkbox and replace it with a span */
+  width: 0;
+}
+.RecipeFilter__checkbox > span {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  height: 25px;
+  width: 25px;
+  margin-right: 0.5rem;
+  border: 1px solid var(--c-gs-500);
+}
+.RecipeFilter__checkbox > input:checked ~ span:after {
+  content: '\2713';
+}
+
+/* ingredients list */
+
 #RecipeFilter__ingredients-list {
+  grid-column: 1 / -1;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   padding: 0.2rem;

@@ -2,12 +2,12 @@ import loadingImg from '../assets/loading.svg';
 import './TextBtn.css';
 
 export default function TextBtn({
+  dataTest,
   light,
   text,
   size = 1,
-  cb,
+  callback,
   isLoading,
-  dataTest,
 }) {
   return (
     <button
@@ -18,7 +18,7 @@ export default function TextBtn({
         fontSize: `${size / 2.5}rem`,
         padding: `0 ${size / 1.8}rem`,
       }}
-      onClick={cb}
+      onClick={callback}
       disabled={isLoading}
     >
       <span style={{ visibility: isLoading && 'hidden' }}>{text}</span>

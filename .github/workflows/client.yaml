@@ -44,13 +44,13 @@ jobs:
           component: true
           working-directory: client
           browser: chrome
-          start: npm --prefix ../server listen, npm run dev
-          wait-on: http://localhost:5173
+          start: npm --prefix ../server run listen, npm run dev-cicd
+          wait-on: http://127.0.0.1:5173
 
       - name: run cypress e2e tests
         uses: cypress-io/github-action@v3
         with:
           working-directory: client
           browser: chrome
-          start: npm --prefix ../server listen, npm run dev
-          wait-on: http://localhost:5173
+          start: npm --prefix ../server run listen, npm run dev-cicd
+          wait-on: http://127.0.0.1:5173
