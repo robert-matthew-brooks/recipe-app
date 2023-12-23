@@ -139,6 +139,7 @@
   cursor: pointer;
 }
 .RecipeFilter__checkbox > input[type='checkbox'] {
+  /* hide actual checkbox and replace it with a span */
   width: 0;
 }
 .RecipeFilter__checkbox > span {

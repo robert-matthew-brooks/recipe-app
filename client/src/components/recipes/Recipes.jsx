@@ -12,7 +12,7 @@ export default function AllRecipes() {
   const [filterName, setFilterName] = useState('');
   const [filterOrderBy, setFilterOrderBy] = useState('');
   const [filterIngredients, setFilterIngredients] = useState([]);
-  const [filterIsFavourites, setFilterIsFavourites] = useState(false);
+  const [filterIsFavourites, setFilterIsFavourites] = useState(true);
   const [filterIsVegetarian, setFilterIsVegetarian] = useState(false);
   const limit = 6;
   const [page, setPage] = useState(1);
@@ -24,7 +24,13 @@ export default function AllRecipes() {
     (async () => {
       addRecipes([], 1);
     })();
-  }, [filterName, filterOrderBy, filterIngredients, filterIsVegetarian]);
+  }, [
+    filterName,
+    filterOrderBy,
+    filterIngredients,
+    filterIsFavourites,
+    filterIsVegetarian,
+  ]);
 
   const addRecipes = async (currentRecipes, page) => {
     if (!isLoading) setIsLoading(true);
@@ -33,6 +39,7 @@ export default function AllRecipes() {
         filterName,
         filterOrderBy,
         filterIngredients,
+        filterIsFavourites,
         filterIsVegetarian,
         limit,
         page
@@ -60,6 +67,10 @@ export default function AllRecipes() {
               setFilterOrderBy,
               filterIngredients,
               setFilterIngredients,
+              filterIsFavourites,
+              setFilterIsFavourites,
+              filterIsVegetarian,
+              setFilterIsVegetarian,
               setIsLoading,
             }}
           />

@@ -10,6 +10,10 @@ export default function RecipeFilter({
   setFilterOrderBy,
   filterIngredients,
   setFilterIngredients,
+  filterIsFavourites,
+  setFilterIsFavourites,
+  filterIsVegetarian,
+  setFilterIsVegetarian,
   setIsLoading,
 }) {
   const [allIngredients, setAllIngredients] = useState([]);
@@ -80,7 +84,7 @@ export default function RecipeFilter({
     ]);
   };
 
-  const removeIngredient = (which) => {
+  const removeIngredientFromFilter = (which) => {
     setFilterIngredients(
       filterIngredients.filter((_el, i) => {
         return which !== i;
@@ -164,13 +168,25 @@ export default function RecipeFilter({
           </select>
 
           <label className="RecipeFilter__checkbox">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={filterIsFavourites}
+              onChange={() => {
+                setFilterIsFavourites(!filterIsFavourites);
+              }}
+            />
             <span></span>
             Favourites Only
           </label>
 
           <label className="RecipeFilter__checkbox">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={filterIsVegetarian}
+              onChange={() => {
+                setFilterIsVegetarian(!filterIsVegetarian);
+              }}
+            />
             <span></span>
             Vegetarian Only
           </label>
@@ -192,7 +208,7 @@ export default function RecipeFilter({
                     light={true}
                     size={1.1}
                     callback={() => {
-                      removeIngredient(i);
+                      removeIngredientFromFilter(i);
                     }}
                   />
                 </li>
