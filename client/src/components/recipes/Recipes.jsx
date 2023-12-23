@@ -12,6 +12,7 @@ export default function AllRecipes() {
   const [filterName, setFilterName] = useState('');
   const [filterOrderBy, setFilterOrderBy] = useState('');
   const [filterIngredients, setFilterIngredients] = useState([]);
+  const [filterIsFavourites, setFilterIsFavourites] = useState(false);
   const [filterIsVegetarian, setFilterIsVegetarian] = useState(false);
   const limit = 6;
   const [page, setPage] = useState(1);
@@ -74,7 +75,7 @@ export default function AllRecipes() {
           <RecipePagination
             recipesCount={recipes.length}
             totalRecipes={totalRecipes}
-            cb={() => {
+            callback={() => {
               addRecipes(recipes, page);
             }}
             isLoading={isLoading}

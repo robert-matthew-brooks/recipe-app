@@ -23,7 +23,7 @@ export default function SimpleMsg({ title, msg, linkText, linkHref }) {
           <TextBtn
             text={linkText}
             size={3}
-            cb={() => {
+            callback={() => {
               navigate(linkHref);
             }}
           />

@@ -8,7 +8,7 @@ describe('RecipePagination.', () => {
       <RecipePagination
         recipesCount={6}
         totalRecipes={30}
-        cb={cy.stub().as('cb')}
+        callback={cy.stub().as('callback')}
         isLoading={false}
       />
     );
@@ -18,9 +18,9 @@ describe('RecipePagination.', () => {
     cy.contains('30').should('exist');
     cy.get('@loadBtn').should('exist');
 
-    cy.get('@cb').its('callCount').should('eq', 0);
+    cy.get('@callback').its('callCount').should('eq', 0);
     cy.get('@loadBtn').click();
-    cy.get('@cb').its('callCount').should('eq', 1);
+    cy.get('@callback').its('callCount').should('eq', 1);
   });
 
   it('should not show the load button if all recipes are loaded', () => {
@@ -28,7 +28,7 @@ describe('RecipePagination.', () => {
       <RecipePagination
         recipesCount={30}
         totalRecipes={30}
-        cb={null}
+        callback={null}
         isLoading={false}
       />
     );

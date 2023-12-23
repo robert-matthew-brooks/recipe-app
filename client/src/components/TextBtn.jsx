@@ -6,7 +6,7 @@ export default function TextBtn({
   light,
   text,
   size = 1,
-  cb,
+  callback,
   isLoading,
 }) {
   return (
@@ -18,7 +18,7 @@ export default function TextBtn({
         fontSize: `${size / 2.5}rem`,
         padding: `0 ${size / 1.8}rem`,
       }}
-      onClick={cb}
+      onClick={callback}
       disabled={isLoading}
     >
       <span style={{ visibility: isLoading && 'hidden' }}>{text}</span>

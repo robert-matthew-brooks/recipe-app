@@ -4,7 +4,7 @@ import './RecipePagination.css';
 export default function RecipePagination({
   recipesCount = 0,
   totalRecipes = 0,
-  cb,
+  callback,
   isLoading,
 }) {
   return (
@@ -18,7 +18,7 @@ export default function RecipePagination({
           dataTest="RecipePagination-load-btn"
           text="&#8595; Load More..."
           size={3}
-          cb={cb}
+          callback={callback}
           isLoading={isLoading}
         />
       )}

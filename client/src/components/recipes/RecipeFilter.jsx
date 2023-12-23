@@ -96,7 +96,7 @@ export default function RecipeFilter({
         className={isFilterHidden ? '' : 'RecipeFilter__accordion--active'}
         onClick={toggleFilter}
       >
-        Filter
+        Search Options
       </div>
 
       <div id="RecipeFilter__panel__wrapper" ref={filterRef}>
@@ -113,7 +113,11 @@ export default function RecipeFilter({
               }}
               placeholder="Recipe name..."
             />
-            <CrossBtn size={1.2} cb={clearSearchbox} hidden={!searchBoxValue} />
+            <CrossBtn
+              size={1.2}
+              callback={clearSearchbox}
+              hidden={!searchBoxValue}
+            />
           </div>
 
           <select
@@ -159,6 +163,18 @@ export default function RecipeFilter({
               })}
           </select>
 
+          <label className="RecipeFilter__checkbox">
+            <input type="checkbox" />
+            <span></span>
+            Favourites Only
+          </label>
+
+          <label className="RecipeFilter__checkbox">
+            <input type="checkbox" />
+            <span></span>
+            Vegetarian Only
+          </label>
+
           <ul
             id="RecipeFilter__ingredients-list"
             data-test="filter-ingredients-list"
@@ -175,7 +191,7 @@ export default function RecipeFilter({
                   <CrossBtn
                     light={true}
                     size={1.1}
-                    cb={() => {
+                    callback={() => {
                       removeIngredient(i);
                     }}
                   />
