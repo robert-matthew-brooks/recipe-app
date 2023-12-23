@@ -44,7 +44,7 @@ jobs:
           component: true
           working-directory: client
           browser: chrome
-          start: npm --prefix ../server listen, npm run dev
+          start: npm --prefix ../server run listen, npm run dev
           wait-on: http://localhost:5173
 
       - name: run cypress e2e tests
@@ -52,5 +52,5 @@ jobs:
         with:
           working-directory: client
           browser: chrome
-          start: npm --prefix ../server listen, npm run dev
+          start: npm --prefix ../server run listen, npm run dev
           wait-on: http://localhost:5173
