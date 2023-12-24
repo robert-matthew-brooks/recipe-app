@@ -14,19 +14,21 @@ async function getOne(req, res, next) {
 async function getMany(req, res, next) {
   const {
     search_term: searchTerm,
-    ingredient_ids: ingredientIdsStr,
-    is_vegetarian: isVegetarianStr,
-    sort: sortStr,
+    ingredient_ids: ingredientIds,
+    favourites_token: favouritesToken,
+    is_vegetarian: isVegetarian,
+    sort,
     limit,
     page,
-  } = req.query;
+  } = req.body;
 
   try {
     const { recipes, total_recipes } = await recipesModel.getMany(
       searchTerm,
-      ingredientIdsStr,
-      isVegetarianStr,
-      sortStr,
+      ingredientIds,
+      favouritesToken,
+      isVegetarian,
+      sort,
       limit,
       page
     );

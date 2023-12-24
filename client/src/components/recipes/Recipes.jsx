@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getRecipes } from '../../util/api';
+import { UserContext } from '../context/UserContext';
 import Header from '../Header';
 import RecipeCards from './RecipeCards';
 import RecipeFilter from './RecipeFilter';
@@ -7,12 +9,16 @@ import './Recipes.css';
 import RecipePagination from './RecipePagination';
 
 export default function AllRecipes() {
+  const navigate = useNavigate();
+
+  const { activeUser } = useContext(UserContext);
   const [recipes, setRecipes] = useState([]);
   const [totalRecipes, setTotalRecipes] = useState(0);
+
   const [filterName, setFilterName] = useState('');
   const [filterOrderBy, setFilterOrderBy] = useState('');
   const [filterIngredients, setFilterIngredients] = useState([]);
-  const [filterIsFavourites, setFilterIsFavourites] = useState(true);
+  const [filterIsFavourites, setFilterIsFavourites] = useState(false);
   const [filterIsVegetarian, setFilterIsVegetarian] = useState(false);
   const limit = 6;
   const [page, setPage] = useState(1);
@@ -35,11 +41,13 @@ export default function AllRecipes() {
   const addRecipes = async (currentRecipes, page) => {
     if (!isLoading) setIsLoading(true);
     try {
+      if (filterIsFavourites && !activeUser) navigate('/login');
+
       const { recipes: fetchedRecipes, totalRecipes } = await getRecipes(
         filterName,
         filterOrderBy,
         filterIngredients,
-        filterIsFavourites,
+        filterIsFavourites ? activeUser.token : null, // pass user token to get favourites from
         filterIsVegetarian,
         limit,
         page

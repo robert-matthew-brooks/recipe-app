@@ -39,7 +39,9 @@ async function seed({ recipes, users }) {
   /* drop tables */
   /***************/
 
-  await pool.query('DROP TABLE IF EXISTS recipe_likes CASCADE;');
+  await pool.query('DROP TABLE IF EXISTS likes CASCADE;');
+  await pool.query('DROP TABLE IF EXISTS todo CASCADE;');
+  await pool.query('DROP TABLE IF EXISTS favourites CASCADE;');
   await pool.query('DROP TABLE IF EXISTS recipes_ingredients CASCADE;');
   await pool.query('DROP TABLE IF EXISTS recipes CASCADE;');
   await pool.query('DROP TABLE IF EXISTS ingredients CASCADE;');
@@ -49,18 +51,15 @@ async function seed({ recipes, users }) {
   /* create tables */
   /*****************/
 
-  // ("lower_username" is for keeping it unique)
-  // ("username" preserves case)
+  // "lower_username" is for keeping it unique -
+  // "username" preserves case
   await pool.query(
     `
       CREATE TABLE users (
         id SERIAL PRIMARY KEY,
         username VARCHAR NOT NULL,
         lower_username VARCHAR UNIQUE NOT NULL,
-        hashed_password VARCHAR NOT NULL,
-        favourites INT[],
-        list INT[],
-        done INT[]
+        hashed_password VARCHAR NOT NULL
       );
     `
   );
@@ -80,10 +79,10 @@ async function seed({ recipes, users }) {
         name VARCHAR NOT NULL,
         slug VARCHAR UNIQUE NOT NULL,
         img_url VARCHAR,
-        author_id INT REFERENCES users(id) NOT NULL,
+        author_id INT REFERENCES users NOT NULL,
         steps VARCHAR[],
         is_vegetarian BOOLEAN,
-        created_at TIMESTAMP DEFAULT NOW() 
+        created_at TIMESTAMP DEFAULT NOW()
       );
     `
   );
@@ -94,8 +93,8 @@ async function seed({ recipes, users }) {
     `
       CREATE TABLE recipes_ingredients (
         id SERIAL PRIMARY KEY,
-        recipe_id INT REFERENCES recipes(id) NOT NULL,
-        ingredient_id INT REFERENCES ingredients(id) NOT NULL,
+        recipe_id INT REFERENCES recipes NOT NULL,
+        ingredient_id INT REFERENCES ingredients NOT NULL,
         amount INT NOT NULL
       );
     `
@@ -103,11 +102,31 @@ async function seed({ recipes, users }) {
 
   await pool.query(
     `
-      CREATE TABLE recipe_likes (
+      CREATE TABLE favourites (
         id SERIAL PRIMARY KEY,
-        recipe_id INT REFERENCES recipes(id) NOT NULL,
-        user_id INT REFERENCES users(id) NOT NULL,
-        is_liked BOOLEAN NOT NULL
+        user_id INT REFERENCES users NOT NULL,
+        recipe_id INT REFERENCES recipes NOT NULL
+      );
+    `
+  );
+
+  await pool.query(
+    `
+      CREATE TABLE todo (
+        id SERIAL PRIMARY KEY,
+        user_id INT REFERENCES users NOT NULL,
+        recipe_id INT REFERENCES recipes NOT NULL,
+        is_done BOOLEAN DEFAULT FALSE
+      );
+    `
+  );
+
+  await pool.query(
+    `
+      CREATE TABLE likes (
+        id SERIAL PRIMARY KEY,
+        recipe_id INT REFERENCES recipes NOT NULL,
+        user_id INT REFERENCES users NOT NULL
       );
     `
   );
@@ -115,14 +134,6 @@ async function seed({ recipes, users }) {
   /*****************/
   /* insert values */
   /*****************/
-
-  // **user.favourites** references **recipe.id**, and
-  // **recipe.id** references **user.id**
-  // so:
-  // create empty users with ids, then recipes with ids,
-  // then populate user favourites
-
-  // empty users
 
   const insertUsersSql = format(
     `
@@ -210,27 +221,6 @@ async function seed({ recipes, users }) {
     })
   );
 
-  // populate user details (favourites, meal list, done list)
-
-  for (const user of users) {
-    const insertUserDetailsSql = format(
-      `
-        UPDATE users
-        SET
-          favourites = %L,
-          list = %L,
-          done = %L
-        WHERE LOWER(username) = LOWER(%L);
-      `,
-      arrToSqlArr(await getIdList(user.favourites, 'slug', 'recipes')),
-      arrToSqlArr(await getIdList(user.list, 'slug', 'recipes')),
-      arrToSqlArr(await getIdList(user.done, 'slug', 'recipes')),
-      user.username
-    );
-
-    await pool.query(insertUserDetailsSql);
-  }
-
   // recipes-ingredients junction
 
   const recipesIngredientsData = [];
@@ -263,30 +253,73 @@ async function seed({ recipes, users }) {
 
   await pool.query(insertRecipesIngredientsSql);
 
-  // recipes-users likes junction
+  // get user junction data
 
+  const recipeFavouritesData = [];
+  const recipeTodoData = [];
   const recipeLikesData = [];
 
   for (const user of users) {
     const userId = await getId(user.username, 'username', 'users');
 
+    for (const recipeSlug of user.favourites) {
+      const recipeId = await getId(recipeSlug, 'slug', 'recipes');
+
+      recipeFavouritesData.push([recipeId, userId]);
+    }
+
+    for (const recipeSlug of user.todo) {
+      const recipeId = await getId(recipeSlug, 'slug', 'recipes');
+      const isDone = user.done.includes(recipeSlug);
+
+      recipeTodoData.push([recipeId, userId, isDone]);
+    }
+
     for (const recipeSlug of user.likes) {
       const recipeId = await getId(recipeSlug, 'slug', 'recipes');
 
-      recipeLikesData.push([
-        recipeId,
-        userId,
-        true, // isLiked, always true for seeding
-      ]);
+      recipeLikesData.push([recipeId, userId]);
     }
   }
 
-  const insertRecipeLikesSql = format(
+  // users-recipes favourites junction
+
+  const insertRecipeFavouritesSql = format(
     `
-      INSERT INTO recipe_likes (
+      INSERT INTO favourites (
+        recipe_id,
+        user_id
+      )
+      VALUES %L;
+    `,
+    recipeFavouritesData
+  );
+
+  await pool.query(insertRecipeFavouritesSql);
+
+  // users-recipes todo junction
+
+  const insertRecipeTodoSql = format(
+    `
+      INSERT INTO todo (
         recipe_id,
         user_id,
-        is_liked
+        is_done
+      )
+      VALUES %L;
+    `,
+    recipeTodoData
+  );
+
+  await pool.query(insertRecipeTodoSql);
+
+  // recipes-users likes junction
+
+  const insertRecipeLikesSql = format(
+    `
+      INSERT INTO likes (
+        recipe_id,
+        user_id
       )
       VALUES %L;
     `,

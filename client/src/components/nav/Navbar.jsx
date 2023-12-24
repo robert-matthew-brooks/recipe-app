@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../context/UserContext';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import TextBtn from '../TextBtn';
@@ -16,9 +15,10 @@ const links = [
 ];
 
 export default function Navbar() {
-  const { activeUser } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const { activeUser } = useContext(UserContext);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginScreen, setIsLoginScreen] = useState(false);
 
