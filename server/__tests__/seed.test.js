@@ -75,9 +75,6 @@ describe('users table', () => {
         username: expect.any(String),
         lower_username: expect.any(String),
         hashed_password: expect.any(String),
-        favourites: expect.any(Array),
-        list: expect.any(Array),
-        done: expect.any(Array),
       });
     }
   });
@@ -103,21 +100,59 @@ describe('recipes_ingredients junction table', () => {
   });
 });
 
-describe('recipes_likes table', () => {
-  it('should contain 13 entries', async () => {
-    const { rows } = await pool.query('SELECT * FROM recipe_likes;');
-    expect(rows).toHaveLength(13);
+describe('favourites table', () => {
+  it('should contain 8 entries', async () => {
+    const { rows } = await pool.query('SELECT * FROM favourites;');
+    expect(rows).toHaveLength(8);
   });
 
   it('should return objects with correct properties', async () => {
-    const { rows } = await pool.query('SELECT * FROM recipe_likes;');
+    const { rows } = await pool.query('SELECT * FROM favourites;');
 
     for (const row of rows) {
       expect(row).toMatchObject({
         id: expect.any(Number),
         recipe_id: expect.any(Number),
         user_id: expect.any(Number),
-        is_liked: expect.any(Boolean),
+      });
+    }
+  });
+});
+
+describe('todo table', () => {
+  it('should contain 9 entries', async () => {
+    const { rows } = await pool.query('SELECT * FROM todo;');
+    expect(rows).toHaveLength(9);
+  });
+
+  it('should return objects with correct properties', async () => {
+    const { rows } = await pool.query('SELECT * FROM todo;');
+
+    for (const row of rows) {
+      expect(row).toMatchObject({
+        id: expect.any(Number),
+        recipe_id: expect.any(Number),
+        user_id: expect.any(Number),
+        is_done: expect.any(Boolean),
+      });
+    }
+  });
+});
+
+describe('likes table', () => {
+  it('should contain 13 entries', async () => {
+    const { rows } = await pool.query('SELECT * FROM likes;');
+    expect(rows).toHaveLength(13);
+  });
+
+  it('should return objects with correct properties', async () => {
+    const { rows } = await pool.query('SELECT * FROM likes;');
+
+    for (const row of rows) {
+      expect(row).toMatchObject({
+        id: expect.any(Number),
+        recipe_id: expect.any(Number),
+        user_id: expect.any(Number),
       });
     }
   });

@@ -32,15 +32,15 @@ export async function getRecipes(
   searchTerm,
   orderBy,
   ingredients,
-  isFavourites,
+  favouritesToken,
   isVegetarian,
   limit,
   page
 ) {
   const params = {
     search_term: searchTerm,
-    ingredient_ids: JSON.stringify(ingredients.map((el) => el.id)),
-    is_favourites: isFavourites || null,
+    ingredient_ids: ingredients.map((el) => el.id),
+    favourites_token: favouritesToken || null,
     is_vegetarian: isVegetarian || null,
     sort: orderBy || null,
     limit,
@@ -52,7 +52,7 @@ export async function getRecipes(
     [null, '', '[]'].includes(params[key]) && delete params[key];
   });
 
-  const { data } = await api.get('/recipes', { params });
+  const { data } = await api.post('/recipes', params);
 
   const recipes = data.recipes.map((recipe) => {
     recipe.imgUrl = recipe.img_url;

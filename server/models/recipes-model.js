@@ -1,5 +1,6 @@
 const pool = require('../db/pool');
 const format = require('pg-format');
+const { verifyToken } = require('../util/token');
 const validate = require('../util/validate');
 
 async function getOne(recipeSlug) {
@@ -32,7 +33,7 @@ async function getOne(recipeSlug) {
         AND r.slug = $1
       INNER JOIN ingredients i
         ON ri.ingredient_id = i.id
-      LEFT OUTER JOIN recipe_likes l
+      LEFT OUTER JOIN likes l
         ON r.id = l.recipe_id
       GROUP BY
         r.id,
@@ -46,14 +47,15 @@ async function getOne(recipeSlug) {
 
 async function getMany(
   searchTerm = '',
-  ingredientIdsStr,
-  isVegetarianStr,
-  sortStr = 'new',
+  ingredientIds = [],
+  favouritesToken,
+  isVegetarian,
+  sort = 'new',
   limit = 10,
   page = 1
 ) {
-  const ingredientIds = ingredientIdsStr ? JSON.parse(ingredientIdsStr) : [];
-  const isVegetarian = !!isVegetarianStr;
+  const favouritesId = favouritesToken ? verifyToken(favouritesToken).id : null;
+  isVegetarian = !!isVegetarian;
   const offset = limit * (page - 1);
   const lookupSort = {
     new: 'r.created_at DESC',
@@ -66,7 +68,7 @@ async function getMany(
   ingredientIds.forEach((ingredientId) => {
     validate.rejectIfFailsRegex({ ingredientId }, '^\\d+$');
   });
-  validate.rejectIfNotInList({ sortStr }, Object.keys(lookupSort));
+  validate.rejectIfNotInList({ sort }, Object.keys(lookupSort));
   validate.rejectIfFailsRegex({ limit, page }, '^\\d+$');
 
   // optional sql query strings
@@ -94,41 +96,55 @@ async function getMany(
         )
       : '';
 
+  const favouritesQueryStr = favouritesId
+    ? format(
+        `
+          INNER JOIN (
+            SELECT favourites.recipe_id
+            FROM favourites
+            WHERE favourites.user_id = ${favouritesId}
+          ) f
+            ON r.id = f.recipe_id
+        `
+      )
+    : '';
+
   const vegetarianQueryStr = isVegetarian ? 'AND r.is_vegetarian IS TRUE' : '';
 
-  const orderByQueryStr = lookupSort[sortStr];
+  const orderByQueryStr = lookupSort[sort];
 
   // get paginated recipes
 
   const { rows: recipes } = await pool.query(
     `
       SELECT
-      r.id,
-      r.name,
-      r.slug,
-      u.username AS author,
-      r.img_url,
-      r.created_at,
-      COUNT(DISTINCT l)::INT AS likes
-    FROM (
-      SELECT * FROM recipes r
-      WHERE LOWER(r.name) LIKE LOWER($1)
-      ${vegetarianQueryStr}
-    ) r
-    ${ingredientsQueryStr}
-    INNER JOIN users u
-      ON r.author_id = u.id
-    LEFT OUTER JOIN recipe_likes l
-      ON r.id = l.recipe_id
-    GROUP BY
-      r.id,
-      r.name,
-      r.slug,
-      u.username,
-      r.img_url,
-      r.created_at
-    ORDER BY ${orderByQueryStr}
-    LIMIT $2 OFFSET $3;
+        r.id,
+        r.name,
+        r.slug,
+        u.username AS author,
+        r.img_url,
+        r.created_at,
+        COUNT(DISTINCT l)::INT AS likes
+      FROM (
+        SELECT * FROM recipes r
+        WHERE LOWER(r.name) LIKE LOWER($1)
+        ${vegetarianQueryStr}
+      ) r
+      ${favouritesQueryStr}
+      ${ingredientsQueryStr}
+      INNER JOIN users u
+        ON r.author_id = u.id
+      LEFT OUTER JOIN likes l
+        ON r.id = l.recipe_id
+      GROUP BY
+        r.id,
+        r.name,
+        r.slug,
+        u.username,
+        r.img_url,
+        r.created_at
+      ORDER BY ${orderByQueryStr}
+      LIMIT $2 OFFSET $3;
     `,
     [`%${searchTerm}%`, limit, offset]
   );
@@ -147,6 +163,7 @@ async function getMany(
           WHERE LOWER(r.name) LIKE LOWER($1)
           ${vegetarianQueryStr}
         ) r
+        ${favouritesQueryStr}
         ${ingredientsQueryStr}
       ) count;
     `,

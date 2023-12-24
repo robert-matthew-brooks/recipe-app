@@ -44,16 +44,20 @@ describe('POST /auth/register', () => {
 
   describe('error handing', () => {
     it('409: should return an error if username already exists', async () => {
+      const { username, password } = data.users[0];
+
       await supertest(server)
         .post('/auth/register')
-        .send({ username: 'user1', password: 'password1!' })
+        .send({ username, password })
         .expect(409);
     });
 
     it('409: should return an error if username already exists (case insensitive)', async () => {
+      const { username, password } = data.users[0];
+
       await supertest(server)
         .post('/auth/register')
-        .send({ username: 'USER1', password: 'password1!' })
+        .send({ username: username.toUpperCase(), password: 'password1!' })
         .expect(409);
     });
 
@@ -121,9 +125,11 @@ describe('POST /auth/register', () => {
 
 describe('POST /auth/login', () => {
   it('200: should return a user object with correct properties', async () => {
+    const { username, password } = data.users[0];
+
     const { body } = await supertest(server)
       .post('/auth/login')
-      .send({ username: 'user1', password: 'password1!' })
+      .send({ username, password })
       .expect(200);
 
     expect(body.user).toMatchObject({
@@ -134,16 +140,20 @@ describe('POST /auth/login', () => {
   });
 
   it('404: should return an error if username not found', async () => {
+    const { password } = data.users[0];
+
     await supertest(server)
       .post('/auth/login')
-      .send({ username: 'not_a_user', password: 'password1!' })
+      .send({ username: 'not_a_user', password })
       .expect(401);
   });
 
   it('403: should return an error if password is incorrect', async () => {
+    const { username } = data.users[0];
+
     await supertest(server)
       .post('/auth/login')
-      .send({ username: 'user1', password: 'incorrect-password1!' })
+      .send({ username, password: 'incorrect-password1!' })
       .expect(401);
   });
 
