@@ -1,3 +1,4 @@
+import { UserContext } from '../../src/components/context/UserContext';
 import RecipeFilter from '../../src/components/recipes/RecipeFilter';
 
 const allIngredients = [
@@ -10,30 +11,44 @@ const allIngredients = [
 
 const filterIngredients = allIngredients.slice(0, 2);
 
-beforeEach(() => {
+const setupRecipeFilter = (value) => {
   cy.intercept('GET', 'http://localhost:9090/ingredients', {
     body: { ingredients: allIngredients },
   }).as('getIngredients');
 
   cy.mount(
-    <RecipeFilter
-      filterName=""
-      setFilterName={cy.stub().as('setFilterName')}
-      filterOrderBy=""
-      setFilterOrderBy={cy.stub().as('setFilterOrderBy')}
-      filterIngredients={filterIngredients}
-      setFilterIngredients={cy.stub().as('setFilterIngredients')}
-      setIsLoading={() => {}}
-    />
+    <UserContext.Provider value={value}>
+      <RecipeFilter
+        filterName=""
+        setFilterName={cy.stub().as('setFilterName')}
+        filterOrderBy=""
+        setFilterOrderBy={cy.stub().as('setFilterOrderBy')}
+        filterIngredients={filterIngredients}
+        setFilterIngredients={cy.stub().as('setFilterIngredients')}
+        filterIsFavourites={false}
+        setFilterIsFavourites={cy.stub().as('setFilterIsFavourites')}
+        filterIsVegetarian={false}
+        setFilterIsVegetarian={cy.stub().as('setFilterIsVegetarian')}
+        setIsLoading={() => {}}
+      />
+    </UserContext.Provider>
   );
 
-  cy.get('[data-test="RecipeFilter-accordion"]').as('accordion');
-  cy.get('[data-test="RecipeFilter-panel"]').as('panel');
+  cy.get('[data-test="filter-accordion"]').as('accordion');
+  cy.get('[data-test="filter-panel"]').as('panel');
   cy.get('[data-test="filter-search"]').as('searchBox');
-});
+  cy.get('[data-test="filter-sort-dropdown"]').as('sort-dropdown');
+  cy.get('[data-test="filter-ingredients-dropdown"]').as(
+    'ingredients-dropdown'
+  );
+  cy.get('[data-test="filter-favourites"]').as('favourites-chkbox');
+  cy.get('[data-test="filter-vegetarian"]').as('vegetarian-chkbox');
+};
 
 describe('RecipeFilter', () => {
   it('should show contents when clicked', () => {
+    setupRecipeFilter({ activeUser: null });
+
     //hidden by default
     cy.get('@panel').should('not.be.visible');
 
@@ -51,6 +66,7 @@ describe('RecipeFilter', () => {
   });
 
   it('should show and update search term', () => {
+    setupRecipeFilter({ activeUser: null });
     cy.get('@accordion').click();
 
     cy.get('@searchBox').type('beans on toast');
@@ -61,19 +77,21 @@ describe('RecipeFilter', () => {
   });
 
   it('should update sort order', () => {
+    setupRecipeFilter({ activeUser: null });
     cy.get('@accordion').click();
 
     cy.get('@setFilterOrderBy').its('callCount').should('eq', 0);
 
-    cy.get('[data-test="filter-sort-dropdown"]').select(1);
+    cy.get('@sort-dropdown').select(1);
     cy.get('@setFilterOrderBy').its('callCount').should('eq', 1);
   });
 
   it('should show and update ingredients', () => {
+    setupRecipeFilter({ activeUser: null });
     cy.get('@accordion').click();
 
     // show correct ingredients
-    cy.get('[data-test="filter-ingredients-dropdown"]').within(() => {
+    cy.get('@ingredients-dropdown').within(() => {
       cy.get('option:enabled').should(
         'have.length',
         allIngredients.length - filterIngredients.length
@@ -87,7 +105,7 @@ describe('RecipeFilter', () => {
     // selecting or removing ingredients calls setter
     cy.get('@setFilterIngredients').its('callCount').should('eq', 0);
 
-    cy.get('[data-test="filter-ingredients-dropdown"]').select(1);
+    cy.get('@ingredients-dropdown').select(1);
     cy.get('@setFilterIngredients').its('callCount').should('eq', 1);
 
     cy.get('[data-test="filter-ingredients-list"]').within(() => {
@@ -98,5 +116,34 @@ describe('RecipeFilter', () => {
         });
     });
     cy.get('@setFilterIngredients').its('callCount').should('eq', 2);
+  });
+
+  it('should update filter state on favourites box click and logged in', () => {
+    setupRecipeFilter({ activeUser: { username: 'test_user' } });
+    cy.get('@accordion').click();
+
+    cy.get('@favourites-chkbox').click();
+    cy.get('@setFilterIsFavourites').its('callCount').should('eq', 1);
+    cy.get('@favourites-chkbox').click();
+    cy.get('@setFilterIsFavourites').its('callCount').should('eq', 2);
+  });
+
+  it('should show an error on favourites box click and not logged in', () => {
+    setupRecipeFilter({ activeUser: null });
+    cy.get('@accordion').click();
+
+    cy.get('@favourites-chkbox').click();
+    cy.get('[data-test="favourites-err"]').should('be.visible');
+    cy.get('@setFilterIsFavourites').its('callCount').should('eq', 0);
+  });
+
+  it('should update filter state when vegetarian box is checked', () => {
+    setupRecipeFilter({ activeUser: null });
+    cy.get('@accordion').click();
+
+    cy.get('@vegetarian-chkbox').click();
+    cy.get('@setFilterIsVegetarian').its('callCount').should('eq', 1);
+    cy.get('@vegetarian-chkbox').click();
+    cy.get('@setFilterIsVegetarian').its('callCount').should('eq', 2);
   });
 });
