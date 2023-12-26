@@ -48,13 +48,15 @@ async function getOne(recipeSlug) {
 async function getMany(
   searchTerm = '',
   ingredientIds = [],
-  favouritesToken,
+  isFavourites,
   isVegetarian,
   sort = 'new',
   limit = 10,
-  page = 1
+  page = 1,
+  token
 ) {
-  const favouritesId = favouritesToken ? verifyToken(favouritesToken).id : null;
+  isFavourites = !!isFavourites;
+  const userId = isFavourites ? verifyToken(token).id : null;
   isVegetarian = !!isVegetarian;
   const offset = limit * (page - 1);
   const lookupSort = {
@@ -96,13 +98,13 @@ async function getMany(
         )
       : '';
 
-  const favouritesQueryStr = favouritesId
+  const favouritesQueryStr = isFavourites
     ? format(
         `
           INNER JOIN (
             SELECT favourites.recipe_id
             FROM favourites
-            WHERE favourites.user_id = ${favouritesId}
+            WHERE favourites.user_id = ${userId}
           ) f
             ON r.id = f.recipe_id
         `

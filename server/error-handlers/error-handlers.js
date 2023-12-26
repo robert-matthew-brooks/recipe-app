@@ -25,7 +25,7 @@ function psqlErrHandler(err, req, res, next) {
 
 function serverErrHandler(err, _req, res, _next) {
   console.log(err);
-  res.status(500).send({ unhandled_server_err: { err } });
+  res.status(500).send({ unhandled_server_err: err.toString() });
 }
 
 module.exports = { customErrHandler, psqlErrHandler, serverErrHandler };
