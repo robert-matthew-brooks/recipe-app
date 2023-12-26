@@ -8,7 +8,7 @@
   },
   "POST /auth/register": {
     "description": "responds with created user details, including an authorisation token",
-    "exampleequest": {
+    "example_request": {
       "body": {
         "username": "test_user",
         "password": "password123!"
@@ -24,7 +24,7 @@
   },
   "POST /auth/login": {
     "description": "responds with authenticated user details, including an authorisation token",
-    "exampleequest": {
+    "example_request": {
       "body": {
         "username": "test_user",
         "password": "password123!"
@@ -49,6 +49,77 @@
       ]
     }
   },
-  "POST /recipes": { "description": "" },
-  "GET /recipes/:recipe__slug": { "description": "" }
+  "GET /recipes": {
+    "description": "responds with a filtered and paginated list of recipes, and the number of total matches with the provided paramters",
+    "accepted_queries": [
+      "search_term",
+      "ingredient_ids",
+      "is_favourites",
+      "is_vegetarian",
+      "sort",
+      "limit",
+      "page"
+    ],
+    "example_request": {
+      "headers": {
+        "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
+      }
+    },
+    "example_response": {
+      "total_recipes": 2,
+      "recipes": [
+        {
+          "id": 1,
+          "name": "Beans On Toast",
+          "slug": "beans-on-toast",
+          "author": "mr_chef_77",
+          "img_url": "http://www.food-images.com/beans-on-toast.jpg",
+          "created_at": "2000-01-01T12:00:00.000Z",
+          "likes": 0
+        },
+        {
+          "id": 2,
+          "name": "Pot Noodle",
+          "slug": "pot-noodle",
+          "author": "cant_cook_wont_cook",
+          "img_url": null,
+          "created_at": "2000-01-02T12:00:00.000Z",
+          "likes": 3
+        }
+      ]
+    }
+  },
+  "GET /recipes/:recipe__slug": {
+    "description": "responds with the details of the requested recipe",
+    "example_response": {
+      "recipe": {
+        "id": 5,
+        "name": "Cheese Sandwich",
+        "slug": "cheese-sandwich",
+        "author": "sandwich_lover_2000",
+        "img_url": "http://www.sandwiches.com/cheese.png",
+        "ingredients": [
+          {
+            "name": "Bread Slices",
+            "units": "",
+            "amount": 2
+          },
+          {
+            "name": "Cheese",
+            "units": "g",
+            "amount": 30
+          }
+        ],
+        "steps": [
+          "Butter the bread slices.",
+          "Grate the cheese onto the bread slices",
+          "Put the bread slices together and cut in half.",
+          "Enjoy your cheese sandwich."
+        ],
+        "is_vegetarian": true,
+        "created_at": "2000-01-02T12:00:00.000Z",
+        "likes": 10
+      }
+    }
+  }
 }

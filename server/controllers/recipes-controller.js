@@ -12,25 +12,30 @@ async function getOne(req, res, next) {
 }
 
 async function getMany(req, res, next) {
+  const token = req.headers?.authorization?.split(' ')[1];
+
   const {
     search_term: searchTerm,
-    ingredient_ids: ingredientIds,
-    favourites_token: favouritesToken,
+    ingredient_ids: ingredientIdsStr,
+    is_favourites: isFavourites,
     is_vegetarian: isVegetarian,
     sort,
     limit,
     page,
-  } = req.body;
+  } = req.query;
+
+  const ingredientIds = ingredientIdsStr && JSON.parse(ingredientIdsStr);
 
   try {
     const { recipes, total_recipes } = await recipesModel.getMany(
       searchTerm,
       ingredientIds,
-      favouritesToken,
+      isFavourites,
       isVegetarian,
       sort,
       limit,
-      page
+      page,
+      token
     );
     res.send({ recipes, total_recipes });
   } catch (err) {
