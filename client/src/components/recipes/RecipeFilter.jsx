@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import { getIngredients } from '../../util/api';
 import CrossBtn from '../CrossBtn';
@@ -23,7 +24,7 @@ export default function RecipeFilter({
   const [isPanelHidden, setIsPanelHidden] = useState(true);
   const searchRef = useRef(null);
   const [searchBoxValue, setSearchBoxValue] = useState(filterName);
-  const [filterErr, setFilterErr] = useState('');
+  const [isFavUserErr, setIsFavUserErr] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -56,7 +57,7 @@ export default function RecipeFilter({
 
   const handleFavouritesToggle = () => {
     if (!filterIsFavourites && !activeUser) {
-      setFilterErr('Sign in to use favourites');
+      setIsFavUserErr(true);
     } else {
       setFilterIsFavourites(!filterIsFavourites);
     }
@@ -178,7 +179,7 @@ export default function RecipeFilter({
               })}
           </select>
 
-          {!filterErr ? (
+          {!isFavUserErr ? (
             <label
               data-test="filter-favourites"
               className="RecipeFilter__checkbox"
@@ -193,7 +194,7 @@ export default function RecipeFilter({
             </label>
           ) : (
             <p data-test="favourites-err" className="RecipeFilter__err">
-              &#9888; {filterErr}
+              &#9888; <Link to="/login"> Sign in</Link> to use favourites
             </p>
           )}
 

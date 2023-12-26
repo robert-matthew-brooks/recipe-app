@@ -162,6 +162,9 @@
   font-size: 0.8rem;
   color: var(--c-err-text);
 }
+.RecipeFilter__err > a {
+  color: var(--c-link-text);
+}
 
 /* ingredients list */
 
