@@ -18,8 +18,9 @@ async function register(username, password) {
     [username, username.toLowerCase(), hashedPassword]
   );
 
-  const token = createToken(rows[0]);
-  const user = { ...rows[0], token };
+  const user = { ...rows[0] };
+  const token = createToken(user);
+  user.token = token;
 
   return { user };
 }

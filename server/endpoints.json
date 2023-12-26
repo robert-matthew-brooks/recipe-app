@@ -1,0 +1,54 @@
+{
+  "GET /": {
+    "description": "responds with this json document, containing api endpoint details"
+  },
+  "GET /status": {
+    "description": "responds with server status message",
+    "example_response": "Server OK"
+  },
+  "POST /auth/register": {
+    "description": "responds with created user details, including an authorisation token",
+    "exampleequest": {
+      "body": {
+        "username": "test_user",
+        "password": "password123!"
+      }
+    },
+    "example_response": {
+      "user": {
+        "id": "23",
+        "username": "test_user",
+        "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
+      }
+    }
+  },
+  "POST /auth/login": {
+    "description": "responds with authenticated user details, including an authorisation token",
+    "exampleequest": {
+      "body": {
+        "username": "test_user",
+        "password": "password123!"
+      }
+    },
+    "example_response": {
+      "user": {
+        "id": "23",
+        "username": "test_user",
+        "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
+      }
+    }
+  },
+  "GET /user/availability/:username": { "description": "" },
+  "GET /ingredients": {
+    "description": "responds with a list of every ingredient used in every recipe",
+    "example_response": {
+      "ingredients": [
+        { "id": "1", "name": "Cheese", "units": "g" },
+        { "id": "2", "name": "Sausages", "units": "" },
+        { "id": "3", "name": "Milk", "units": "ml" }
+      ]
+    }
+  },
+  "POST /recipes": { "description": "" },
+  "GET /recipes/:recipe__slug": { "description": "" }
+}

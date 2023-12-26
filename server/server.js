@@ -6,6 +6,7 @@ const usersRouter = require('./routers/users-router');
 const ingredientsRouter = require('./routers/ingredients-router');
 const recipesRouter = require('./routers/recipes-router');
 const errHandlers = require('./error-handlers/error-handlers');
+const endpointsJson = require('./endpoints.json');
 
 setEnvVars();
 
@@ -13,6 +14,10 @@ const server = express();
 server.use(cors({ origin: process.env.CLIENT_ORIGIN }));
 server.use(express.json());
 server.set('json spaces', 2);
+
+server.get('/', (_req, res) => {
+  res.send(endpointsJson);
+});
 
 server.get('/status', (_req, res) => {
   res.send('Server OK');

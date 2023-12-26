@@ -1,5 +1,13 @@
 const supertest = require('supertest');
 const server = require('../server');
+const endpointsJson = require('../endpoints.json');
+
+describe('GET /', () => {
+  it('should respond with the endpoint details json document', async () => {
+    const { body } = await supertest(server).get('/');
+    expect(body).toEqual(endpointsJson);
+  });
+});
 
 describe('GET /status', () => {
   it('200: should confirm server is up', async () => {
