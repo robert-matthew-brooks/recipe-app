@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { UserContext } from '../../src/components/context/UserContext';
 import RecipeFilter from '../../src/components/recipes/RecipeFilter';
 
@@ -15,6 +16,8 @@ const setupRecipeFilter = (value) => {
   cy.intercept('GET', 'http://localhost:9090/ingredients', {
     body: { ingredients: allIngredients },
   }).as('getIngredients');
+
+  cy.stub(Link);
 
   cy.mount(
     <UserContext.Provider value={value}>

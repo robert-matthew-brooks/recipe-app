@@ -194,7 +194,7 @@ export default function RecipeFilter({
             </label>
           ) : (
             <p data-test="favourites-err" className="RecipeFilter__err">
-              &#9888; <Link to="/login"> Sign in</Link> to use favourites
+              &#9888; <Link to="/login">Sign in</Link> to use favourites
             </p>
           )}
 

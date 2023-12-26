@@ -5,7 +5,7 @@ export default function NavbarLogin() {
   return (
     <nav id="Navbar">
       <div id="Navbar__inner" className="inner">
-        <Link to={'/'}>&larr; Back to site</Link>
+        <Link to="/">&larr; Back to site</Link>
       </div>
     </nav>
   );
