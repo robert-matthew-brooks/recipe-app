@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 import { getIngredients } from '../../util/api';
 import CrossBtn from '../CrossBtn';
 import './RecipeFilter.css';
@@ -16,11 +18,13 @@ export default function RecipeFilter({
   setFilterIsVegetarian,
   setIsLoading,
 }) {
+  const { activeUser } = useContext(UserContext);
   const [allIngredients, setAllIngredients] = useState([]);
-  const filterRef = useRef(null);
-  const [isFilterHidden, setIsFilterHidden] = useState(true);
+  const panelRef = useRef(null);
+  const [isPanelHidden, setIsPanelHidden] = useState(true);
   const searchRef = useRef(null);
   const [searchBoxValue, setSearchBoxValue] = useState(filterName);
+  const [isFavUserErr, setIsFavUserErr] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -28,27 +32,35 @@ export default function RecipeFilter({
     })();
   }, []);
 
-  const toggleFilter = async () => {
-    const filterDiv = filterRef.current;
-    filterDiv.style.maxHeight = `${filterDiv.scrollHeight}px`; // set to absolute value, can't animate to zero from 'fit-content'
-    filterDiv.offsetHeight; // wait for next animation frame
+  const togglePanel = async () => {
+    const panelDiv = panelRef.current;
+    panelDiv.style.maxHeight = `${panelDiv.scrollHeight}px`; // set to absolute value, can't animate to zero from 'fit-content'
+    panelDiv.offsetHeight; // wait for next animation frame
 
-    if (isFilterHidden) {
-      setIsFilterHidden(false);
+    if (isPanelHidden) {
+      setIsPanelHidden(false);
     } else {
-      filterDiv.style.maxHeight = '0px';
-      setIsFilterHidden(true);
+      panelDiv.style.maxHeight = '0px';
+      setIsPanelHidden(true);
     }
 
-    filterDiv.addEventListener(
+    panelDiv.addEventListener(
       'transitionend',
       () => {
-        if (filterDiv.offsetHeight > 0) {
-          filterDiv.style.maxHeight = 'fit-content'; // allow content size to change if not closed
+        if (panelDiv.offsetHeight > 0) {
+          panelDiv.style.maxHeight = 'fit-content'; // allow content size to change if not closed
         }
       },
       { once: true }
     );
+  };
+
+  const handleFavouritesToggle = () => {
+    if (!filterIsFavourites && !activeUser) {
+      setIsFavUserErr(true);
+    } else {
+      setFilterIsFavourites(!filterIsFavourites);
+    }
   };
 
   useEffect(() => {
@@ -96,15 +108,15 @@ export default function RecipeFilter({
     <div id="RecipeFilter">
       <div
         id="RecipeFilter__accordion"
-        data-test="RecipeFilter-accordion"
-        className={isFilterHidden ? '' : 'RecipeFilter__accordion--active'}
-        onClick={toggleFilter}
+        data-test="filter-accordion"
+        className={isPanelHidden ? '' : 'RecipeFilter__accordion--active'}
+        onClick={togglePanel}
       >
         Search Options
       </div>
 
-      <div id="RecipeFilter__panel__wrapper" ref={filterRef}>
-        <div id="RecipeFilter__panel" data-test="RecipeFilter-panel">
+      <div id="RecipeFilter__panel__wrapper" ref={panelRef}>
+        <div id="RecipeFilter__panel" data-test="filter-panel">
           <div id="RecipeFilter__search-box__wrapper">
             <input
               id="RecipeFilter__search-box"
@@ -167,19 +179,29 @@ export default function RecipeFilter({
               })}
           </select>
 
-          <label className="RecipeFilter__checkbox">
-            <input
-              type="checkbox"
-              checked={filterIsFavourites}
-              onChange={() => {
-                setFilterIsFavourites(!filterIsFavourites);
-              }}
-            />
-            <span></span>
-            Favourites Only
-          </label>
+          {!isFavUserErr ? (
+            <label
+              data-test="filter-favourites"
+              className="RecipeFilter__checkbox"
+            >
+              <input
+                type="checkbox"
+                checked={filterIsFavourites}
+                onChange={handleFavouritesToggle}
+              />
+              <span></span>
+              Favourites Only
+            </label>
+          ) : (
+            <p data-test="favourites-err" className="RecipeFilter__err">
+              &#9888; <Link to="/login">Sign in</Link> to use favourites
+            </p>
+          )}
 
-          <label className="RecipeFilter__checkbox">
+          <label
+            data-test="filter-vegetarian"
+            className="RecipeFilter__checkbox"
+          >
             <input
               type="checkbox"
               checked={filterIsVegetarian}

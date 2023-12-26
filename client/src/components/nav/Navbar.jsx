@@ -45,7 +45,7 @@ export default function Navbar() {
     return (
       <nav id="Navbar">
         <div id="Navbar__inner" className="inner">
-          <Link to={'/'}>&larr; Back to site</Link>
+          <Link to="/">&larr; Back to site</Link>
         </div>
       </nav>
     );
