@@ -32,15 +32,16 @@ export async function getRecipes(
   searchTerm,
   orderBy,
   ingredients,
-  favouritesToken,
+  isFavouites,
   isVegetarian,
   limit,
-  page
+  page,
+  token
 ) {
   const params = {
     search_term: searchTerm,
     ingredient_ids: ingredients.map((el) => el.id),
-    favourites_token: favouritesToken || null,
+    is_favourites: isFavouites || null,
     is_vegetarian: isVegetarian || null,
     sort: orderBy || null,
     limit,
@@ -52,7 +53,10 @@ export async function getRecipes(
     [null, '', '[]'].includes(params[key]) && delete params[key];
   });
 
-  const { data } = await api.post('/recipes', params);
+  const { data } = await api.get('/recipes', {
+    headers: { Authorization: `Bearer ${token}` },
+    params,
+  });
 
   const recipes = data.recipes.map((recipe) => {
     recipe.imgUrl = recipe.img_url;
