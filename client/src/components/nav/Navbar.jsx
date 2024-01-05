@@ -63,7 +63,7 @@ export default function Navbar() {
             <div id="Navbar__links-wrapper">
               {links.map((link, i) => {
                 return (
-                  <Link key={i} to={link.href}>
+                  <Link key={`navLink${i}`} to={link.href}>
                     {link.text}
                   </Link>
                 );

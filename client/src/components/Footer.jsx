@@ -29,7 +29,7 @@ export default function Footer() {
         <ul className="Footer__sm-links">
           {smLinks.map((link, i) => {
             return (
-              <li key={i}>
+              <li key={`footerLink${i}`}>
                 <a href={link.href}>
                   <img src={link.src} />
                 </a>

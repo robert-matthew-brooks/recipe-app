@@ -41,10 +41,11 @@ export default function AllRecipes() {
         filterName,
         filterOrderBy,
         filterIngredients,
-        filterIsFavourites ? activeUser?.token : null, // pass user token to get favourites from
+        filterIsFavourites,
         filterIsVegetarian,
         limit,
-        page
+        page,
+        activeUser?.token
       );
       setRecipes([...currentRecipes, ...fetchedRecipes]);
       setTotalRecipes(totalRecipes);
