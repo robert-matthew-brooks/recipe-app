@@ -23,6 +23,7 @@
 }
 
 .Recipe__title {
+  font-family: var(--ff-titles);
   font-size: 3rem;
 }
 
@@ -59,6 +60,7 @@
 }
 
 .Recipe__list > h2 {
+  font-family: var(--ff-titles);
   font-size: 2rem;
 }
 
@@ -92,7 +94,7 @@
   justify-content: center;
   align-items: center;
   color: var(--c-gs-500);
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   background-color: var(--c-gs-300);
   border-radius: 50%;
 }
