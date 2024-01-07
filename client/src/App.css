@@ -8,10 +8,6 @@ body {
   background-color: var(--c-gs-wk);
 }
 
-.noscroll {
-  overflow-y: hidden;
-}
-
 #App {
   min-height: calc(100vh - var(--nav-height));
   margin-top: var(--nav-height);
@@ -45,4 +41,14 @@ body {
 
 .err--hidden {
   display: none;
+}
+
+/* general */
+
+.noscroll {
+  overflow-y: hidden;
+}
+
+.bold {
+  font-weight: bold;
 }

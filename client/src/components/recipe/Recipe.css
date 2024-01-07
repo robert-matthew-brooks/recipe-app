@@ -27,11 +27,6 @@
   font-size: 0.8rem;
   text-transform: uppercase;
 }
-#Recipe__author--bold {
-  color: var(--c-gs-str);
-  font-weight: bold;
-  margin-right: 1rem;
-}
 
 #Recipe__image {
   width: 500px;
