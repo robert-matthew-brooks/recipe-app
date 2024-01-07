@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import RecipeButtons from './RecipeButtons';
 import { getRecipe } from '../../util/api';
-import Header from '../Header';
+import { getShortDate } from '../../util/date';
+import recipePlaceholderImg from '../../assets/recipe-placeholder.jpeg';
 import './Recipe.css';
 
 export default function Recipe() {
@@ -27,44 +29,66 @@ export default function Recipe() {
   }, [slug]);
 
   return (
-    <>
-      <Header title={recipe.name} />
-      <p>Back to whatever...</p>
+    <article id="Recipe">
+      <div id="Recipe__inner" className="inner">
+        <div id="Recipe__backlink">
+          <Link to="/recipes">&larr; Back to Recipes...</Link>
+        </div>
 
-      <p>by {recipe.author}</p>
+        <h1 className="Recipe__title">{recipe.name}</h1>
 
-      <p>added {recipe.createdAt}</p>
+        <p id="Recipe__author">
+          added by <span id="Recipe__author--bold">{recipe.author}</span>
+          on {getShortDate(recipe.createdAt)}
+        </p>
 
-      <img src={recipe.imgUrl} />
-      {/* TODO placeholder */}
+        <RecipeButtons slug={recipe.slug} />
 
-      <button>share website.com/recipes/{slug}</button>
+        <div
+          id="Recipe__image"
+          style={{
+            backgroundImage: `url('${recipe.imgUrl || recipePlaceholderImg}')`,
+          }}
+        ></div>
 
-      <button>Add to favourites</button>
+        <div id="Recipe__row-wrapper">
+          <section id="Recipe__ingredients" className="Recipe__list">
+            <h2>Ingredients</h2>
+            <ul>
+              {recipe.ingredients?.map((ingredient, i) => {
+                return (
+                  <li key={`ingredient${i}`}>
+                    {ingredient.name} - {ingredient.amount}
+                    {ingredient.units}
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
 
-      <p>Ingredients</p>
-      <ol>
-        {recipe.ingredients?.map((ingredient, i) => {
-          return (
-            <li key={`ingredient${i}`}>
-              {ingredient.name} - {ingredient.amount}
-              {ingredient.units}
-            </li>
-          );
-        })}
-      </ol>
-      <p>Steps</p>
-      <ol>
-        {recipe.steps?.map((step, i) => {
-          return <li key={`step${i}`}>{step}</li>;
-        })}
-      </ol>
-      <button>Done (if on meal list)</button>
+          <section id="Recipe__steps" className="Recipe__list">
+            <h2>Instructions</h2>
+            <ol>
+              {recipe.steps?.map((step, i) => {
+                return <li key={`step${i}`}>{step}</li>;
+              })}
+            </ol>
+          </section>
+        </div>
 
-      <button>Like? {recipe.likes}</button>
-      {/* TODO star rating? */}
+        <RecipeButtons slug={recipe.slug} />
 
-      <p>Comments....</p>
-    </>
+        <button>Done (if on meal list)</button>
+
+        <button>Like? {recipe.likes}</button>
+        {/* TODO star rating? */}
+
+        <hr />
+
+        <section>
+          <h1 className="Recipe__title">Comments</h1>
+        </section>
+      </div>
+    </article>
   );
 }
