@@ -63,7 +63,7 @@ export default function Navbar() {
             <div id="Navbar__links-wrapper">
               {links.map((link, i) => {
                 return (
-                  <Link key={i} to={link.href}>
+                  <Link key={`navLink${i}`} to={link.href}>
                     {link.text}
                   </Link>
                 );
@@ -74,7 +74,7 @@ export default function Navbar() {
               {!activeUser && (
                 <TextBtn
                   text="Register"
-                  size={2}
+                  size="2"
                   callback={() => {
                     navigate('/register');
                   }}
@@ -85,7 +85,7 @@ export default function Navbar() {
                 dataTest={activeUser ? 'logout-btn' : 'login-btn'}
                 light={true}
                 text={activeUser ? 'Sign out' : 'Sign in'}
-                size={2}
+                size="2"
                 callback={() => {
                   activeUser ? navigate('/logout') : navigate('/login');
                 }}

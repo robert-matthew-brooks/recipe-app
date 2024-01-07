@@ -3,10 +3,12 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import ScrollTopBtn from './components/nav/ScrollTopBtn';
 import Navbar from './components/nav/Navbar';
 import Recipes from './components/recipes/Recipes';
+import Recipe from './components/recipe/Recipe';
 import AuthRegister from './components/auth/AuthRegister';
 import AuthLogin from './components/auth/AuthLogin';
 import SimpleMsg from './components/SimpleMsg';
 import Footer from './components/Footer';
+import Missing404 from './components/404';
 import './App.css';
 
 export default function App() {
@@ -40,17 +42,10 @@ export default function App() {
 
         <Route path="/recipes" element={<Recipes />} />
 
-        <Route
-          path="*"
-          element={
-            <SimpleMsg
-              title="Oops!"
-              msg="Sorry, the page you're looking for doesn't exist! &#9785;"
-              linkText="Back to Recipes"
-              linkHref="/recipes"
-            />
-          }
-        />
+        <Route path="/recipes/:recipe_slug" element={<Recipe />} />
+
+        <Route path="/404" element={<Missing404 />} />
+        <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
 
       <Footer />

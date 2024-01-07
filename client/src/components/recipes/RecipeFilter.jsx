@@ -193,8 +193,8 @@ export default function RecipeFilter({
               Favourites Only
             </label>
           ) : (
-            <p data-test="favourites-err" className="RecipeFilter__err">
-              &#9888; <Link to="/login">Sign in</Link> to use favourites
+            <p data-test="favourites-err" className="err">
+              <Link to="/login">Sign in</Link> to use favourites
             </p>
           )}
 

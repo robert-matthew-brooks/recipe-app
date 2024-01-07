@@ -156,16 +156,6 @@
   content: '\2713';
 }
 
-.RecipeFilter__err {
-  width: fit-content;
-  padding: 0.2rem;
-  font-size: 0.8rem;
-  color: var(--c-err-text);
-}
-.RecipeFilter__err > a {
-  color: var(--c-link-text);
-}
-
 /* ingredients list */
 
 #RecipeFilter__ingredients-list {

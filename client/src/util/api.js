@@ -5,10 +5,9 @@ const api = axios.create({ baseURL: 'http://localhost:9090' });
 export async function checkUsernameAvailability(username) {
   const { data } = await api.get(`/users/availability/${username}`);
 
-  const user = {
-    username: data.user.username,
-    isAvailable: data.user.is_available,
-  };
+  const user = { ...data.user };
+  user.isAvailable = user.is_available;
+  delete user.is_available;
 
   return user;
 }
@@ -32,7 +31,7 @@ export async function getRecipes(
   searchTerm,
   orderBy,
   ingredients,
-  isFavouites,
+  isFavourites,
   isVegetarian,
   limit,
   page,
@@ -40,9 +39,12 @@ export async function getRecipes(
 ) {
   const params = {
     search_term: searchTerm,
-    ingredient_ids: ingredients.map((el) => el.id),
-    is_favourites: isFavouites || null,
-    is_vegetarian: isVegetarian || null,
+    ingredient_ids:
+      ingredients.length > 0
+        ? JSON.stringify(ingredients.map((el) => el.id))
+        : null,
+    is_favourites: isFavourites ? 'true' : null,
+    is_vegetarian: isVegetarian ? 'true' : null,
     sort: orderBy || null,
     limit,
     page,
@@ -65,4 +67,18 @@ export async function getRecipes(
   });
 
   return { recipes, totalRecipes: data.total_recipes };
+}
+
+export async function getRecipe(slug) {
+  const { data } = await api.get(`/recipes/${slug}`);
+
+  const recipe = { ...data.recipe };
+  recipe.imgUrl = recipe.img_url;
+  delete recipe.img_url;
+  recipe.isVegetarian = recipe.is_vegetarian;
+  delete recipe.is_vegetarian;
+  recipe.createdAt = recipe.created_at;
+  delete recipe.created_at;
+
+  return recipe;
 }
