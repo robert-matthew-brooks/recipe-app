@@ -80,6 +80,7 @@
   padding: 2.5rem 0;
   padding-left: 3rem;
   font-size: 1.1rem;
+  line-height: 1.8rem;
   border-bottom: 1px dashed var(--c-gs-300);
   counter-increment: step;
 }

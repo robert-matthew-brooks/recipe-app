@@ -4,11 +4,19 @@ import TextBtn from '../TextBtn';
 import './RecipeButtons.css';
 
 export default function RecipeButtons({ slug }) {
+  const [userRating, setUserRating] = useState(1);
   const [isFavUserErr, setIsFavUserErr] = useState(false);
 
   const addToFavourites = () => {
     // TODO check user logged in from context
     setIsFavUserErr(true);
+  };
+
+  const setRating = (numberOfStars) => {
+    if (numberOfStars === userRating) setUserRating(null);
+    else setUserRating(numberOfStars);
+
+    // update server
   };
 
   return (
@@ -18,7 +26,7 @@ export default function RecipeButtons({ slug }) {
         text="Share via Email"
         size="2"
         callback={() => {
-          console.log(` website.com/recipes/${slug}`);
+          console.log(window.location.href);
         }}
       />
 
@@ -31,6 +39,30 @@ export default function RecipeButtons({ slug }) {
       )}
       {/* TODO remove from favourites if already added */}
       {/* or show error if not signed in */}
+
+      <div className="Rating" style={{ '--rating': 2.5 }}>
+        {(() => {
+          const stars = [];
+
+          for (let i = 0; i < 5; i++) {
+            stars.push(
+              <a
+                key={i}
+                className={`Rating__star ${
+                  i === userRating ? 'Rating__star--current' : ''
+                }`}
+                onClick={() => {
+                  setRating(i);
+                }}
+              >
+                &#9734;
+              </a>
+            );
+          }
+
+          return stars;
+        })()}
+      </div>
     </div>
   );
 }
