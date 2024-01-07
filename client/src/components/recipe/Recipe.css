@@ -9,11 +9,6 @@
   gap: 2rem;
 }
 
-#Recipe__row-wrapper {
-  display: flex;
-  gap: 3rem;
-}
-
 #Recipe__backlink a {
   font-size: 0.8rem;
   color: var(--c-gs-600);
@@ -47,6 +42,11 @@
 }
 
 /* Lists eg. ingredients, steps */
+
+#Recipe__row-wrapper {
+  display: flex;
+  gap: 3rem;
+}
 
 .Recipe__list {
   display: flex;

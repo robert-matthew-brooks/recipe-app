@@ -95,14 +95,3 @@
 #Auth__msg > a:hover {
   text-decoration: underline;
 }
-
-.Auth__err {
-  width: 100%;
-  padding: 0.2rem;
-  font-size: 0.8rem;
-  color: var(--c-err-text);
-}
-
-.Auth__err--hidden {
-  display: none;
-}

@@ -94,8 +94,8 @@ export default function AuthLogin() {
             className={usernameErr ? 'Auth__username__err' : undefined}
             disabled={isLoading}
           />
-          <p className={`Auth__err ${!usernameErr && 'Auth__err--hidden'}`}>
-            &#9888; {usernameErr}
+          <p className={`err ${!usernameErr && 'err--hidden'}`}>
+            {usernameErr}
           </p>
         </div>
 
@@ -112,8 +112,8 @@ export default function AuthLogin() {
             className={passwordErr ? 'Auth__password__err' : undefined}
             disabled={isLoading}
           />
-          <p className={`Auth__err ${!passwordErr && 'Auth__err--hidden'}`}>
-            &#9888; {passwordErr}
+          <p className={`err ${!passwordErr && 'err--hidden'}`}>
+            {passwordErr}
           </p>
         </div>
 
@@ -130,9 +130,9 @@ export default function AuthLogin() {
         </p>
         <p
           data-test="login-err-msg"
-          className={`Auth__err ${!apiErr && 'Auth__err--hidden'}`}
+          className={`err ${!apiErr && 'err--hidden'}`}
         >
-          &#9888; {apiErr}
+          {apiErr}
         </p>
       </form>
     </div>

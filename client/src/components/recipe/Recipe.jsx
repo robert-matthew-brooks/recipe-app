@@ -78,11 +78,6 @@ export default function Recipe() {
 
         <RecipeButtons slug={recipe.slug} />
 
-        <button>Done (if on meal list)</button>
-
-        <button>Like? {recipe.likes}</button>
-        {/* TODO star rating? */}
-
         <hr />
 
         <section>

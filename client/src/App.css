@@ -25,3 +25,24 @@ body {
   margin: auto;
   padding: 0.5rem 4rem;
 }
+
+/* errors */
+
+.err {
+  width: fit-content;
+  padding: 0.2rem;
+  font-family: var(--ff-clear);
+  font-size: 0.8rem;
+  color: var(--c-err-text);
+}
+.err::before {
+  /* exclamation and space */
+  content: '\0026A0\0020';
+}
+.err > a {
+  color: var(--c-link-text);
+}
+
+.err--hidden {
+  display: none;
+}
