@@ -24,7 +24,7 @@ export default function RecipeFilter({
   const [isPanelHidden, setIsPanelHidden] = useState(true);
   const searchRef = useRef(null);
   const [searchBoxValue, setSearchBoxValue] = useState(filterName);
-  const [isFavUserErr, setIsFavUserErr] = useState(false);
+  const [isSignedInErr, setIsSignedInErr] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -57,7 +57,7 @@ export default function RecipeFilter({
 
   const handleFavouritesToggle = () => {
     if (!filterIsFavourites && !activeUser) {
-      setIsFavUserErr(true);
+      setIsSignedInErr(true);
     } else {
       setFilterIsFavourites(!filterIsFavourites);
     }
@@ -179,7 +179,7 @@ export default function RecipeFilter({
               })}
           </select>
 
-          {!isFavUserErr ? (
+          {!isSignedInErr ? (
             <label
               data-test="filter-favourites"
               className="RecipeFilter__checkbox"

@@ -1,0 +1,42 @@
+.RecipeRating__wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.RecipeRating {
+  --percent: calc(var(--rating) / 5 * 100%);
+  grid-column: 1 / span 2;
+  position: relative;
+  letter-spacing: 0.2rem;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 2.8rem;
+  cursor: pointer;
+}
+.RecipeRating::before {
+  content: '\2605\2605\2605\2605\2605';
+  position: absolute;
+  z-index: -1;
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    #ffcc00 var(--percent),
+    var(--c-gs-400) var(--percent)
+  );
+  background-clip: text;
+}
+
+.RecipeRating__star {
+  color: transparent;
+}
+.RecipeRating > a:hover {
+  color: var(--c-gs-600);
+}
+.RecipeRating__star--current {
+  color: red !important;
+}
+
+.RecipeRating__votes {
+  font-size: 0.8rem;
+  color: var(--c-gs-700);
+}

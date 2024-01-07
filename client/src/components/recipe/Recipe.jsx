@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import RecipeButtons from './RecipeButtons';
+import RecipeRating from './RecipeRating';
 import { getRecipe } from '../../util/api';
 import { getShortDate } from '../../util/date';
 import recipePlaceholderImg from '../../assets/recipe-placeholder.jpeg';
@@ -11,12 +12,20 @@ export default function Recipe() {
   const { recipe_slug: slug } = useParams();
   const [recipe, setRecipe] = useState({});
 
+  const [userRating, setUserRating] = useState(null);
+  const [optimisticVotes, setOptimisticVotes] = useState(0);
+  const [optimisticRating, setOptimisticRating] = useState(0);
+
   useEffect(() => {
     (async () => {
       // TODO set loading
 
       try {
-        setRecipe(await getRecipe(slug));
+        const recipe = await getRecipe(slug);
+        // get userRating
+        setRecipe(recipe);
+        setOptimisticVotes(recipe.votes);
+        setOptimisticRating(recipe.rating);
       } catch (err) {
         if (err.response?.data?.status === 404) {
           navigate('404');
@@ -38,11 +47,23 @@ export default function Recipe() {
         <h1 className="Recipe__title">{recipe.name}</h1>
 
         <p id="Recipe__author">
-          added by <span id="Recipe__author--bold">{recipe.author}</span>
-          on {getShortDate(recipe.createdAt)}
+          added by <span className="bold">{recipe.author}</span>
+          &nbsp;&nbsp;&nbsp;on {getShortDate(recipe.createdAt)}
         </p>
 
-        <RecipeButtons slug={recipe.slug} />
+        <RecipeButtons slug={recipe.slug} name={recipe.name} />
+        <RecipeRating
+          votes={recipe.votes}
+          rating={recipe.rating}
+          {...{
+            userRating,
+            setUserRating,
+            optimisticVotes,
+            setOptimisticVotes,
+            optimisticRating,
+            setOptimisticRating,
+          }}
+        />
 
         <div
           id="Recipe__image"
@@ -58,8 +79,11 @@ export default function Recipe() {
               {recipe.ingredients?.map((ingredient, i) => {
                 return (
                   <li key={`ingredient${i}`}>
-                    {ingredient.name} - {ingredient.amount}
-                    {ingredient.units}
+                    {ingredient.name} -{' '}
+                    <span className="bold">
+                      {ingredient.amount}
+                      {ingredient.units}
+                    </span>
                   </li>
                 );
               })}
@@ -77,6 +101,18 @@ export default function Recipe() {
         </div>
 
         <RecipeButtons slug={recipe.slug} />
+        <RecipeRating
+          votes={recipe.votes}
+          rating={recipe.rating}
+          {...{
+            userRating,
+            setUserRating,
+            optimisticVotes,
+            setOptimisticVotes,
+            optimisticRating,
+            setOptimisticRating,
+          }}
+        />
 
         <hr />
 
