@@ -39,7 +39,7 @@ async function seed({ recipes, users }) {
   /* drop tables */
   /***************/
 
-  await pool.query('DROP TABLE IF EXISTS likes CASCADE;');
+  await pool.query('DROP TABLE IF EXISTS ratings CASCADE;');
   await pool.query('DROP TABLE IF EXISTS todo CASCADE;');
   await pool.query('DROP TABLE IF EXISTS favourites CASCADE;');
   await pool.query('DROP TABLE IF EXISTS recipes_ingredients CASCADE;');
@@ -123,10 +123,11 @@ async function seed({ recipes, users }) {
 
   await pool.query(
     `
-      CREATE TABLE likes (
+      CREATE TABLE ratings (
         id SERIAL PRIMARY KEY,
         recipe_id INT REFERENCES recipes NOT NULL,
-        user_id INT REFERENCES users NOT NULL
+        user_id INT REFERENCES users NOT NULL,
+        stars INT
       );
     `
   );
@@ -257,7 +258,7 @@ async function seed({ recipes, users }) {
 
   const recipeFavouritesData = [];
   const recipeTodoData = [];
-  const recipeLikesData = [];
+  const recipeRatingsData = [];
 
   for (const user of users) {
     const userId = await getId(user.username, 'username', 'users');
@@ -275,10 +276,10 @@ async function seed({ recipes, users }) {
       recipeTodoData.push([recipeId, userId, isDone]);
     }
 
-    for (const recipeSlug of user.likes) {
-      const recipeId = await getId(recipeSlug, 'slug', 'recipes');
+    for (const rating of user.ratings) {
+      const recipeId = await getId(rating.slug, 'slug', 'recipes');
 
-      recipeLikesData.push([recipeId, userId]);
+      recipeRatingsData.push([recipeId, userId, rating.stars]);
     }
   }
 
@@ -313,20 +314,21 @@ async function seed({ recipes, users }) {
 
   await pool.query(insertRecipeTodoSql);
 
-  // recipes-users likes junction
+  // recipes-users ratings junction
 
-  const insertRecipeLikesSql = format(
+  const insertRecipeRatingsSql = format(
     `
-      INSERT INTO likes (
+      INSERT INTO ratings (
         recipe_id,
-        user_id
+        user_id,
+        stars
       )
       VALUES %L;
     `,
-    recipeLikesData
+    recipeRatingsData
   );
 
-  await pool.query(insertRecipeLikesSql);
+  await pool.query(insertRecipeRatingsSql);
 }
 
 module.exports = seed;

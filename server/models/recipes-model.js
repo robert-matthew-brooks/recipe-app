@@ -24,7 +24,8 @@ async function getOne(recipeSlug) {
         r.steps,
         r.is_vegetarian,
         r.created_at,
-        COUNT(DISTINCT l)::INT AS likes
+        COUNT(DISTINCT ra)::INT AS votes,
+        AVG(DISTINCT ra.stars)::FLOAT AS rating
       FROM recipes r
       INNER JOIN users u
         ON r.author_id = u.id
@@ -33,8 +34,8 @@ async function getOne(recipeSlug) {
         AND r.slug = $1
       INNER JOIN ingredients i
         ON ri.ingredient_id = i.id
-      LEFT OUTER JOIN likes l
-        ON r.id = l.recipe_id
+      LEFT OUTER JOIN ratings ra
+        ON r.id = ra.recipe_id
       GROUP BY
         r.id,
         u.username;
@@ -61,7 +62,7 @@ async function getMany(
   const offset = limit * (page - 1);
   const lookupSort = {
     new: 'r.created_at DESC',
-    top: 'likes DESC',
+    top: 'votes DESC',
     az: 'r.name',
     za: 'r.name DESC',
   };
@@ -126,7 +127,8 @@ async function getMany(
         u.username AS author,
         r.img_url,
         r.created_at,
-        COUNT(DISTINCT l)::INT AS likes
+        COUNT(DISTINCT ra)::INT AS votes,
+        AVG(DISTINCT ra.stars)::FLOAT AS rating
       FROM (
         SELECT * FROM recipes r
         WHERE LOWER(r.name) LIKE LOWER($1)
@@ -136,8 +138,8 @@ async function getMany(
       ${ingredientsQueryStr}
       INNER JOIN users u
         ON r.author_id = u.id
-      LEFT OUTER JOIN likes l
-        ON r.id = l.recipe_id
+      LEFT OUTER JOIN ratings ra
+        ON r.id = ra.recipe_id
       GROUP BY
         r.id,
         r.name,

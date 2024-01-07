@@ -139,20 +139,21 @@ describe('todo table', () => {
   });
 });
 
-describe('likes table', () => {
+describe('ratings table', () => {
   it('should contain 13 entries', async () => {
-    const { rows } = await pool.query('SELECT * FROM likes;');
+    const { rows } = await pool.query('SELECT * FROM ratings;');
     expect(rows).toHaveLength(13);
   });
 
   it('should return objects with correct properties', async () => {
-    const { rows } = await pool.query('SELECT * FROM likes;');
+    const { rows } = await pool.query('SELECT * FROM ratings;');
 
     for (const row of rows) {
       expect(row).toMatchObject({
         id: expect.any(Number),
         recipe_id: expect.any(Number),
         user_id: expect.any(Number),
+        stars: expect.any(Number),
       });
     }
   });

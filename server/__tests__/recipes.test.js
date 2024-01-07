@@ -5,7 +5,6 @@ const pool = require('../db/pool');
 const seed = require('../db/seed');
 const data = require('../db/data/test');
 const { createToken } = require('../util/token');
-const { json } = require('express');
 
 expect.extend(matchers);
 
@@ -33,7 +32,8 @@ describe('GET /recipes/:recipe_id', () => {
       steps: expect.any(Array),
       is_vegetarian: expect.any(Boolean),
       created_at: expect.any(String),
-      likes: expect.any(Number),
+      votes: expect.any(Number),
+      rating: expect.toBeOneOf([expect.any(Number), null]),
     });
 
     for (const ingredient of body.recipe.ingredients) {
@@ -73,7 +73,8 @@ describe('GET /recipes', () => {
         author: expect.any(String),
         img_url: expect.toBeOneOf([expect.any(String), null]),
         created_at: expect.any(String),
-        likes: expect.any(Number),
+        votes: expect.any(Number),
+        rating: expect.toBeOneOf([expect.any(Number), null]),
       });
     }
   });
