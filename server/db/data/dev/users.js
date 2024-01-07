@@ -5,7 +5,7 @@ const users = [
     favourites: ['chicken-leek-and-bacon-pie'],
     todo: ['chicken-leek-and-bacon-pie', 'penne-and-cheese', 'beef-kebab'],
     done: ['chicken-leek-and-bacon-pie'],
-    likes: ['penne-and-cheese'],
+    ratings: [{ slug: 'penne-and-cheese', stars: 4 }],
   },
 ];
 
