@@ -7,6 +7,28 @@ const users = [
     done: ['chicken-leek-and-bacon-pie'],
     ratings: [{ slug: 'penne-and-cheese', stars: 4 }],
   },
+  {
+    username: 'some_user',
+    password: 'password123!',
+    favourites: [],
+    todo: [],
+    done: [],
+    ratings: [
+      { slug: 'penne-and-cheese', stars: 3 },
+      { slug: 'beef-meatballs-with-tomato-sauce-and-linguine', stars: 2 },
+    ],
+  },
+  {
+    username: 'another_user',
+    password: 'password123!',
+    favourites: [],
+    todo: [],
+    done: [],
+    ratings: [
+      { slug: 'penne-and-cheese', stars: 3 },
+      { slug: 'beef-meatballs-with-tomato-sauce-and-linguine', stars: 5 },
+    ],
+  },
 ];
 
 module.exports = users;
