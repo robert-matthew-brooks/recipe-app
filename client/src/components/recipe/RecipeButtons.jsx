@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import TextBtn from '../TextBtn';
-import { putFavourite } from '../../util/api';
+import { deleteFavourite, putFavourite } from '../../util/api';
 import './RecipeButtons.css';
 
 export default function RecipeButtons({ slug, name }) {
@@ -13,9 +13,13 @@ export default function RecipeButtons({ slug, name }) {
     // TODO loading wheel
     if (!activeUser) setIsSignedInErr(true);
     else {
-      //TODO update favourites context
-      console.log();
-      await putFavourite(activeUser?.token, slug);
+      if (favourites.includes(slug)) {
+        setFavourites(favourites.filter((el) => el !== slug));
+        await deleteFavourite(activeUser?.token, slug);
+      } else {
+        setFavourites([...favourites, slug]);
+        await putFavourite(activeUser?.token, slug);
+      }
     }
     // TODO end loading
   };
@@ -33,22 +37,23 @@ export default function RecipeButtons({ slug, name }) {
         />
 
         {!isSignedInErr ? (
-          <TextBtn
-            text={
-              favourites.includes(slug)
-                ? 'Remove from Favourites'
-                : 'Add to Favourites'
-            }
-            size="2"
-            callback={handleFavouritesClick}
-          />
+          <>
+            <TextBtn
+              text={
+                favourites.includes(slug)
+                  ? 'Remove from Favourites'
+                  : 'Add to Favourites'
+              }
+              size="2"
+              callback={handleFavouritesClick}
+            />
+            <TextBtn text="Add to Meal List" size="2" callback={() => {}} />
+          </>
         ) : (
           <p className="err">
             <Link to="/login">Sign in</Link> to use favourites
           </p>
         )}
-        {/* TODO remove from favourites if already added */}
-        {/* or show error if not signed in */}
       </div>
     </>
   );

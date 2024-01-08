@@ -1,7 +1,5 @@
 .RecipeButtons {
-  width: fit-content;
-  display: grid;
-  grid-template-columns: repeat(2, max-content);
-  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }

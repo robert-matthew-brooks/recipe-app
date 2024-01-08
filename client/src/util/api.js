@@ -124,3 +124,9 @@ export async function putFavourite(token, slug) {
     }
   );
 }
+
+export async function deleteFavourite(token, slug) {
+  await api.delete(`/favourites/${slug}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
