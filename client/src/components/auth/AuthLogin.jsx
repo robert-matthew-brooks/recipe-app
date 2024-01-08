@@ -7,7 +7,7 @@ import loadingImg from '../../assets/loading.svg';
 import './Auth.css';
 
 export default function AuthLogin() {
-  const { setActiveUser } = useContext(UserContext);
+  const { activateUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState('bob'); // TODO remove these when finished dev testing
   const [password, setPassword] = useState('password123!');
@@ -54,8 +54,9 @@ export default function AuthLogin() {
     if (isValidUsername && isValidPassword) {
       try {
         const user = await login(username, password);
-        localStorage.setItem('user', JSON.stringify(user));
-        setActiveUser(user);
+        const userStr = JSON.stringify(user);
+        localStorage.setItem('user', userStr);
+        await activateUser(userStr);
         navigate('/recipes');
       } catch (err) {
         console.log(err);

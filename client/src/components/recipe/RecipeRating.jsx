@@ -40,7 +40,7 @@ export default function RecipeRating({
         setOptimisticRating(optimisticTotalStars / newOptimisticVotes || 0);
 
         try {
-          await deleteRating(slug, activeUser.token);
+          await deleteRating(activeUser.token, slug);
         } catch (err) {
           console.log(err);
           setIsErr(true);
@@ -60,7 +60,7 @@ export default function RecipeRating({
         setOptimisticRating(optimisticTotalStars / newOptimisticVotes || 0);
 
         try {
-          await putRating(slug, activeUser.token, clickedRating);
+          await putRating(activeUser.token, slug, clickedRating);
         } catch (err) {
           console.log(err);
           setIsErr(true);

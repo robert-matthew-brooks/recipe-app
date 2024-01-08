@@ -2,18 +2,22 @@ import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import TextBtn from '../TextBtn';
+import { putFavourite } from '../../util/api';
 import './RecipeButtons.css';
 
 export default function RecipeButtons({ slug, name }) {
-  const { activeUser } = useContext(UserContext);
+  const { activeUser, favourites, setFavourites } = useContext(UserContext);
   const [isSignedInErr, setIsSignedInErr] = useState(false);
 
-  const addToFavourites = () => {
+  const handleFavouritesClick = async () => {
+    // TODO loading wheel
     if (!activeUser) setIsSignedInErr(true);
     else {
-      // TODO add to user favs
-      console.log('do something');
+      //TODO update favourites context
+      console.log();
+      await putFavourite(activeUser?.token, slug);
     }
+    // TODO end loading
   };
 
   return (
@@ -30,9 +34,13 @@ export default function RecipeButtons({ slug, name }) {
 
         {!isSignedInErr ? (
           <TextBtn
-            text="Add to Favourites"
+            text={
+              favourites.includes(slug)
+                ? 'Remove from Favourites'
+                : 'Add to Favourites'
+            }
             size="2"
-            callback={addToFavourites}
+            callback={handleFavouritesClick}
           />
         ) : (
           <p className="err">

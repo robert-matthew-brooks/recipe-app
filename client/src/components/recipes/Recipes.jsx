@@ -39,14 +39,14 @@ export default function AllRecipes() {
     if (!isLoading) setIsLoading(true);
     try {
       const { recipes: fetchedRecipes, totalRecipes } = await getRecipes(
+        activeUser?.token,
         filterName,
         filterOrderBy,
         filterIngredients,
         filterIsFavourites,
         filterIsVegetarian,
         limit,
-        page,
-        activeUser?.token
+        page
       );
       setRecipes([...currentRecipes, ...fetchedRecipes]);
       setTotalRecipes(totalRecipes);

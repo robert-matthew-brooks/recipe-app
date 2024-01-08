@@ -7,7 +7,7 @@ import loadingImg from '../../assets/loading.svg';
 import './Auth.css';
 
 export default function AuthRegister() {
-  const { setActiveUser } = useContext(UserContext);
+  const { activateUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -58,9 +58,9 @@ export default function AuthRegister() {
       } else {
         try {
           const user = await register(username, password);
-
-          localStorage.setItem('user', JSON.stringify(user));
-          setActiveUser(user);
+          const userStr = JSON.stringify(user);
+          localStorage.setItem('user', userStr);
+          await activateUser(userStr);
           navigate('/recipes');
         } catch (err) {
           console.log(err);

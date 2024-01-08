@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 import RecipeButtons from './RecipeButtons';
 import RecipeRating from './RecipeRating';
 import { getRating, getRecipe } from '../../util/api';
 import { getShortDate } from '../../util/date';
 import recipePlaceholderImg from '../../assets/recipe-placeholder.jpeg';
 import './Recipe.css';
-import { UserContext } from '../context/UserContext';
 
 export default function Recipe() {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function Recipe() {
       try {
         const recipe = await getRecipe(slug);
         if (activeUser) {
-          setUserRating(await getRating(slug, activeUser.token));
+          setUserRating(await getRating(activeUser.token, slug));
         }
 
         setRecipe(recipe);

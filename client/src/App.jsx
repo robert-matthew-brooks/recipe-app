@@ -6,7 +6,7 @@ import Recipes from './components/recipes/Recipes';
 import Recipe from './components/recipe/Recipe';
 import AuthRegister from './components/auth/AuthRegister';
 import AuthLogin from './components/auth/AuthLogin';
-import SimpleMsg from './components/SimpleMsg';
+import AuthLogout from './components/auth/AuthLogout';
 import Footer from './components/Footer';
 import Missing404 from './components/404';
 import Error from './components/error';
@@ -29,17 +29,7 @@ export default function App() {
 
         <Route path="/register" element={<AuthRegister />} />
         <Route path="/login" element={<AuthLogin />} />
-        <Route
-          path="/logout"
-          element={
-            <SimpleMsg
-              title="Signed Out"
-              msg="Hope to see you again soon!"
-              linkText="Back to Recipes"
-              linkHref="/recipes"
-            />
-          }
-        />
+        <Route path="/logout" element={<AuthLogout />} />
 
         <Route path="/recipes" element={<Recipes />} />
 
