@@ -23,14 +23,6 @@ async function seed({ recipes, users }) {
     return rows[0].id;
   };
 
-  const getIdList = async (values, field, table) => {
-    return await Promise.all(
-      values.map(async (value) => {
-        return await getId(value, field, table);
-      })
-    );
-  };
-
   const arrToSqlArr = (arr) => {
     return `{${arr.map((el) => `"${el}"`)}}`;
   };
@@ -40,7 +32,7 @@ async function seed({ recipes, users }) {
   /***************/
 
   await pool.query('DROP TABLE IF EXISTS ratings CASCADE;');
-  await pool.query('DROP TABLE IF EXISTS todo CASCADE;');
+  await pool.query('DROP TABLE IF EXISTS todos CASCADE;');
   await pool.query('DROP TABLE IF EXISTS favourites CASCADE;');
   await pool.query('DROP TABLE IF EXISTS recipes_ingredients CASCADE;');
   await pool.query('DROP TABLE IF EXISTS recipes CASCADE;');
@@ -112,7 +104,7 @@ async function seed({ recipes, users }) {
 
   await pool.query(
     `
-      CREATE TABLE todo (
+      CREATE TABLE todos (
         id SERIAL PRIMARY KEY,
         user_id INT REFERENCES users NOT NULL,
         recipe_id INT REFERENCES recipes NOT NULL,
@@ -257,7 +249,7 @@ async function seed({ recipes, users }) {
   // get user junction data
 
   const recipeFavouritesData = [];
-  const recipeTodoData = [];
+  const recipeTodosData = [];
   const recipeRatingsData = [];
 
   for (const user of users) {
@@ -269,11 +261,11 @@ async function seed({ recipes, users }) {
       recipeFavouritesData.push([recipeId, userId]);
     }
 
-    for (const recipeSlug of user.todo) {
+    for (const recipeSlug of user.todos) {
       const recipeId = await getId(recipeSlug, 'slug', 'recipes');
       const isDone = user.done.includes(recipeSlug);
 
-      recipeTodoData.push([recipeId, userId, isDone]);
+      recipeTodosData.push([recipeId, userId, isDone]);
     }
 
     for (const rating of user.ratings) {
@@ -298,21 +290,21 @@ async function seed({ recipes, users }) {
 
   await pool.query(insertRecipeFavouritesSql);
 
-  // users-recipes todo junction
+  // users-recipes todos junction
 
-  const insertRecipeTodoSql = format(
+  const insertRecipeTodosSql = format(
     `
-      INSERT INTO todo (
+      INSERT INTO todos (
         recipe_id,
         user_id,
         is_done
       )
       VALUES %L;
     `,
-    recipeTodoData
+    recipeTodosData
   );
 
-  await pool.query(insertRecipeTodoSql);
+  await pool.query(insertRecipeTodosSql);
 
   // recipes-users ratings junction
 

@@ -1,0 +1,68 @@
+const pool = require('../db/pool');
+const { verifyToken } = require('../util/token');
+const validate = require('../util/validate');
+
+async function getAll(token) {
+  const userId = verifyToken(token).id;
+
+  const { rows } = await pool.query(
+    `
+      SELECT ARRAY_AGG(r.slug) AS todos
+      FROM todos t
+      INNER JOIN recipes r
+      ON t.recipe_id = r.id
+      WHERE t.user_id = $1
+      GROUP BY t.user_id;
+    `,
+    [userId]
+  );
+
+  const todos = rows[0]?.todos;
+
+  return { todos };
+}
+
+async function put(token, recipeSlug) {
+  const userId = verifyToken(token).id;
+  await validate.rejectIfNotInDb(recipeSlug, 'slug', 'recipes');
+
+  // get recipeId
+  const { rows } = await pool.query(
+    `
+      SELECT id
+      FROM recipes
+      WHERE slug = $1;
+    `,
+    [recipeSlug]
+  );
+
+  const recipeId = rows[0].id;
+
+  await pool.query(
+    `
+      INSERT INTO todos
+        (user_id, recipe_id)
+      VALUES
+        ($1, $2);
+    `,
+    [userId, recipeId]
+  );
+}
+
+async function del(token, recipeSlug) {
+  const userId = verifyToken(token).id;
+  await validate.rejectIfNotInDb(recipeSlug, 'slug', 'recipes');
+
+  await pool.query(
+    `
+      DELETE FROM todos t
+      USING recipes r
+      WHERE t.recipe_id = r.id
+      AND t.user_id = $1
+      AND r.slug = $2;
+    `,
+    [userId, recipeSlug]
+  );
+}
+
+module.exports = { getAll, put, del };

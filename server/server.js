@@ -6,6 +6,7 @@ const usersRouter = require('./routers/users-router');
 const ingredientsRouter = require('./routers/ingredients-router');
 const recipesRouter = require('./routers/recipes-router');
 const favouritesRouter = require('./routers/favourites-router');
+const todosRouter = require('./routers/todos-router');
 const ratingsRouter = require('./routers/ratings-router');
 const errHandlers = require('./error-handlers/error-handlers');
 const endpointsJson = require('./endpoints.json');
@@ -34,6 +35,7 @@ server.use('/users', usersRouter);
 server.use('/ingredients', ingredientsRouter);
 server.use('/recipes', recipesRouter);
 server.use('/favourites', favouritesRouter);
+server.use('/todos', todosRouter);
 server.use('/ratings', ratingsRouter);
 
 /******************/
