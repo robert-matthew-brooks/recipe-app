@@ -9,6 +9,7 @@ import AuthLogin from './components/auth/AuthLogin';
 import SimpleMsg from './components/SimpleMsg';
 import Footer from './components/Footer';
 import Missing404 from './components/404';
+import Error from './components/error';
 import './App.css';
 
 export default function App() {
@@ -45,6 +46,7 @@ export default function App() {
         <Route path="/recipes/:recipe_slug" element={<Recipe />} />
 
         <Route path="/404" element={<Missing404 />} />
+        <Route path="/Error" element={<Error />} />
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
 

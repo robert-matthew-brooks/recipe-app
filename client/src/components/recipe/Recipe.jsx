@@ -33,10 +33,10 @@ export default function Recipe() {
         setOptimisticRating(recipe.rating);
       } catch (err) {
         if (err.response?.data?.status === 404) {
-          navigate('404');
+          navigate('/404');
         } else {
           console.log(err);
-          // TODO handle err with error state / message
+          navigate('/error');
         }
       }
     })();

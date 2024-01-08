@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getRecipes } from '../../util/api';
 import { UserContext } from '../context/UserContext';
 import Header from '../Header';
@@ -9,10 +10,10 @@ import RecipePagination from './RecipePagination';
 
 export default function AllRecipes() {
   const { activeUser } = useContext(UserContext);
+  const navigate = useNavigate();
   const [recipes, setRecipes] = useState([]);
   const [totalRecipes, setTotalRecipes] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [isErr, setIsErr] = useState(false); // TODO - string? contain err msg?
 
   const [filterName, setFilterName] = useState('');
   const [filterOrderBy, setFilterOrderBy] = useState('');
@@ -52,6 +53,7 @@ export default function AllRecipes() {
       setPage(page + 1);
     } catch (err) {
       console.log(err);
+      navigate('/error');
     }
     setIsLoading(false);
   };
@@ -83,7 +85,7 @@ export default function AllRecipes() {
           {recipes.length > 0 ? (
             <RecipeCards {...{ recipes }} />
           ) : (
-            <p>No recipes :(</p>
+            <p id="Recipes__none-msg">No recipes found &#9785;</p>
           )}
 
           <RecipePagination
