@@ -3,7 +3,7 @@ const users = [
     username: 'user1',
     password: 'password1!',
     favourites: ['recipe-2', 'recipe-1'],
-    todo: ['recipe-5', 'recipe-3', 'recipe-4'],
+    todos: ['recipe-5', 'recipe-3', 'recipe-4'],
     done: ['recipe-3'],
     ratings: [
       { slug: 'recipe-1', stars: 5 },
@@ -15,7 +15,7 @@ const users = [
     username: 'user2',
     password: 'password2!',
     favourites: ['recipe-6-tag', 'recipe-7-tag'],
-    todo: ['recipe-1', 'recipe-8-tag', 'recipe-6-tag'],
+    todos: ['recipe-1', 'recipe-8-tag', 'recipe-6-tag'],
     done: ['recipe-1', 'recipe-6-tag'],
     ratings: [
       { slug: 'recipe-3', stars: 5 },
@@ -29,7 +29,7 @@ const users = [
     username: 'user3',
     password: 'password3!',
     favourites: ['recipe-7-tag', 'recipe-5', 'recipe-3'],
-    todo: ['recipe-4', 'recipe-2'],
+    todos: ['recipe-4', 'recipe-2'],
     done: [],
     ratings: [
       { slug: 'recipe-7-tag', stars: 3 },
@@ -40,7 +40,7 @@ const users = [
     username: 'user4',
     password: 'password4!',
     favourites: [],
-    todo: [],
+    todos: [],
     done: [],
     ratings: [],
   },
@@ -48,7 +48,7 @@ const users = [
     username: 'user5',
     password: 'password5!',
     favourites: ['recipe-8-tag'],
-    todo: ['recipe-5'],
+    todos: ['recipe-5'],
     done: ['recipe-5'],
     ratings: [
       { slug: 'recipe-3', stars: 4 },
