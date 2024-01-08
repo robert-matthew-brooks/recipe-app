@@ -7,7 +7,7 @@ import loadingImg from '../../assets/loading.svg';
 import './Auth.css';
 
 export default function AuthRegister() {
-  const { setActiveUser } = useContext(UserContext);
+  const { activateUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -58,9 +58,9 @@ export default function AuthRegister() {
       } else {
         try {
           const user = await register(username, password);
-
-          localStorage.setItem('user', JSON.stringify(user));
-          setActiveUser(user);
+          const userStr = JSON.stringify(user);
+          localStorage.setItem('user', userStr);
+          await activateUser(userStr);
           navigate('/recipes');
         } catch (err) {
           console.log(err);
@@ -97,8 +97,8 @@ export default function AuthRegister() {
             className={usernameErr ? 'Auth__username__err' : undefined}
             disabled={isLoading}
           />
-          <p className={`Auth__err ${!usernameErr && 'Auth__err--hidden'}`}>
-            &#9888; {usernameErr}
+          <p className={`err ${!usernameErr && 'err--hidden'}`}>
+            {usernameErr}
           </p>
         </div>
 
@@ -114,8 +114,8 @@ export default function AuthRegister() {
             className={passwordErr ? 'Auth__password__err' : undefined}
             disabled={isLoading}
           />
-          <p className={`Auth__err ${!passwordErr && 'Auth__err--hidden'}`}>
-            &#9888; {passwordErr}
+          <p className={`err ${!passwordErr && 'err--hidden'}`}>
+            {passwordErr}
           </p>
         </div>
 
@@ -125,9 +125,7 @@ export default function AuthRegister() {
         <p id="Auth__msg">
           Already have an account? <Link to="/login">Login here</Link>
         </p>
-        <p className={`Auth__err ${!apiErr && 'Auth__err--hidden'}`}>
-          &#9888; {apiErr}
-        </p>
+        <p className={`err ${!apiErr && 'err--hidden'}`}>{apiErr}</p>
       </form>
     </div>
   );

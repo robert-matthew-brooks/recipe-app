@@ -17,7 +17,7 @@ async function getAll(token) {
     [userId]
   );
 
-  const favourites = rows[0].favourites;
+  const favourites = rows[0]?.favourites;
 
   return { favourites };
 }

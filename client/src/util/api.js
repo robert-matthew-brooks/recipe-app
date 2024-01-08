@@ -28,14 +28,14 @@ export async function getIngredients() {
 }
 
 export async function getRecipes(
+  token,
   searchTerm,
   orderBy,
   ingredients,
   isFavourites,
   isVegetarian,
   limit,
-  page,
-  token
+  page
 ) {
   const params = {
     search_term: searchTerm,
@@ -81,4 +81,52 @@ export async function getRecipe(slug) {
   delete recipe.created_at;
 
   return recipe;
+}
+
+export async function getRating(token, slug) {
+  const { data } = await api.get(`/ratings/${slug}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return data.rating;
+}
+
+export async function putRating(token, slug, rating) {
+  await api.put(
+    `/ratings/${slug}`,
+    { rating },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+
+export async function deleteRating(token, slug) {
+  await api.delete(`/ratings/${slug}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+export async function getFavourites(token) {
+  const { data } = await api.get('/favourites', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return data.favourites;
+}
+
+export async function putFavourite(token, slug) {
+  await api.put(
+    `/favourites/${slug}`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+
+export async function deleteFavourite(token, slug) {
+  await api.delete(`/favourites/${slug}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }

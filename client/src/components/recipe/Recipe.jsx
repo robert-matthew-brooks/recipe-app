@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 import RecipeButtons from './RecipeButtons';
 import RecipeRating from './RecipeRating';
-import { getRecipe } from '../../util/api';
+import { getRating, getRecipe } from '../../util/api';
 import { getShortDate } from '../../util/date';
 import recipePlaceholderImg from '../../assets/recipe-placeholder.jpeg';
 import './Recipe.css';
 
 export default function Recipe() {
   const navigate = useNavigate();
+  const { activeUser } = useContext(UserContext);
   const { recipe_slug: slug } = useParams();
   const [recipe, setRecipe] = useState({});
 
@@ -22,16 +24,19 @@ export default function Recipe() {
 
       try {
         const recipe = await getRecipe(slug);
-        // get userRating
+        if (activeUser) {
+          setUserRating(await getRating(activeUser.token, slug));
+        }
+
         setRecipe(recipe);
         setOptimisticVotes(recipe.votes);
         setOptimisticRating(recipe.rating);
       } catch (err) {
         if (err.response?.data?.status === 404) {
-          navigate('404');
+          navigate('/404');
         } else {
           console.log(err);
-          // TODO handle err with error state / message
+          navigate('/error');
         }
       }
     })();
@@ -53,6 +58,7 @@ export default function Recipe() {
 
         <RecipeButtons slug={recipe.slug} name={recipe.name} />
         <RecipeRating
+          slug={recipe.slug}
           votes={recipe.votes}
           rating={recipe.rating}
           {...{
@@ -102,6 +108,7 @@ export default function Recipe() {
 
         <RecipeButtons slug={recipe.slug} />
         <RecipeRating
+          slug={recipe.slug}
           votes={recipe.votes}
           rating={recipe.rating}
           {...{

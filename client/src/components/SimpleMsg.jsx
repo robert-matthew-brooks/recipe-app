@@ -1,18 +1,10 @@
-import { useContext, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { UserContext } from './context/UserContext';
+import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import TextBtn from './TextBtn';
 import './SimpleMsg.css';
 
 export default function SimpleMsg({ title, msg, linkText, linkHref }) {
   const navigate = useNavigate();
-  const { setActiveUser } = useContext(UserContext);
-
-  useEffect(() => {
-    localStorage.clear();
-    setActiveUser(null);
-  }, []);
 
   return (
     <>
