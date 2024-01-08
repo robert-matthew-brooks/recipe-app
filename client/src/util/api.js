@@ -82,3 +82,27 @@ export async function getRecipe(slug) {
 
   return recipe;
 }
+
+export async function getRating(slug, token) {
+  const { data } = await api.get(`/ratings/${slug}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return data.rating;
+}
+
+export async function putRating(slug, token, rating) {
+  await api.put(
+    `/ratings/${slug}`,
+    { rating },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+
+export async function deleteRating(slug, token) {
+  await api.delete(`/ratings/${slug}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}

@@ -97,8 +97,8 @@ export default function AuthRegister() {
             className={usernameErr ? 'Auth__username__err' : undefined}
             disabled={isLoading}
           />
-          <p className={`Auth__err ${!usernameErr && 'Auth__err--hidden'}`}>
-            &#9888; {usernameErr}
+          <p className={`err ${!usernameErr && 'err--hidden'}`}>
+            {usernameErr}
           </p>
         </div>
 
@@ -114,8 +114,8 @@ export default function AuthRegister() {
             className={passwordErr ? 'Auth__password__err' : undefined}
             disabled={isLoading}
           />
-          <p className={`Auth__err ${!passwordErr && 'Auth__err--hidden'}`}>
-            &#9888; {passwordErr}
+          <p className={`err ${!passwordErr && 'err--hidden'}`}>
+            {passwordErr}
           </p>
         </div>
 
@@ -125,9 +125,7 @@ export default function AuthRegister() {
         <p id="Auth__msg">
           Already have an account? <Link to="/login">Login here</Link>
         </p>
-        <p className={`Auth__err ${!apiErr && 'Auth__err--hidden'}`}>
-          &#9888; {apiErr}
-        </p>
+        <p className={`err ${!apiErr && 'err--hidden'}`}>{apiErr}</p>
       </form>
     </div>
   );
