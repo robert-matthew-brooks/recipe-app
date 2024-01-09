@@ -20,6 +20,14 @@
   background-color: var(--c-gs-str);
 }
 
+.TextBtn--dark--inverted {
+  color: var(--c-gs-wk);
+  background-color: var(--c-gs-str);
+}
+.TextBtn--dark--inverted:hover:enabled {
+  background-color: var(--c-gs-900);
+}
+
 .TextBtn--light {
   background-color: var(--c-gs-50);
   border: 1px solid var(--c-gs-200);

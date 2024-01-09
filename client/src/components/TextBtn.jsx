@@ -2,7 +2,14 @@ import { useState } from 'react';
 import loadingImg from '../assets/loading.svg';
 import './TextBtn.css';
 
-export default function TextBtn({ dataTest, light, text, size = 1, callback }) {
+export default function TextBtn({
+  dataTest,
+  light,
+  inverted,
+  text,
+  size = 1,
+  callback,
+}) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCallback = async () => {
@@ -14,7 +21,9 @@ export default function TextBtn({ dataTest, light, text, size = 1, callback }) {
   return (
     <button
       data-test={dataTest}
-      className={`TextBtn TextBtn--${light ? 'light' : 'dark'}`}
+      className={`TextBtn TextBtn--${light ? 'light' : 'dark'}${
+        inverted ? '--inverted' : ''
+      }`}
       style={{
         height: `${size}rem`,
         fontSize: `${size / 2.5}rem`,

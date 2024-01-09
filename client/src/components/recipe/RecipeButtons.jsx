@@ -61,6 +61,7 @@ export default function RecipeButtons({ slug, name }) {
                   ? 'Remove from Favourites'
                   : 'Add to Favourites'
               }
+              inverted={favourites.includes(slug)}
               size="2"
               callback={handleFavouritesClick}
             />
@@ -70,6 +71,7 @@ export default function RecipeButtons({ slug, name }) {
                   ? 'Remove from Meal List'
                   : 'Add to Meal List'
               }
+              inverted={todos.includes(slug)}
               size="2"
               callback={handleTodosClick}
             />
