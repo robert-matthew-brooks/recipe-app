@@ -121,12 +121,12 @@ describe('favourites table', () => {
 
 describe('todo table', () => {
   it('should contain 9 entries', async () => {
-    const { rows } = await pool.query('SELECT * FROM todo;');
+    const { rows } = await pool.query('SELECT * FROM todos;');
     expect(rows).toHaveLength(9);
   });
 
   it('should return objects with correct properties', async () => {
-    const { rows } = await pool.query('SELECT * FROM todo;');
+    const { rows } = await pool.query('SELECT * FROM todos;');
 
     for (const row of rows) {
       expect(row).toMatchObject({
