@@ -2,11 +2,17 @@ import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import TextBtn from '../TextBtn';
-import { deleteFavourite, putFavourite } from '../../util/api';
+import {
+  deleteFavourite,
+  deleteTodo,
+  putFavourite,
+  putTodo,
+} from '../../util/api';
 import './RecipeButtons.css';
 
 export default function RecipeButtons({ slug, name }) {
-  const { activeUser, favourites, setFavourites } = useContext(UserContext);
+  const { activeUser, favourites, setFavourites, todos, setTodos } =
+    useContext(UserContext);
   const [isSignedInErr, setIsSignedInErr] = useState(false);
 
   const handleFavouritesClick = async () => {
@@ -19,6 +25,21 @@ export default function RecipeButtons({ slug, name }) {
       } else {
         setFavourites([...favourites, slug]);
         await putFavourite(activeUser?.token, slug);
+      }
+    }
+    // TODO end loading
+  };
+
+  const handleTodosClick = async () => {
+    // TODO loading wheel
+    if (!activeUser) setIsSignedInErr(true);
+    else {
+      if (todos.includes(slug)) {
+        setTodos(todos.filter((el) => el !== slug));
+        await deleteTodo(activeUser?.token, slug);
+      } else {
+        setTodos([...todos, slug]);
+        await putTodo(activeUser?.token, slug);
       }
     }
     // TODO end loading
@@ -47,7 +68,15 @@ export default function RecipeButtons({ slug, name }) {
               size="2"
               callback={handleFavouritesClick}
             />
-            <TextBtn text="Add to Meal List" size="2" callback={() => {}} />
+            <TextBtn
+              text={
+                todos.includes(slug)
+                  ? 'Remove from Meal List'
+                  : 'Add to Meal List'
+              }
+              size="2"
+              callback={handleTodosClick}
+            />
           </>
         ) : (
           <p className="err">
