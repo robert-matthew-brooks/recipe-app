@@ -1,11 +1,12 @@
 import { createContext, useEffect, useState } from 'react';
-import { getFavourites } from '../../util/api';
+import { getFavourites, getTodos } from '../../util/api';
 
 export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const [activeUser, setActiveUser] = useState(null);
   const [favourites, setFavourites] = useState([]);
+  const [todos, setTodos] = useState([]);
 
   const activateUser = async (userStr) => {
     if (!userStr) userStr = localStorage.getItem('user');
@@ -15,6 +16,7 @@ export function UserContextProvider({ children }) {
       setActiveUser(activeUser);
       try {
         setFavourites((await getFavourites(activeUser.token)) || []);
+        setTodos((await getTodos(activeUser.token)) || []);
       } catch (err) {
         console.log(err);
       }
@@ -25,6 +27,7 @@ export function UserContextProvider({ children }) {
     localStorage.clear();
     setActiveUser(null);
     setFavourites([]);
+    setTodos([]);
   };
 
   useEffect(() => {
@@ -40,6 +43,8 @@ export function UserContextProvider({ children }) {
         setActiveUser,
         favourites,
         setFavourites,
+        todos,
+        setTodos,
         activateUser,
         deactivateUser,
       }}

@@ -38,7 +38,7 @@ describe('GET /favourites', () => {
 });
 
 describe('PUT /favourites/:recipe_slug', () => {
-  it('200: should add a recipe slug to the favourites list', async () => {
+  it('204: should add a recipe slug to the favourites list', async () => {
     await supertest(server)
       .put('/favourites/recipe-3')
       .set('Authorization', `Bearer ${token}`)
@@ -67,7 +67,7 @@ describe('PUT /favourites/:recipe_slug', () => {
 });
 
 describe('DELETE /favourites/:recipe_slug', () => {
-  it('200: should remove a recipe slug from the favourites list', async () => {
+  it('204: should remove a recipe slug from the favourites list', async () => {
     await supertest(server)
       .delete('/favourites/recipe-1')
       .set('Authorization', `Bearer ${token}`)

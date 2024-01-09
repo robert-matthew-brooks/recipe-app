@@ -9,9 +9,8 @@ import './Navbar.css';
 const links = [
   { text: 'About', href: '/about' },
   { text: 'Recipes', href: '/' },
-  { text: 'Meal List', href: '/meal-list' },
-  { text: 'Shopping List', href: '/shopping-list' },
-  { text: 'Profile', href: '/profile' },
+  { text: 'My Meal List', href: '/meal-list' },
+  { text: 'My Shopping List', href: '/shopping-list' },
 ];
 
 export default function Navbar() {

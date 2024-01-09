@@ -130,3 +130,27 @@ export async function deleteFavourite(token, slug) {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+
+export async function getTodos(token) {
+  const { data } = await api.get('/todos', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return data.todos;
+}
+
+export async function putTodo(token, slug) {
+  await api.put(
+    `/todos/${slug}`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+
+export async function deleteTodo(token, slug) {
+  await api.delete(`/todos/${slug}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}

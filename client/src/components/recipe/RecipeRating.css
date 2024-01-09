@@ -20,7 +20,7 @@
   color: transparent;
   background: linear-gradient(
     90deg,
-    #ffcc00 var(--percent),
+    var(--c-rating-star) var(--percent),
     var(--c-gs-400) var(--percent)
   );
   background-clip: text;
@@ -33,7 +33,7 @@
   color: var(--c-gs-600);
 }
 .RecipeRating__star--current {
-  color: red !important;
+  color: var(--c-gs-600) !important;
 }
 
 .RecipeRating__votes {

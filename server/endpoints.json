@@ -125,6 +125,60 @@
       }
     }
   },
+  "GET /favourites": {
+    "description": "responds a list of favourite recipe slugs for the provided user token",
+    "example_request": {
+      "headers": {
+        "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
+      }
+    },
+    "example_response": {
+      "favourites": ["beans-on-toast", "pot-noodle"]
+    }
+  },
+  "PUT /favourites/:recipe_slug": {
+    "description": "adds a recipe slug to the favourites list of the authenticated user",
+    "example_request": {
+      "headers": {
+        "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
+      }
+    }
+  },
+  "DELETE /favourites/:recipe_slug": {
+    "description": "adds a recipe slug to the favourites list of the authenticated user",
+    "example_request": {
+      "headers": {
+        "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
+      }
+    }
+  },
+  "GET /todos": {
+    "description": "responds a list of todo recipe slugs for the provided user token",
+    "example_request": {
+      "headers": {
+        "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
+      }
+    },
+    "example_response": {
+      "todos": ["beans-on-toast", "pot-noodle"]
+    }
+  },
+  "PUT /todos/:recipe_slug": {
+    "description": "adds a recipe slug to the todos list of the authenticated user",
+    "example_request": {
+      "headers": {
+        "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
+      }
+    }
+  },
+  "DELETE /todos/:recipe_slug": {
+    "description": "adds a recipe slug to the todos list of the authenticated user",
+    "example_request": {
+      "headers": {
+        "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
+      }
+    }
+  },
   "GET /ratings/:recipe_slug": {
     "description": "responds with the 5-star rating for the provided user and recipe",
     "example_request": {
