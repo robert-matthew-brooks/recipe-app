@@ -4,6 +4,7 @@ import Header from './Header';
 import './Todos.css';
 import SimpleMsg from './SimpleMsg';
 import { Link } from 'react-router-dom';
+import TextBtn from './TextBtn';
 
 export default function Todos() {
   const { activeUser, todos, setTodos } = useContext(UserContext);
@@ -44,6 +45,8 @@ export default function Todos() {
                 );
               })}
             </ul>
+
+            <TextBtn text="Clear Meal List..." size={3} callback={() => {}} />
           </div>
         </section>
       </>

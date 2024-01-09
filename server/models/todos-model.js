@@ -5,11 +5,9 @@ const validate = require('../util/validate');
 async function getAll(token) {
   const userId = verifyToken(token).id;
 
-  const { rows: todos } = await pool.query(
+  const { rows } = await pool.query(
     `
-      SELECT
-        r.name,
-        r.slug
+      SELECT ARRAY_AGG(r.slug) AS todos
       FROM todos t
       INNER JOIN recipes r
       ON t.recipe_id = r.id
@@ -18,7 +16,7 @@ async function getAll(token) {
     [userId]
   );
 
-  return { todos };
+  return { todos: rows[0].todos };
 }
 
 async function put(token, recipeSlug) {

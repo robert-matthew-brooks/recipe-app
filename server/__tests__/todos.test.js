@@ -27,10 +27,7 @@ describe('GET /todos', () => {
       .expect(200);
 
     for (const todo of body.todos) {
-      expect(todo).toMatchObject({
-        name: expect.any(String),
-        slug: expect.any(String),
-      });
+      expect(todo).toEqual(expect.any(String));
     }
   });
 
@@ -53,7 +50,7 @@ describe('PUT /todos/:recipe_slug', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
-    expect(body.todos.map((el) => el.slug)).toContain('recipe-1');
+    expect(body.todos).toContain('recipe-1');
   });
 
   describe('error handling', () => {
