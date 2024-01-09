@@ -91,10 +91,9 @@ export default function AllRecipes() {
           <RecipePagination
             recipesCount={recipes.length}
             totalRecipes={totalRecipes}
-            callback={() => {
-              addRecipes(recipes, page);
+            callback={async () => {
+              await addRecipes(recipes, page);
             }}
-            isLoading={isLoading}
           />
         </div>
       </section>

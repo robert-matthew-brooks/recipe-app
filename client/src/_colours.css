@@ -17,23 +17,34 @@
   --c-link-text: #0000ff;
   --c-err-text: #8b0000;
 
-  --c-nav-underline: #87cefa;
+  --medium-box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
+  --subtle-box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.03);
+  --subtle-drop-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
+  /* buttons */
   --c-cta-bg: #8fbc8f;
   --c-cta-text: #000000;
   --c-cta-hover-bg: #000000;
   --c-cta-hover-text: #ffffff;
 
+  /*****************/
+  /* page specific */
+  /*****************/
+
+  /* nav menu */
+  --c-nav-underline: #87cefa;
+
+  /* login page */
   --c-auth-title: #008b8b;
   --c-auth-focus-bg: #ebfad7;
   --c-auth-submit-bg: #bfd0e0;
   --c-auth-submit-hover-bg: #a8bed3;
 
+  /* recipes search page */
   --c-recipe-outline: #ff0000;
   --c-filter-focus: #ebfad7;
   --c-filter-ingredient-bg: #b0c4de;
 
-  --medium-box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
-  --subtle-box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.03);
-  --subtle-drop-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* recipe page */
+  --c-rating-star: #ffcc00;
 }

@@ -16,7 +16,6 @@ export default function RecipeButtons({ slug, name }) {
   const [isSignedInErr, setIsSignedInErr] = useState(false);
 
   const handleFavouritesClick = async () => {
-    // TODO loading wheel
     if (!activeUser) setIsSignedInErr(true);
     else {
       if (favourites.includes(slug)) {
@@ -27,11 +26,9 @@ export default function RecipeButtons({ slug, name }) {
         await putFavourite(activeUser?.token, slug);
       }
     }
-    // TODO end loading
   };
 
   const handleTodosClick = async () => {
-    // TODO loading wheel
     if (!activeUser) setIsSignedInErr(true);
     else {
       if (todos.includes(slug)) {
@@ -42,7 +39,6 @@ export default function RecipeButtons({ slug, name }) {
         await putTodo(activeUser?.token, slug);
       }
     }
-    // TODO end loading
   };
 
   return (
