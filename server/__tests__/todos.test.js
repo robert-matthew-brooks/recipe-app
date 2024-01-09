@@ -20,14 +20,18 @@ afterAll(() => {
 });
 
 describe('GET /todos', () => {
-  it('200: should return a list of recipe slugs', async () => {
+  it('200: should return a recipe object with correct properties', async () => {
     const { body } = await supertest(server)
       .get('/todos')
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
-    expect(body.todos).toEqual(expect.any(Array));
-    expect(body.todos[0]).toEqual(expect.any(String));
+    for (const todo of body.todos) {
+      expect(todo).toMatchObject({
+        name: expect.any(String),
+        slug: expect.any(String),
+      });
+    }
   });
 
   describe('error handling', () => {
@@ -49,7 +53,7 @@ describe('PUT /todos/:recipe_slug', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
-    expect(body.todos).toContain('recipe-1');
+    expect(body.todos.map((el) => el.slug)).toContain('recipe-1');
   });
 
   describe('error handling', () => {

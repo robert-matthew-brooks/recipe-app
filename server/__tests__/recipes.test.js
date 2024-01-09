@@ -61,7 +61,7 @@ describe('GET /recipes', () => {
     const { body } = await supertest(server).get('/recipes').expect(200);
 
     expect(body).toMatchObject({
-      recipes: expect.any(Object),
+      recipes: expect.any(Array),
       total_recipes: expect.any(Number),
     });
 

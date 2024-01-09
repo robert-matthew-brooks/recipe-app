@@ -5,19 +5,18 @@ const validate = require('../util/validate');
 async function getAll(token) {
   const userId = verifyToken(token).id;
 
-  const { rows } = await pool.query(
+  const { rows: todos } = await pool.query(
     `
-      SELECT ARRAY_AGG(r.slug) AS todos
+      SELECT
+        r.name,
+        r.slug
       FROM todos t
       INNER JOIN recipes r
       ON t.recipe_id = r.id
-      WHERE t.user_id = $1
-      GROUP BY t.user_id;
+      WHERE t.user_id = $1;
     `,
     [userId]
   );
-
-  const todos = rows[0]?.todos;
 
   return { todos };
 }
