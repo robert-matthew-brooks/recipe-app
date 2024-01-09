@@ -38,7 +38,7 @@ describe('GET /todos', () => {
 });
 
 describe('PUT /todos/:recipe_slug', () => {
-  it('200: should add a recipe slug to the todos list', async () => {
+  it('204: should add a recipe slug to the todos list', async () => {
     await supertest(server)
       .put('/todos/recipe-1')
       .set('Authorization', `Bearer ${token}`)
@@ -67,7 +67,7 @@ describe('PUT /todos/:recipe_slug', () => {
 });
 
 describe('DELETE /todos/:recipe_slug', () => {
-  it('200: should remove a recipe slug from the todos list', async () => {
+  it('204: should remove a recipe slug from the todos list', async () => {
     await supertest(server)
       .delete('/todos/recipe-5')
       .set('Authorization', `Bearer ${token}`)
