@@ -251,3 +251,29 @@ describe('GET /recipes', () => {
     });
   });
 });
+
+describe('POST /recipes/info', () => {
+  it('200: should return an array of recipe objects with the correct properties', async () => {
+    const { body } = await supertest(server)
+      .post('/recipes/info')
+      .send({ slugs: ['recipe-1', 'recipe-2', 'recipe-3'] })
+      .expect(200);
+
+    for (const recipe of body.recipes) {
+      expect(recipe).toMatchObject({
+        name: expect.any(String),
+        slug: expect.any(String),
+        img_url: expect.toBeOneOf([expect.any(String), null]),
+      });
+    }
+  });
+
+  describe('error handling', () => {
+    it('404: should return an error if recipe_id is not in database', async () => {
+      await supertest(server)
+        .post('/recipes/info')
+        .send({ slugs: ['recipe-999'] })
+        .expect(404);
+    });
+  });
+});

@@ -125,6 +125,26 @@
       }
     }
   },
+  "POST /recipes/info": {
+    "description": "responds with details to build thumbnails and links from the provided slugs",
+    "example_request": {
+      "slugs": ["beans-on-toast", "pot-noodle"]
+    },
+    "example_response": {
+      "recipes": [
+        {
+          "name": "Beans on Toast",
+          "slug": "beans-on-toast",
+          "img_url": "http://www.food-images.com/beans-on-toast.jpg"
+        },
+        {
+          "name": "Pot Noodle",
+          "slug": "pot-noodle",
+          "img_url": "http://www.food-images.com/pot-noodle.jpg"
+        }
+      ]
+    }
+  },
   "GET /favourites": {
     "description": "responds a list of favourite recipe slugs for the provided user token",
     "example_request": {

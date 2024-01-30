@@ -43,4 +43,15 @@ async function getMany(req, res, next) {
   }
 }
 
-module.exports = { getOne, getMany };
+async function getInfo(req, res, next) {
+  const { slugs } = req.body;
+
+  try {
+    const { recipes } = await recipesModel.getInfo(slugs);
+    res.send({ recipes });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { getOne, getMany, getInfo };
