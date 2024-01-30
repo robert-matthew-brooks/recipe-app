@@ -4,8 +4,8 @@ import { UserContext } from './context/UserContext';
 import Header from './Header';
 import SimpleMsg from './SimpleMsg';
 import TextBtn from './TextBtn';
-import { deleteTodo, getTodoDetails } from '../util/api';
-import recipePlaceholderImg from '../assets/recipe-placeholder.jpeg';
+import RecipeCards from './recipes/RecipeCards';
+import { deleteTodo, getTodos } from '../util/api';
 import './Todos.css';
 
 export default function Todos() {
@@ -15,7 +15,7 @@ export default function Todos() {
   useEffect(() => {
     (async () => {
       try {
-        setTodos(await getTodoDetails(todoSlugs));
+        setTodos(await getTodos(activeUser.token));
       } catch (err) {
         console.log(err);
       }
@@ -24,7 +24,7 @@ export default function Todos() {
 
   const clearTodos = async () => {
     await Promise.all([
-      todoSlugs.map((todo) => deleteTodo(activeUser.token, todo)),
+      todos.map((todo) => deleteTodo(activeUser.token, todo.slug)),
     ]);
 
     setTodoSlugs([]);
@@ -39,7 +39,7 @@ export default function Todos() {
         linkHref="/login"
       />
     );
-  else if (todos.length === 0) {
+  else if (!todos.length > 0) {
     return (
       <SimpleMsg
         title="My Meal List"
@@ -55,21 +55,7 @@ export default function Todos() {
 
         <section id="Todos">
           <div id="Todos__inner" className="inner">
-            <ul id="Todos__list">
-              {todos.recipes?.map((todo, i) => {
-                return (
-                  <Link key={i} to={`/recipes/${todo.slug}`}>
-                    <li className="Todos__card">
-                      <img
-                        src={todo.imgUrl || recipePlaceholderImg}
-                        height="100px"
-                      />
-                      {todo.name}
-                    </li>
-                  </Link>
-                );
-              })}
-            </ul>
+            <RecipeCards recipes={todos} />
 
             <TextBtn
               text="Remove All..."

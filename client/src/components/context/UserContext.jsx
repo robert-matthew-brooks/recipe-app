@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import { getFavourites, getTodos } from '../../util/api';
+import { getFavouriteSlugs, getTodoSlugs } from '../../util/api';
 
 export const UserContext = createContext({});
 
@@ -15,8 +15,8 @@ export function UserContextProvider({ children }) {
       const activeUser = JSON.parse(userStr);
       setActiveUser(activeUser);
       try {
-        setFavouriteSlugs((await getFavourites(activeUser.token)) || []);
-        setTodoSlugs((await getTodos(activeUser.token)) || []);
+        setFavouriteSlugs((await getFavouriteSlugs(activeUser.token)) || []);
+        setTodoSlugs((await getTodoSlugs(activeUser.token)) || []);
       } catch (err) {
         console.log(err);
       }
