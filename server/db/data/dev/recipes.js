@@ -35,6 +35,7 @@ const recipes = [
   {
     name: 'Penne & Cheese',
     slug: 'penne-and-cheese',
+    imgUrl: '/recipe-imgs/penne-and-cheese.jpeg',
     author: 'Bob',
     ingredients: [
       { name: 'Shallot', amount: '1' },
@@ -190,6 +191,7 @@ const recipes = [
   {
     name: 'Chicken & Pepper Chow Mein',
     slug: 'chicken-and-pepper-chow-mein',
+    imgUrl: '/recipe-imgs/chicken-and-pepper-chow-mein.jpg',
     author: 'Bob',
     ingredients: [
       { name: 'Chicken Breasts', amount: '2' },
@@ -214,6 +216,7 @@ const recipes = [
   {
     name: 'Cheesy Bacon & Potato Gratin',
     slug: 'cheesy-bacon-and-potato-gratin',
+    imgUrl: '/recipe-imgs/cheesy-bacon-and-potato-gratin.jpg',
     author: 'Bob',
     ingredients: [
       { name: 'Onions', amount: '1' },

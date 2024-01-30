@@ -177,4 +177,30 @@ async function getMany(
   return { recipes, total_recipes: rows[0].total_recipes };
 }
 
-module.exports = { getOne, getMany };
+async function getInfo(slugs) {
+  if (slugs.length === 0) return { recipes: [] };
+
+  await Promise.all(
+    slugs.map((slug) => {
+      return validate.rejectIfNotInDb(slug, 'slug', 'recipes');
+    })
+  );
+
+  const { rows } = await pool.query(
+    format(
+      `
+        SELECT
+          name,
+          slug,
+          img_url
+        FROM recipes
+        WHERE slug IN (%L);
+      `,
+      slugs
+    )
+  );
+
+  return { recipes: rows };
+}
+
+module.exports = { getOne, getMany, getInfo };
