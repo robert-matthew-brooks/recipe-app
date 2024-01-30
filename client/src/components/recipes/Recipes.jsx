@@ -38,16 +38,16 @@ export default function AllRecipes() {
   const addRecipes = async (currentRecipes, page) => {
     if (!isLoading) setIsLoading(true);
     try {
-      const { recipes: fetchedRecipes, totalRecipes } = await getRecipes(
-        activeUser?.token,
-        filterName,
-        filterOrderBy,
-        filterIngredients,
-        filterIsFavourites,
-        filterIsVegetarian,
+      const { recipes: fetchedRecipes, totalRecipes } = await getRecipes({
+        token: activeUser?.token,
+        searchTerm: filterName,
+        orderBy: filterOrderBy,
+        ingredients: filterIngredients,
+        isFavourites: filterIsFavourites,
+        isVegetarian: filterIsVegetarian,
         limit,
-        page
-      );
+        page,
+      });
       setRecipes([...currentRecipes, ...fetchedRecipes]);
       setTotalRecipes(totalRecipes);
       setPage(page + 1);
@@ -94,7 +94,7 @@ export default function AllRecipes() {
             callback={async () => {
               await addRecipes(recipes, page);
             }}
-          />
+          ></RecipePagination>
         </div>
       </section>
     </>

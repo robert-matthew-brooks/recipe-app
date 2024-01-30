@@ -27,24 +27,26 @@ export async function getIngredients() {
   return data.ingredients;
 }
 
-export async function getRecipes(
+export async function getRecipes({
   token,
   searchTerm,
   orderBy,
   ingredients,
   isFavourites,
+  isTodos,
   isVegetarian,
   limit,
-  page
-) {
+  page,
+}) {
   const params = {
     search_term: searchTerm,
     ingredient_ids:
-      ingredients.length > 0
+      ingredients?.length > 0
         ? JSON.stringify(ingredients.map((el) => el.id))
         : null,
     is_favourites: isFavourites ? 'true' : null,
     is_vegetarian: isVegetarian ? 'true' : null,
+    is_todos: isTodos ? 'true' : null,
     sort: orderBy || null,
     limit,
     page,
@@ -52,7 +54,7 @@ export async function getRecipes(
 
   // remove empty params
   Object.keys(params).forEach((key) => {
-    [null, '', '[]'].includes(params[key]) && delete params[key];
+    [undefined, null, '', '[]'].includes(params[key]) && delete params[key];
   });
 
   const { data } = await api.get('/recipes', {
@@ -153,18 +155,4 @@ export async function deleteTodo(token, slug) {
   await api.delete(`/todos/${slug}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-}
-
-export async function getTodos(token) {
-  const { data } = await api.post('/recipes/todos', {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  const recipes = data.recipes.map((recipe) => {
-    recipe.imgUrl = recipe.img_url;
-    delete recipe.img_url;
-    return recipe;
-  });
-
-  return recipes;
 }
