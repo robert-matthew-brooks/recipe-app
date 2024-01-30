@@ -27,31 +27,21 @@ async function getMany(req, res, next) {
   const ingredientIds = ingredientIdsStr && JSON.parse(ingredientIdsStr);
 
   try {
-    const { recipes, total_recipes } = await recipesModel.getMany(
+    const { recipes, total_recipes } = await recipesModel.getMany({
       searchTerm,
       ingredientIds,
       isFavourites,
+      isTodos: false,
       isVegetarian,
       sort,
       limit,
       page,
-      token
-    );
+      token,
+    });
     res.send({ recipes, total_recipes });
   } catch (err) {
     next(err);
   }
 }
 
-async function getInfo(req, res, next) {
-  const { slugs } = req.body;
-
-  try {
-    const { recipes } = await recipesModel.getInfo(slugs);
-    res.send({ recipes });
-  } catch (err) {
-    next(err);
-  }
-}
-
-module.exports = { getOne, getMany, getInfo };
+module.exports = { getOne, getMany };

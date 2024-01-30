@@ -46,18 +46,20 @@ async function getOne(recipeSlug) {
   return { recipe: rows[0] };
 }
 
-async function getMany(
+async function getMany({
   searchTerm = '',
   ingredientIds = [],
   isFavourites,
+  isTodos,
   isVegetarian,
   sort = 'new',
   limit = 10,
   page = 1,
-  token
-) {
+  token,
+}) {
   isFavourites = !!isFavourites;
-  const userId = isFavourites ? verifyToken(token).id : null;
+  isTodos = !!isTodos;
+  const userId = isFavourites || isTodos ? verifyToken(token).id : null;
   isVegetarian = !!isVegetarian;
   const offset = limit * (page - 1);
   const lookupSort = {
@@ -112,6 +114,19 @@ async function getMany(
       )
     : '';
 
+  const todosQueryStr = isTodos
+    ? format(
+        `
+          INNER JOIN (
+            SELECT todos.recipe_id
+            FROM todos
+            WHERE todos.user_id = ${userId}
+          ) t
+            ON r.id = t.recipe_id
+        `
+      )
+    : '';
+
   const vegetarianQueryStr = isVegetarian ? 'AND r.is_vegetarian IS TRUE' : '';
 
   const orderByQueryStr = lookupSort[sort];
@@ -135,6 +150,7 @@ async function getMany(
         ${vegetarianQueryStr}
       ) r
       ${favouritesQueryStr}
+      ${todosQueryStr}
       ${ingredientsQueryStr}
       INNER JOIN users u
         ON r.author_id = u.id
@@ -168,6 +184,7 @@ async function getMany(
           ${vegetarianQueryStr}
         ) r
         ${favouritesQueryStr}
+        ${todosQueryStr}
         ${ingredientsQueryStr}
       ) count;
     `,
@@ -177,30 +194,4 @@ async function getMany(
   return { recipes, total_recipes: rows[0].total_recipes };
 }
 
-async function getInfo(slugs) {
-  if (slugs.length === 0) return { recipes: [] };
-
-  await Promise.all(
-    slugs.map((slug) => {
-      return validate.rejectIfNotInDb(slug, 'slug', 'recipes');
-    })
-  );
-
-  const { rows } = await pool.query(
-    format(
-      `
-        SELECT
-          name,
-          slug,
-          img_url
-        FROM recipes
-        WHERE slug IN (%L);
-      `,
-      slugs
-    )
-  );
-
-  return { recipes: rows };
-}
-
-module.exports = { getOne, getMany, getInfo };
+module.exports = { getOne, getMany };
