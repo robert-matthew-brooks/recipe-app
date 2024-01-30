@@ -7,9 +7,14 @@ const data = require('../db/data/test');
 const { createToken } = require('../util/token');
 
 expect.extend(matchers);
+let token;
 
 beforeEach(async () => {
   await seed(data);
+
+  token = createToken(
+    (await pool.query('SELECT id, username FROM users;')).rows[0]
+  );
 });
 
 afterAll(async () => {
@@ -118,10 +123,6 @@ describe('GET /recipes', () => {
   });
 
   it('200: should filter 2 favourite recipes', async () => {
-    const token = createToken(
-      (await pool.query('SELECT id, username FROM users;')).rows[0]
-    );
-
     const { body } = await supertest(server)
       .get('/recipes?is_favourites=true')
       .set('Authorization', `Bearer ${token}`)
@@ -252,28 +253,40 @@ describe('GET /recipes', () => {
   });
 });
 
-describe('POST /recipes/info', () => {
+describe('GET /recipes/info', () => {
   it('200: should return an array of recipe objects with the correct properties', async () => {
     const { body } = await supertest(server)
-      .post('/recipes/info')
-      .send({ slugs: ['recipe-1', 'recipe-2', 'recipe-3'] })
+      .get('/todos')
+      .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
     for (const recipe of body.recipes) {
       expect(recipe).toMatchObject({
+        id: expect.any(Number),
         name: expect.any(String),
         slug: expect.any(String),
+        author: expect.any(String),
         img_url: expect.toBeOneOf([expect.any(String), null]),
+        created_at: expect.any(String),
+        votes: expect.any(Number),
+        rating: expect.toBeOneOf([expect.any(Number), null]),
       });
     }
   });
 
+  it('200: should return 3 todo recipes', async () => {
+    const { body } = await supertest(server)
+      .get('/todos')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+
+    expect(body.recipes).toHaveLength(3);
+    expect(body.total_recipes).toBe(3);
+  });
+
   describe('error handling', () => {
-    it('404: should return an error if recipe_id is not in database', async () => {
-      await supertest(server)
-        .post('/recipes/info')
-        .send({ slugs: ['recipe-999'] })
-        .expect(404);
+    it('401: should return an error if token for todos is not valid', async () => {
+      await supertest(server).get('/todos').expect(401);
     });
   });
 });
