@@ -253,10 +253,10 @@ describe('GET /recipes', () => {
   });
 });
 
-describe('GET /recipes/info', () => {
+describe('GET /recipes?is_todos=true', () => {
   it('200: should return an array of recipe objects with the correct properties', async () => {
     const { body } = await supertest(server)
-      .get('/todos')
+      .get('/recipes?is_todos=true')
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
@@ -276,7 +276,7 @@ describe('GET /recipes/info', () => {
 
   it('200: should return 3 todo recipes', async () => {
     const { body } = await supertest(server)
-      .get('/todos')
+      .get('/recipes?is_todos=true')
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
@@ -286,7 +286,7 @@ describe('GET /recipes/info', () => {
 
   describe('error handling', () => {
     it('401: should return an error if token for todos is not valid', async () => {
-      await supertest(server).get('/todos').expect(401);
+      await supertest(server).get('/recipes?is_todos=true').expect(401);
     });
   });
 });
