@@ -154,3 +154,15 @@ export async function deleteTodo(token, slug) {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+
+export async function getTodoDetails(slugs) {
+  const { data } = await api.post('/recipes/info', { slugs });
+
+  const recipes = data.recipes.map((recipe) => {
+    recipe.imgUrl = recipe.img_url;
+    delete recipe.img_url;
+    return recipe;
+  });
+
+  return { recipes };
+}

@@ -1,15 +1,34 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { UserContext } from './context/UserContext';
 import Header from './Header';
-import './Todos.css';
 import SimpleMsg from './SimpleMsg';
-import { Link } from 'react-router-dom';
 import TextBtn from './TextBtn';
+import { deleteTodo, getTodoDetails } from '../util/api';
+import recipePlaceholderImg from '../assets/recipe-placeholder.jpeg';
+import './Todos.css';
 
 export default function Todos() {
-  const { activeUser, todos, setTodos } = useContext(UserContext);
+  const { activeUser, todoSlugs, setTodoSlugs } = useContext(UserContext);
+  const [todos, setTodos] = useState([]);
 
-  // if not logged in, redirect
+  useEffect(() => {
+    (async () => {
+      try {
+        setTodos(await getTodoDetails(todoSlugs));
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [todoSlugs]);
+
+  const clearTodos = async () => {
+    await Promise.all([
+      todoSlugs.map((todo) => deleteTodo(activeUser.token, todo)),
+    ]);
+
+    setTodoSlugs([]);
+  };
 
   if (!activeUser)
     return (
@@ -36,17 +55,29 @@ export default function Todos() {
 
         <section id="Todos">
           <div id="Todos__inner" className="inner">
-            <ul>
-              {todos.map((todo, i) => {
+            <ul id="Todos__list">
+              {todos.recipes?.map((todo, i) => {
                 return (
-                  <li key={i}>
-                    <Link to={`/recipes/${todo}`}>{todo}</Link>
-                  </li>
+                  <Link key={i} to={`/recipes/${todo.slug}`}>
+                    <li className="Todos__card">
+                      <img
+                        src={todo.imgUrl || recipePlaceholderImg}
+                        height="100px"
+                      />
+                      {todo.name}
+                    </li>
+                  </Link>
                 );
               })}
             </ul>
 
-            <TextBtn text="Clear Meal List..." size={3} callback={() => {}} />
+            <TextBtn
+              text="Remove All..."
+              size={3}
+              callback={async () => {
+                await clearTodos();
+              }}
+            />
           </div>
         </section>
       </>
