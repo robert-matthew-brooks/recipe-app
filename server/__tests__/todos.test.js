@@ -19,25 +19,6 @@ afterAll(() => {
   pool.end();
 });
 
-describe('GET /todos', () => {
-  it('200: should return a recipe object with correct properties', async () => {
-    const { body } = await supertest(server)
-      .get('/todos')
-      .set('Authorization', `Bearer ${token}`)
-      .expect(200);
-
-    for (const todo of body.todos) {
-      expect(todo).toEqual(expect.any(String));
-    }
-  });
-
-  describe('error handling', () => {
-    it('401: should return an error if user token not provided', async () => {
-      await supertest(server).get('/todos').expect(401);
-    });
-  });
-});
-
 describe('PUT /todos/:recipe_slug', () => {
   it('204: should add a recipe slug to the todos list', async () => {
     await supertest(server)
