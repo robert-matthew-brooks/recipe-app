@@ -1,33 +1,58 @@
 import { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from './context/UserContext';
 import Header from './Header';
+import RecipeCards from './recipes/RecipeCards';
+import RecipePagination from './recipes/RecipePagination';
 import SimpleMsg from './SimpleMsg';
 import TextBtn from './TextBtn';
-import RecipeCards from './recipes/RecipeCards';
-import { deleteTodo, getTodos } from '../util/api';
+import { getRecipes, deleteTodo } from '../util/api';
 import './Todos.css';
 
 export default function Todos() {
-  const { activeUser, todoSlugs, setTodoSlugs } = useContext(UserContext);
-  const [todos, setTodos] = useState([]);
+  const { activeUser, setTodoSlugs } = useContext(UserContext);
+  const navigate = useNavigate();
+  const [recipes, setRecipes] = useState([]);
+  const [totalRecipes, setTotalRecipes] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const limit = 6;
+  const [page, setPage] = useState(1);
+
+  const addRecipes = async (currentRecipes, page) => {
+    if (!isLoading) setIsLoading(true);
+    try {
+      const { recipes: fetchedRecipes, totalRecipes } = await getRecipes({
+        token: activeUser?.token,
+        isTodos: true,
+        limit,
+        page,
+      });
+      setRecipes([...currentRecipes, ...fetchedRecipes]);
+      setTotalRecipes(totalRecipes);
+      setPage(page + 1);
+    } catch (err) {
+      console.log(err);
+      navigate('/error');
+    }
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     (async () => {
-      try {
-        setTodos(await getTodos(activeUser.token));
-      } catch (err) {
-        console.log(err);
+      if (activeUser?.token) {
+        addRecipes([], 1);
       }
     })();
-  }, [todoSlugs]);
+  }, []);
 
   const clearTodos = async () => {
     await Promise.all([
-      todos.map((todo) => deleteTodo(activeUser.token, todo.slug)),
+      recipes.map((recipe) => deleteTodo(activeUser.token, recipe.slug)),
     ]);
 
     setTodoSlugs([]);
+    setRecipes([]);
   };
 
   if (!activeUser)
@@ -39,7 +64,7 @@ export default function Todos() {
         linkHref="/login"
       />
     );
-  else if (!todos.length > 0) {
+  else if (!recipes?.length > 0) {
     return (
       <SimpleMsg
         title="My Meal List"
@@ -55,15 +80,23 @@ export default function Todos() {
 
         <section id="Todos">
           <div id="Todos__inner" className="inner">
-            <RecipeCards recipes={todos} />
+            <RecipeCards recipes={recipes} />
 
-            <TextBtn
-              text="Remove All..."
-              size={3}
+            <RecipePagination
+              recipesCount={recipes.length}
+              totalRecipes={totalRecipes}
               callback={async () => {
-                await clearTodos();
+                await addRecipes(recipes, page);
               }}
-            />
+            >
+              <TextBtn
+                text="Remove All..."
+                size={3}
+                callback={async () => {
+                  await clearTodos();
+                }}
+              />
+            </RecipePagination>
           </div>
         </section>
       </>

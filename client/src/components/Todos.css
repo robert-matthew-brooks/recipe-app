@@ -10,20 +10,3 @@
   align-items: center;
   gap: 3rem;
 }
-
-#Todos__list {
-  display: grid;
-  grid-template-columns: repeat(2, 400px);
-  gap: 1rem;
-}
-
-.Todos__card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  list-style-type: none;
-  background-color: red;
-}
-.Todos__card:hover {
-  outline: 1px solid black;
-}

@@ -4,3 +4,8 @@
   align-items: center;
   gap: 1.5rem;
 }
+
+#RecipePagination__buttons {
+  display: flex;
+  gap: 1rem;
+}
