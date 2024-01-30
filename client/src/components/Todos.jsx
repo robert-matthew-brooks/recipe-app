@@ -1,14 +1,34 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { UserContext } from './context/UserContext';
 import Header from './Header';
-import './Todos.css';
 import SimpleMsg from './SimpleMsg';
-import { Link } from 'react-router-dom';
+import TextBtn from './TextBtn';
+import RecipeCards from './recipes/RecipeCards';
+import { deleteTodo, getTodos } from '../util/api';
+import './Todos.css';
 
 export default function Todos() {
-  const { activeUser, todos, setTodos } = useContext(UserContext);
+  const { activeUser, todoSlugs, setTodoSlugs } = useContext(UserContext);
+  const [todos, setTodos] = useState([]);
 
-  // if not logged in, redirect
+  useEffect(() => {
+    (async () => {
+      try {
+        setTodos(await getTodos(activeUser.token));
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [todoSlugs]);
+
+  const clearTodos = async () => {
+    await Promise.all([
+      todos.map((todo) => deleteTodo(activeUser.token, todo.slug)),
+    ]);
+
+    setTodoSlugs([]);
+  };
 
   if (!activeUser)
     return (
@@ -19,7 +39,7 @@ export default function Todos() {
         linkHref="/login"
       />
     );
-  else if (todos.length === 0) {
+  else if (!todos.length > 0) {
     return (
       <SimpleMsg
         title="My Meal List"
@@ -35,15 +55,15 @@ export default function Todos() {
 
         <section id="Todos">
           <div id="Todos__inner" className="inner">
-            <ul>
-              {todos.map((todo, i) => {
-                return (
-                  <li key={i}>
-                    <Link to={`/recipes/${todo}`}>{todo}</Link>
-                  </li>
-                );
-              })}
-            </ul>
+            <RecipeCards recipes={todos} />
+
+            <TextBtn
+              text="Remove All..."
+              size={3}
+              callback={async () => {
+                await clearTodos();
+              }}
+            />
           </div>
         </section>
       </>

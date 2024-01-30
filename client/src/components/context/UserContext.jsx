@@ -1,12 +1,12 @@
 import { createContext, useEffect, useState } from 'react';
-import { getFavourites, getTodos } from '../../util/api';
+import { getFavouriteSlugs, getTodoSlugs } from '../../util/api';
 
 export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const [activeUser, setActiveUser] = useState(null);
-  const [favourites, setFavourites] = useState([]);
-  const [todos, setTodos] = useState([]);
+  const [favouriteSlugs, setFavouriteSlugs] = useState([]);
+  const [todoSlugs, setTodoSlugs] = useState([]);
 
   const activateUser = async (userStr) => {
     if (!userStr) userStr = localStorage.getItem('user');
@@ -15,8 +15,8 @@ export function UserContextProvider({ children }) {
       const activeUser = JSON.parse(userStr);
       setActiveUser(activeUser);
       try {
-        setFavourites((await getFavourites(activeUser.token)) || []);
-        setTodos((await getTodos(activeUser.token)) || []);
+        setFavouriteSlugs((await getFavouriteSlugs(activeUser.token)) || []);
+        setTodoSlugs((await getTodoSlugs(activeUser.token)) || []);
       } catch (err) {
         console.log(err);
       }
@@ -26,8 +26,8 @@ export function UserContextProvider({ children }) {
   const deactivateUser = () => {
     localStorage.clear();
     setActiveUser(null);
-    setFavourites([]);
-    setTodos([]);
+    setFavouriteSlugs([]);
+    setTodoSlugs([]);
   };
 
   useEffect(() => {
@@ -41,10 +41,10 @@ export function UserContextProvider({ children }) {
       value={{
         activeUser,
         setActiveUser,
-        favourites,
-        setFavourites,
-        todos,
-        setTodos,
+        favouriteSlugs,
+        setFavouriteSlugs,
+        todoSlugs,
+        setTodoSlugs,
         activateUser,
         deactivateUser,
       }}

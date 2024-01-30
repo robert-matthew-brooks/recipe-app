@@ -107,7 +107,7 @@ export async function deleteRating(token, slug) {
   });
 }
 
-export async function getFavourites(token) {
+export async function getFavouriteSlugs(token) {
   const { data } = await api.get('/favourites', {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -131,7 +131,7 @@ export async function deleteFavourite(token, slug) {
   });
 }
 
-export async function getTodos(token) {
+export async function getTodoSlugs(token) {
   const { data } = await api.get('/todos', {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -153,4 +153,18 @@ export async function deleteTodo(token, slug) {
   await api.delete(`/todos/${slug}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
+}
+
+export async function getTodos(token) {
+  const { data } = await api.post('/recipes/todos', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  const recipes = data.recipes.map((recipe) => {
+    recipe.imgUrl = recipe.img_url;
+    delete recipe.img_url;
+    return recipe;
+  });
+
+  return recipes;
 }

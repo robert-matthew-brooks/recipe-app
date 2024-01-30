@@ -11,18 +11,23 @@ import {
 import './RecipeButtons.css';
 
 export default function RecipeButtons({ slug, name }) {
-  const { activeUser, favourites, setFavourites, todos, setTodos } =
-    useContext(UserContext);
+  const {
+    activeUser,
+    favouriteSlugs,
+    setFavouriteSlugs,
+    todoSlugs,
+    setTodoSlugs,
+  } = useContext(UserContext);
   const [isSignedInErr, setIsSignedInErr] = useState(false);
 
   const handleFavouritesClick = async () => {
     if (!activeUser) setIsSignedInErr(true);
     else {
-      if (favourites.includes(slug)) {
-        setFavourites(favourites.filter((el) => el !== slug));
+      if (favouriteSlugs.includes(slug)) {
+        setFavouriteSlugs(favouriteSlugs.filter((el) => el !== slug));
         await deleteFavourite(activeUser?.token, slug);
       } else {
-        setFavourites([...favourites, slug]);
+        setFavouriteSlugs([...favouriteSlugs, slug]);
         await putFavourite(activeUser?.token, slug);
       }
     }
@@ -31,11 +36,11 @@ export default function RecipeButtons({ slug, name }) {
   const handleTodosClick = async () => {
     if (!activeUser) setIsSignedInErr(true);
     else {
-      if (todos.includes(slug)) {
-        setTodos(todos.filter((el) => el !== slug));
+      if (todoSlugs.includes(slug)) {
+        setTodoSlugs(todoSlugs.filter((el) => el !== slug));
         await deleteTodo(activeUser?.token, slug);
       } else {
-        setTodos([...todos, slug]);
+        setTodoSlugs([...todoSlugs, slug]);
         await putTodo(activeUser?.token, slug);
       }
     }
@@ -57,21 +62,21 @@ export default function RecipeButtons({ slug, name }) {
           <>
             <TextBtn
               text={
-                favourites.includes(slug)
+                favouriteSlugs.includes(slug)
                   ? 'Remove from Favourites'
                   : 'Add to Favourites'
               }
-              inverted={favourites.includes(slug)}
+              inverted={favouriteSlugs.includes(slug)}
               size="2"
               callback={handleFavouritesClick}
             />
             <TextBtn
               text={
-                todos.includes(slug)
+                todoSlugs.includes(slug)
                   ? 'Remove from Meal List'
                   : 'Add to Meal List'
               }
-              inverted={todos.includes(slug)}
+              inverted={todoSlugs.includes(slug)}
               size="2"
               callback={handleTodosClick}
             />

@@ -106,7 +106,7 @@ export default function Recipe() {
           </section>
         </div>
 
-        <RecipeButtons slug={recipe.slug} />
+        <RecipeButtons slug={recipe.slug} name={recipe.name} />
         <RecipeRating
           slug={recipe.slug}
           votes={recipe.votes}
