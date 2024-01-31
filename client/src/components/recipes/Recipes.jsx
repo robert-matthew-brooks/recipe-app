@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getRecipes } from '../../util/api';
 import { UserContext } from '../context/UserContext';
+import Loading from '../Loading';
 import Header from '../Header';
 import RecipeCards from './RecipeCards';
 import RecipeFilter from './RecipeFilter';
@@ -79,14 +80,16 @@ export default function AllRecipes() {
               setIsLoading,
             }}
           />
-          {isLoading && 'loading'}
-          {/* TODO proper loading screen/wheel */}
 
-          {recipes.length > 0 ? (
-            <RecipeCards {...{ recipes }} />
-          ) : (
-            <p id="Recipes__none-msg">No recipes found &#9785;</p>
-          )}
+          <Loading isLoading={isLoading}>
+            {recipes.length > 0 ? (
+              <RecipeCards {...{ recipes }} />
+            ) : (
+              !isLoading && (
+                <p id="Recipes__none-msg">No recipes found &#9785;</p>
+              )
+            )}
+          </Loading>
 
           <RecipePagination
             recipesCount={recipes.length}
