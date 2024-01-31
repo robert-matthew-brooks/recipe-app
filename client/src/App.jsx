@@ -5,6 +5,7 @@ import Navbar from './components/nav/Navbar';
 import Recipes from './components/recipes/Recipes';
 import Recipe from './components/recipe/Recipe';
 import Todos from './components/Todos';
+import ShoppingList from './components/ShoppingList';
 import AuthRegister from './components/auth/AuthRegister';
 import AuthLogin from './components/auth/AuthLogin';
 import AuthLogout from './components/auth/AuthLogout';
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="/recipes/:recipe_slug" element={<Recipe />} />
 
         <Route path="meal-list" element={<Todos />} />
+        <Route path="shopping-list" element={<ShoppingList />} />
 
         <Route path="/404" element={<Missing404 />} />
         <Route path="/Error" element={<Error />} />

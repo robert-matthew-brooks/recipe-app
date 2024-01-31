@@ -44,7 +44,7 @@ export default function Todos() {
         addRecipes([], 1);
       }
     })();
-  }, []);
+  }, [activeUser]);
 
   const clearTodos = async () => {
     await Promise.all([

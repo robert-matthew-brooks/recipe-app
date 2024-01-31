@@ -1,0 +1,49 @@
+#ShoppingList {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+#ShoppingList__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+#ShoppingList__ingredients {
+}
+
+#ShoppingList__ingredients > ul {
+  list-style-type: none;
+  cursor: pointer;
+}
+
+#ShoppingList__ingredients > ul > li {
+  display: flex;
+  gap: 1rem;
+  padding: 0 0.6rem;
+  font-size: 1.2rem;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--c-gs-300);
+}
+#ShoppingList__ingredients > ul > li:hover {
+  background-color: var(--c-gs-100);
+}
+
+#ShoppingList__ingredients > ul > li > label {
+  display: block;
+  width: 400px;
+  padding: 1rem 0;
+}
+
+#ShoppingList__ingredients > ul > li > input,
+#ShoppingList__ingredients > ul > li > label {
+  cursor: pointer;
+}
+
+#ShoppingList__ingredients > ul > li > input:checked + label {
+  text-decoration: line-through;
+  text-decoration-thickness: 0.1rem;
+  opacity: 0.3;
+}
