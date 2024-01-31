@@ -15,6 +15,9 @@
 }
 
 #ShoppingList__ingredients > ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 2rem;
   list-style-type: none;
   cursor: pointer;
 }
@@ -57,7 +60,7 @@
 
 #ShoppingList__ingredients > ul > li > label {
   display: block;
-  width: 400px;
+  min-width: 250px;
   padding: 1rem 0;
 }
 
