@@ -39,16 +39,6 @@
     }
   },
   "GET /user/availability/:username": { "description": "" },
-  "GET /ingredients": {
-    "description": "responds with a list of every ingredient used in every recipe",
-    "example_response": {
-      "ingredients": [
-        { "id": "1", "name": "Cheese", "units": "g" },
-        { "id": "2", "name": "Sausages", "units": "" },
-        { "id": "3", "name": "Milk", "units": "ml" }
-      ]
-    }
-  },
   "GET /recipes": {
     "description": "responds with a filtered and paginated list of recipes, and the number of total matches with the provided paramters",
     "accepted_queries": [
@@ -124,6 +114,31 @@
         "votes": 10,
         "rating": 2.9
       }
+    }
+  },
+  "GET /ingredients": {
+    "description": "responds with a list of every ingredient used in every recipe",
+    "example_response": {
+      "ingredients": [
+        { "id": "1", "name": "Cheese", "units": "g" },
+        { "id": "2", "name": "Sausages", "units": "" },
+        { "id": "3", "name": "Milk", "units": "ml" }
+      ]
+    }
+  },
+  "GET /ingredients/shopping-list": {
+    "description": "responds with a list of ingredients (not reduced) for the user's todo list",
+    "example_request": {
+      "headers": {
+        "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
+      }
+    },
+    "example_response": {
+      "ingredients": [
+        { "name": "Cheese", "amount": "20", "units": "g" },
+        { "name": "Cheese", "amount": "30", "units": "g" },
+        { "name": "Sausages", "amount": "2", "units": "" }
+      ]
     }
   },
   "GET /favourites": {
