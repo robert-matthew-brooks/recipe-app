@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from './context/UserContext';
 import Header from './Header';
 import SimpleMsg from './SimpleMsg';
+import TextBtn from './TextBtn';
 import { getShoppingList } from '../util/api';
 import './ShoppingList.css';
 
@@ -27,6 +28,16 @@ export default function ShoppingList() {
     );
 
     localStorage.setItem('checked-ingredients', checkedIngredientsStr);
+  };
+
+  const clearCheckedIngredients = () => {
+    localStorage.removeItem('checked-ingredients');
+    setIngredients(
+      ingredients.map((ingredient) => {
+        ingredient.isChecked = false;
+        return ingredient;
+      })
+    );
   };
 
   useEffect(() => {
@@ -117,6 +128,11 @@ export default function ShoppingList() {
                           handleIngredientToggle(i);
                         }}
                       />
+                      <span
+                        onClick={() => {
+                          handleIngredientToggle(i);
+                        }}
+                      ></span>
                       <label htmlFor={`ingredient${i}`}>
                         {ingredient.name} -{' '}
                         <span className="bold">
@@ -129,6 +145,14 @@ export default function ShoppingList() {
                 })}
               </ul>
             </section>
+
+            <TextBtn
+              text="Untick All..."
+              size={3}
+              callback={() => {
+                clearCheckedIngredients();
+              }}
+            />
           </div>
         </section>
       </>
