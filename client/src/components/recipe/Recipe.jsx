@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import Loading from '../Loading';
 import RecipeButtons from './RecipeButtons';
 import RecipeRating from './RecipeRating';
 import { getRating, getRecipe } from '../../util/api';
@@ -13,6 +14,7 @@ export default function Recipe() {
   const { activeUser } = useContext(UserContext);
   const { recipe_slug: slug } = useParams();
   const [recipe, setRecipe] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const [userRating, setUserRating] = useState(null);
   const [optimisticVotes, setOptimisticVotes] = useState(0);
@@ -20,8 +22,7 @@ export default function Recipe() {
 
   useEffect(() => {
     (async () => {
-      // TODO set loading
-
+      setIsLoading(true);
       try {
         const recipe = await getRecipe(slug);
         if (activeUser) {
@@ -39,6 +40,7 @@ export default function Recipe() {
           navigate('/error');
         }
       }
+      setIsLoading(false);
     })();
   }, [slug]);
 
@@ -49,83 +51,93 @@ export default function Recipe() {
           <Link to="/recipes">&larr; Back to Recipes...</Link>
         </div>
 
-        <h1 className="Recipe__title">{recipe.name}</h1>
+        <Loading isLoading={isLoading}>
+          <div id="Recipe__wrapper">
+            <h1 className="Recipe__title">{recipe.name}</h1>
 
-        <p id="Recipe__author">
-          added by <span className="bold">{recipe.author}</span>
-          &nbsp;&nbsp;&nbsp;on {getShortDate(recipe.createdAt)}
-        </p>
+            {!isLoading && (
+              <p id="Recipe__author">
+                added by <span className="bold">{recipe.author}</span>
+                &nbsp;&nbsp;&nbsp;on {getShortDate(recipe.createdAt)}
+              </p>
+            )}
 
-        <RecipeButtons slug={recipe.slug} name={recipe.name} />
-        <RecipeRating
-          slug={recipe.slug}
-          votes={recipe.votes}
-          rating={recipe.rating}
-          {...{
-            userRating,
-            setUserRating,
-            optimisticVotes,
-            setOptimisticVotes,
-            optimisticRating,
-            setOptimisticRating,
-          }}
-        />
+            <RecipeButtons slug={recipe.slug} name={recipe.name} />
+            <RecipeRating
+              slug={recipe.slug}
+              votes={recipe.votes}
+              rating={recipe.rating}
+              {...{
+                userRating,
+                setUserRating,
+                optimisticVotes,
+                setOptimisticVotes,
+                optimisticRating,
+                setOptimisticRating,
+              }}
+            />
 
-        <div
-          id="Recipe__image"
-          style={{
-            backgroundImage: `url('${recipe.imgUrl || recipePlaceholderImg}')`,
-          }}
-        ></div>
+            <div
+              id="Recipe__image"
+              style={{
+                backgroundImage: `url('${
+                  recipe.imgUrl || recipePlaceholderImg
+                }')`,
+              }}
+            ></div>
 
-        <div id="Recipe__row-wrapper">
-          <section id="Recipe__ingredients" className="Recipe__list">
-            <h2>Ingredients</h2>
-            <ul>
-              {recipe.ingredients?.map((ingredient, i) => {
-                return (
-                  <li key={`ingredient${i}`}>
-                    {ingredient.name} -{' '}
-                    <span className="bold">
-                      {ingredient.amount}
-                      {ingredient.units}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
+            {!isLoading && (
+              <div id="Recipe__row-wrapper">
+                <section id="Recipe__ingredients" className="Recipe__list">
+                  <h2>Ingredients</h2>
+                  <ul>
+                    {recipe.ingredients?.map((ingredient, i) => {
+                      return (
+                        <li key={`ingredient${i}`}>
+                          {ingredient.name} -{' '}
+                          <span className="bold">
+                            {ingredient.amount}
+                            {ingredient.units}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
 
-          <section id="Recipe__steps" className="Recipe__list">
-            <h2>Instructions</h2>
-            <ol>
-              {recipe.steps?.map((step, i) => {
-                return <li key={`step${i}`}>{step}</li>;
-              })}
-            </ol>
-          </section>
-        </div>
+                <section id="Recipe__steps" className="Recipe__list">
+                  <h2>Instructions</h2>
+                  <ol>
+                    {recipe.steps?.map((step, i) => {
+                      return <li key={`step${i}`}>{step}</li>;
+                    })}
+                  </ol>
+                </section>
+              </div>
+            )}
 
-        <RecipeButtons slug={recipe.slug} name={recipe.name} />
-        <RecipeRating
-          slug={recipe.slug}
-          votes={recipe.votes}
-          rating={recipe.rating}
-          {...{
-            userRating,
-            setUserRating,
-            optimisticVotes,
-            setOptimisticVotes,
-            optimisticRating,
-            setOptimisticRating,
-          }}
-        />
+            <RecipeButtons slug={recipe.slug} name={recipe.name} />
+            <RecipeRating
+              slug={recipe.slug}
+              votes={recipe.votes}
+              rating={recipe.rating}
+              {...{
+                userRating,
+                setUserRating,
+                optimisticVotes,
+                setOptimisticVotes,
+                optimisticRating,
+                setOptimisticRating,
+              }}
+            />
 
-        <hr />
+            <hr />
 
-        <section>
-          <h1 className="Recipe__title">Comments</h1>
-        </section>
+            <section>
+              <h1 className="Recipe__title">Comments</h1>
+            </section>
+          </div>
+        </Loading>
       </div>
     </article>
   );

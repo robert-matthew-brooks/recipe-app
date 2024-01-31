@@ -8,6 +8,7 @@ import SimpleMsg from './SimpleMsg';
 import TextBtn from './TextBtn';
 import { getRecipes, deleteTodo } from '../util/api';
 import './Todos.css';
+import Loading from './Loading';
 
 export default function Todos() {
   const { activeUser, setTodoSlugs } = useContext(UserContext);
@@ -64,7 +65,7 @@ export default function Todos() {
         linkHref="/login"
       />
     );
-  else if (!recipes?.length > 0) {
+  else if (!recipes?.length > 0 && !isLoading) {
     return (
       <SimpleMsg
         title="My Meal List"
@@ -80,7 +81,9 @@ export default function Todos() {
 
         <section id="Todos">
           <div id="Todos__inner" className="inner">
-            <RecipeCards recipes={recipes} />
+            <Loading isLoading={isLoading}>
+              <RecipeCards recipes={recipes} />
+            </Loading>
 
             <RecipePagination
               recipesCount={recipes.length}
