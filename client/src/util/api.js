@@ -156,3 +156,10 @@ export async function deleteTodo(token, slug) {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+
+export async function getShoppingList(token) {
+  const { data } = await api.get('/ingredients/shopping-list', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return data.ingredients;
+}
