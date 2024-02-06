@@ -1,0 +1,50 @@
+#Profile {
+  flex: 1;
+}
+
+#Profile__inner {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.Profile__input-section {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.Profile__button-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.Profile__input,
+.Profile__dropdown {
+  width: 100%;
+  padding: 0.5rem;
+  font-family: var(--ff-clear);
+  background-color: var(--c-gs-100);
+  border: 1px solid var(--c-gs-500);
+}
+
+.Profile__input:hover {
+  background-color: var(--c-gs-200);
+}
+.Profile__input:focus,
+.Profile__dropdown:focus {
+  border-color: var(--c-gs-str);
+  outline: none;
+}
+
+.Profile__dropdown {
+  appearance: none;
+
+  background-image: url('../assets/arrow-down.svg');
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: 1.5rem;
+  cursor: pointer;
+}

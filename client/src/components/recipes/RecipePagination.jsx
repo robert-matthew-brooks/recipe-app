@@ -14,7 +14,6 @@ export default function RecipePagination({
           `Showing ${recipesCount} of ${totalRecipes} matching recipes`}
       </p>
       <div id="RecipePagination__buttons">
-        {' '}
         {totalRecipes > recipesCount && (
           <TextBtn
             dataTest="RecipePagination-load-btn"

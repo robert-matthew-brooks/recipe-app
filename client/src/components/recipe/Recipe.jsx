@@ -1,5 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import Loading from '../Loading';
 import RecipeButtons from './RecipeButtons';
@@ -11,6 +16,7 @@ import './Recipe.css';
 
 export default function Recipe() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { activeUser } = useContext(UserContext);
   const { recipe_slug: slug } = useParams();
   const [recipe, setRecipe] = useState({});
@@ -44,11 +50,19 @@ export default function Recipe() {
     })();
   }, [slug]);
 
+  const from = searchParams.get('from') || '/recipes';
+  const fromName = from
+    .replace('/', '')
+    .replace('-', ' ')
+    .split(' ')
+    .map((el) => el[0].toUpperCase() + el.slice(1))
+    .join(' ');
+
   return (
     <article id="Recipe">
       <div id="Recipe__inner" className="inner">
         <div id="Recipe__backlink">
-          <Link to="/recipes">&larr; Back to Recipes...</Link>
+          <Link to={from}>&larr; Back to {fromName}...</Link>
         </div>
 
         <Loading isLoading={isLoading}>
