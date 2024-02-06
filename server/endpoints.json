@@ -38,7 +38,38 @@
       }
     }
   },
-  "GET /user/availability/:username": { "description": "" },
+  "GET /users/availability/:username": {
+    "description": "responds true or false depending if the username already exists in the database",
+    "exampleResponse": { "user": { "username": "bob", "is_available": true } }
+  },
+  "GET /users/recipes": {
+    "description": "responds with a list of recipe slugs and names which user in the authentication token has written",
+    "exampleResponse": {
+      "recipes": [
+        { "slug": "pot-noodle", "name": "Pot Noodle" },
+        {
+          "slug": "beans-on-toast",
+          "name": "Beans On Toast"
+        }
+      ]
+    }
+  },
+  "PATCH /users": {
+    "description": "responds with the updated user token, created using the details in the request body",
+    "example_request": {
+      "body": {
+        "username": "patched_user",
+        "password": "password123!"
+      }
+    },
+    "example_response": {
+      "user": {
+        "id": "23",
+        "username": "patched_user",
+        "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
+      }
+    }
+  },
   "GET /recipes": {
     "description": "responds with a filtered and paginated list of recipes, and the number of total matches with the provided paramters",
     "accepted_queries": [

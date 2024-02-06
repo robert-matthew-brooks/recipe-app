@@ -32,14 +32,14 @@ describe('GET /ingredients', () => {
     }
   });
 
-  it('200 should return 10 ingredients', async () => {
+  it('200: should return 10 ingredients', async () => {
     const { body } = await supertest(server).get('/ingredients').expect(200);
     expect(body.ingredients).toHaveLength(10);
   });
 });
 
 describe('GET /ingredients/shopping-list', () => {
-  it('200 should return an array of ingredient objects with the correct properties ', async () => {
+  it('200: should return an array of ingredient objects with the correct properties ', async () => {
     const { body } = await supertest(server)
       .get('/ingredients/shopping-list')
       .set('Authorization', `Bearer ${token}`)
