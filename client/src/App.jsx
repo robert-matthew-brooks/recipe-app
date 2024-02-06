@@ -9,6 +9,7 @@ import ShoppingList from './components/ShoppingList';
 import AuthRegister from './components/auth/AuthRegister';
 import AuthLogin from './components/auth/AuthLogin';
 import AuthLogout from './components/auth/AuthLogout';
+import Profile from './components/Profile';
 import Footer from './components/Footer';
 import Missing404 from './components/404';
 import Error from './components/Error';
@@ -32,6 +33,7 @@ export default function App() {
         <Route path="/register" element={<AuthRegister />} />
         <Route path="/login" element={<AuthLogin />} />
         <Route path="/logout" element={<AuthLogout />} />
+        <Route path="/profile" element={<Profile />} />
 
         <Route path="/recipes" element={<Recipes />} />
         <Route path="/recipes/:recipe_slug" element={<Recipe />} />

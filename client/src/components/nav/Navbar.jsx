@@ -79,7 +79,6 @@ export default function Navbar() {
                   }}
                 />
               )}
-
               <TextBtn
                 dataTest={activeUser ? 'logout-btn' : 'login-btn'}
                 light={true}
@@ -89,6 +88,17 @@ export default function Navbar() {
                   activeUser ? navigate('/logout') : navigate('/login');
                 }}
               />
+              {activeUser && (
+                <TextBtn
+                  dataTest={activeUser ? 'logout-btn' : 'login-btn'}
+                  light={true}
+                  text="&#128100;"
+                  size="2"
+                  callback={() => {
+                    navigate('/profile');
+                  }}
+                />
+              )}
             </div>
           </div>
         </nav>
