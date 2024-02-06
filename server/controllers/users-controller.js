@@ -11,4 +11,27 @@ async function getAvailability(req, res, next) {
   }
 }
 
-module.exports = { getAvailability };
+async function getRecipes(req, res, next) {
+  const token = req.headers?.authorization?.split(' ')[1];
+
+  try {
+    const { recipes } = await usersModel.getRecipes(token);
+    res.send({ recipes });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function patchUser(req, res, next) {
+  const token = req.headers?.authorization?.split(' ')[1];
+  const { username, password } = req.body;
+
+  try {
+    const { user } = await usersModel.patchUser(username, password, token);
+    res.send({ user });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { getAvailability, getRecipes, patchUser };
