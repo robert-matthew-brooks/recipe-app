@@ -13,26 +13,13 @@ export default function EditRecipe() {
   const [searchParams] = useSearchParams();
   const [allIngredients, setAllIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [formErr, setFormErr] = useState('');
 
   // new recipe variables
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [ingredients, setIngredients] = useState([]);
-  const [steps, setSteps] = useState([]);
-
-  const handleNameChange = (name) => {
-    setName(name);
-    setSlug(
-      name
-        .replace(/[^a-zA-Z\s]/g, '')
-        .replace(/\s+/g, '-')
-        .toLowerCase()
-    );
-  };
-
-  const removeIngredient = (id) => {
-    setIngredients(ingredients.filter((ingredient) => ingredient.id !== id));
-  };
+  const [steps, setSteps] = useState(['']);
 
   useEffect(() => {
     (async () => {
@@ -40,10 +27,13 @@ export default function EditRecipe() {
       try {
         setAllIngredients(await getIngredients());
 
-        const recipe = await getRecipe(searchParams.get('slug'));
-        handleNameChange(recipe.name);
-        setIngredients(recipe.ingredients);
-        setSteps(recipe.steps);
+        const slug = searchParams.get('slug');
+        if (slug) {
+          const recipe = await getRecipe(slug);
+          setName(recipe.name);
+          setIngredients(recipe.ingredients);
+          setSteps(recipe.steps);
+        }
       } catch (err) {
         console.log(err);
         navigate('/error');
@@ -52,16 +42,112 @@ export default function EditRecipe() {
     })();
   }, []);
 
-  // get recipe name from URL
-
-  // SERVER to provide ingredient ID in recipe
-
+  // TODO
   // STYLE delete button to have RED background
   // instead of light=true, have style=light, style=danger
 
   // validate inputs, one error message at bottom
   // generate slug??? if not already existing
   // check recipe name/slug doesn't exist (add 2, 3 etc to end of slug)
+
+  const addIngredient = (id) => {
+    if (id) {
+      const { name, units } = allIngredients.find(
+        (ingredient) => ingredient.id === id
+      );
+
+      setIngredients([
+        ...ingredients,
+        {
+          id,
+          name,
+          units,
+          amount: '',
+        },
+      ]);
+    } else {
+      setIngredients([
+        ...ingredients,
+        {
+          id: null,
+          name: '',
+          units: '',
+          amount: '',
+        },
+      ]);
+    }
+  };
+
+  const removeIngredient = (i) => {
+    const newIngredients = [...ingredients];
+    newIngredients.splice(i, 1);
+    setIngredients(newIngredients);
+  };
+
+  const updateIngredient = (i, ingredient) => {
+    const newIngredients = [...ingredients];
+    for (const key in ingredient) {
+      newIngredients[i][key] = ingredient[key];
+    }
+    setIngredients(newIngredients);
+  };
+
+  const updateStep = (i, step) => {
+    const newSteps = [...steps];
+    newSteps[i] = step;
+    setSteps(newSteps);
+  };
+
+  const isFormValid = () => {
+    if (name.replace(/[^a-zA-Z]/g, '').length === 0) {
+      setFormErr('Recipe name cannot be blank');
+    } else if (name.length > 50) {
+      setFormErr('Recipe name too long');
+    } else if (!ingredients.length) {
+      setFormErr('Ingredients list cannot be empty');
+    } else if (ingredients.filter((el) => !el.name).length > 0) {
+      setFormErr('Ingredient name cannot be blank');
+    } else if (ingredients.filter((el) => !el.amount).length > 0) {
+      setFormErr('Ingredient amount cannot be blank');
+    } else if (steps.filter((el) => el.length === 0).length > 0) {
+      setFormErr('Step cannot be blank');
+    } else {
+      setFormErr('');
+      return true;
+    }
+  };
+
+  const saveRecipe = async () => {
+    const slug = name
+      .replace('&', 'and')
+      .replace(/[^a-zA-Z\s]/g, '')
+      .replace(/\s+/g, '-')
+      .toLowerCase();
+
+    if (isFormValid()) {
+      try {
+        console.log({
+          name,
+          slug,
+          ingredients: ingredients.filter((el) => el.id),
+          newIngredients: ingredients.filter((el) => !el.id),
+          steps,
+          token: activeUser?.token,
+        });
+      } catch (err) {
+        console.log(err);
+        setFormErr('Something went wrong');
+      }
+    }
+  };
+
+  const deleteRecipe = async () => {
+    try {
+    } catch (err) {
+      console.log(err);
+      setFormErr('Something went wrong');
+    }
+  };
 
   return (
     <>
@@ -74,12 +160,11 @@ export default function EditRecipe() {
               type="text"
               value={name}
               onChange={(evt) => {
-                handleNameChange(evt.target.value);
+                setName(evt.target.value);
               }}
               className="EditRecipe__input"
               disabled={isLoading}
             />
-            <p>{`/${slug}`}</p>
           </div>
 
           <div className="EditRecipe__input-section">
@@ -90,7 +175,7 @@ export default function EditRecipe() {
             <h3 className="EditRecipe__section-title">Ingredients:</h3>
             <ul className="EditRecipe__ingredients-list">
               {ingredients.map((ingredient, i) => {
-                return (
+                return ingredient.id ? (
                   <li key={i}>
                     {ingredient.name}
                     {ingredient.units && ` (${ingredient.units})`}:
@@ -99,12 +184,56 @@ export default function EditRecipe() {
                     </div>
                     <input
                       value={ingredient.amount}
+                      onChange={(evt) => {
+                        updateIngredient(i, {
+                          amount: evt.target.value.replace(/\D/g, ''),
+                        });
+                      }}
                       className="EditRecipe__input EditRecipe__input--small"
-                    />{' '}
+                    />
                     <CrossBtn
                       size={1.1}
                       callback={() => {
-                        removeIngredient(ingredient.id);
+                        removeIngredient(i);
+                      }}
+                    />
+                  </li>
+                ) : (
+                  <li key={i}>
+                    <input
+                      value={ingredient.name}
+                      onChange={(evt) => {
+                        updateIngredient(i, { name: evt.target.value });
+                      }}
+                      placeholder="ingredient"
+                      className="EditRecipe__input EditRecipe__input--medium"
+                    />
+                    (
+                    <input
+                      value={ingredient.units}
+                      onChange={(evt) => {
+                        updateIngredient(i, { units: evt.target.value });
+                      }}
+                      placeholder="unit"
+                      className="EditRecipe__input EditRecipe__input--small"
+                    />
+                    ):
+                    <div className="EditRecipe__ingredients-list__spacer">
+                      &nbsp;
+                    </div>
+                    <input
+                      value={ingredient.amount}
+                      onChange={(evt) => {
+                        updateIngredient(i, {
+                          amount: evt.target.value.replace(/\D/g, ''),
+                        });
+                      }}
+                      className="EditRecipe__input EditRecipe__input--small"
+                    />
+                    <CrossBtn
+                      size={1.1}
+                      callback={() => {
+                        removeIngredient(i);
                       }}
                     />
                   </li>
@@ -112,7 +241,14 @@ export default function EditRecipe() {
               })}
             </ul>
 
-            <select className="EditRecipe__dropdown">
+            <select
+              className="EditRecipe__dropdown"
+              defaultValue=""
+              onChange={(evt) => {
+                addIngredient(+evt.target.value);
+                evt.target.selectedIndex = 0;
+              }}
+            >
               <option value="" disabled>
                 Ingredients:
               </option>
@@ -135,7 +271,7 @@ export default function EditRecipe() {
                 text="Create New"
                 size="2"
                 callback={() => {
-                  alert('todo');
+                  addIngredient();
                 }}
               />
             </div>
@@ -148,6 +284,9 @@ export default function EditRecipe() {
                 <textarea
                   key={i}
                   value={step}
+                  onChange={(evt) => {
+                    updateStep(i, evt.target.value);
+                  }}
                   className="EditRecipe__input EditRecipe__input--textarea"
                 />
               );
@@ -157,14 +296,14 @@ export default function EditRecipe() {
                 text="Add"
                 size="2"
                 callback={() => {
-                  alert('todo');
+                  setSteps([...steps, '']);
                 }}
               />
               <TextBtn
                 text="Remove"
                 size="2"
                 callback={() => {
-                  alert('todo');
+                  if (steps.length > 1) setSteps(steps.slice(0, -1));
                 }}
               />
             </div>
@@ -178,7 +317,14 @@ export default function EditRecipe() {
                 text="Save"
                 size="2"
                 callback={() => {
-                  alert('todo');
+                  saveRecipe();
+                }}
+              />{' '}
+              <TextBtn
+                text="Cancel"
+                size="2"
+                callback={() => {
+                  navigate('/profile');
                 }}
               />
               <TextBtn
@@ -190,6 +336,7 @@ export default function EditRecipe() {
                 }}
               />
             </div>
+            <p className={`err ${!formErr && 'err--hidden'}`}>{formErr}</p>
           </div>
         </div>
       </section>
