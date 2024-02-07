@@ -16,6 +16,7 @@ async function getOne(recipeSlug) {
         r.img_url,
         JSON_AGG (
           DISTINCT JSONB_BUILD_OBJECT (
+            'id', i.id,
             'name', i.name,
             'amount', ri.amount,
             'units', i.units
