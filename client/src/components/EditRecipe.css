@@ -1,0 +1,85 @@
+#EditRecipe {
+  flex: 1;
+}
+
+#EditRecipe__inner {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.EditRecipe__input-section {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.EditRecipe__button-row {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.EditRecipe__section-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  font-style: italic;
+  letter-spacing: 0.02rem;
+  text-decoration: underline;
+  text-decoration-color: var(--c-gs-400);
+  text-decoration-thickness: 0.1rem;
+}
+
+.EditRecipe__ingredients-list {
+  list-style-type: none;
+}
+
+.EditRecipe__ingredients-list > li {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-bottom: 0.3rem;
+}
+
+.EditRecipe__ingredients-list__spacer {
+  flex: 1;
+  height: 100%;
+  border-bottom: 1px dotted var(--c-gs-400);
+}
+
+.EditRecipe__input,
+.EditRecipe__dropdown {
+  width: 100%;
+  padding: 0.5rem;
+  font-family: var(--ff-clear);
+  background-color: var(--c-gs-100);
+  border: 1px solid var(--c-gs-500);
+}
+.EditRecipe__input--small {
+  width: 40px !important;
+  padding: 0.2rem !important;
+}
+.EditRecipe__input--textarea {
+  height: 5rem;
+}
+
+.EditRecipe__input:hover {
+  background-color: var(--c-gs-200);
+}
+.EditRecipe__input:focus,
+.EditRecipe__dropdown:focus {
+  border-color: var(--c-gs-str);
+  outline: none;
+}
+
+.EditRecipe__dropdown {
+  appearance: none;
+
+  background-image: url('../assets/arrow-down.svg');
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: 1.5rem;
+  cursor: pointer;
+}

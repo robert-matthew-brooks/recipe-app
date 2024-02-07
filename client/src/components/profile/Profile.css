@@ -18,7 +18,18 @@
 
 .Profile__button-row {
   display: flex;
+  gap: 0.5rem;
   justify-content: flex-end;
+}
+
+.Profile__section-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  font-style: italic;
+  letter-spacing: 0.02rem;
+  text-decoration: underline;
+  text-decoration-color: var(--c-gs-400);
+  text-decoration-thickness: 0.1rem;
 }
 
 .Profile__input,
@@ -42,7 +53,7 @@
 .Profile__dropdown {
   appearance: none;
 
-  background-image: url('../assets/arrow-down.svg');
+  background-image: url('../../assets/arrow-down.svg');
   background-repeat: no-repeat;
   background-position: right;
   background-size: 1.5rem;

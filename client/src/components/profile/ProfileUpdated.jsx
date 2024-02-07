@@ -1,6 +1,6 @@
 import SimpleMsg from '../SimpleMsg';
 
-export default function AuthProfileUpdated() {
+export default function ProfileUpdated() {
   return (
     <SimpleMsg
       title="Profile Updated"
