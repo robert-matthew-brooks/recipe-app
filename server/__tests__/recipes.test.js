@@ -43,6 +43,7 @@ describe('GET /recipes/:recipe_id', () => {
 
     for (const ingredient of body.recipe.ingredients) {
       expect(ingredient).toMatchObject({
+        id: expect.any(Number),
         name: expect.any(String),
         amount: expect.any(Number),
         units: expect.any(String),

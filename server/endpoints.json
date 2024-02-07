@@ -16,7 +16,7 @@
     },
     "example_response": {
       "user": {
-        "id": "23",
+        "id": 23,
         "username": "test_user",
         "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
       }
@@ -32,7 +32,7 @@
     },
     "example_response": {
       "user": {
-        "id": "23",
+        "id": 23,
         "username": "test_user",
         "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
       }
@@ -64,7 +64,7 @@
     },
     "example_response": {
       "user": {
-        "id": "23",
+        "id": 23,
         "username": "patched_user",
         "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
       }
@@ -124,11 +124,13 @@
         "img_url": "http://www.sandwiches.com/cheese.png",
         "ingredients": [
           {
+            "id": 5,
             "name": "Bread Slices",
             "units": "",
             "amount": 2
           },
           {
+            "id": 17,
             "name": "Cheese",
             "units": "g",
             "amount": 30
@@ -151,9 +153,9 @@
     "description": "responds with a list of every ingredient used in every recipe",
     "example_response": {
       "ingredients": [
-        { "id": "1", "name": "Cheese", "units": "g" },
-        { "id": "2", "name": "Sausages", "units": "" },
-        { "id": "3", "name": "Milk", "units": "ml" }
+        { "id": 1, "name": "Cheese", "units": "g" },
+        { "id": 2, "name": "Sausages", "units": "" },
+        { "id": 3, "name": "Milk", "units": "ml" }
       ]
     }
   },
@@ -166,9 +168,9 @@
     },
     "example_response": {
       "ingredients": [
-        { "name": "Cheese", "amount": "20", "units": "g" },
-        { "name": "Cheese", "amount": "30", "units": "g" },
-        { "name": "Sausages", "amount": "2", "units": "" }
+        { "name": "Cheese", "amount": 20, "units": "g" },
+        { "name": "Cheese", "amount": 30, "units": "g" },
+        { "name": "Sausages", "amount": 2, "units": "" }
       ]
     }
   },
