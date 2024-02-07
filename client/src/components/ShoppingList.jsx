@@ -73,11 +73,6 @@ export default function ShoppingList() {
             JSON.parse(localStorage.getItem('checked-ingredients')) || [];
 
           ingredients.forEach((ingredient) => {
-            const ingredientToFind = {
-              name: ingredient.name,
-              amount: ingredient.amount,
-            };
-
             for (const checkedIngredient of checkedIngredients)
               if (
                 ingredient.name === checkedIngredient.name &&
@@ -87,13 +82,12 @@ export default function ShoppingList() {
                 break;
               }
           });
-
           setIngredients(ingredients);
-          setIsLoading(false);
         } catch (err) {
           console.log(err);
           navigate('/error');
         }
+        setIsLoading(false);
       }
     })();
   }, [activeUser]);

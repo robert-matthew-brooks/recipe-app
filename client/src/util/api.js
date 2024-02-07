@@ -163,3 +163,19 @@ export async function getShoppingList(token) {
   });
   return data.ingredients;
 }
+
+export async function patchUser(username, password, token) {
+  const { data } = await api.patch(
+    '/users',
+    { username, password },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  return data.user;
+}
+
+export async function getUsersRecipes(token) {
+  const { data } = await api.get('/users/recipes', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return data.recipes;
+}

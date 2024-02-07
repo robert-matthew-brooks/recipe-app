@@ -1,16 +1,21 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from './context/UserContext';
-import Header from './Header';
-import SimpleMsg from './SimpleMsg';
-import TextBtn from './TextBtn';
-import { checkUsernameAvailability } from '../util/api';
-import { getUsernameErr, getPasswordErr } from '../util/validate';
+import { UserContext } from '../context/UserContext';
+import Header from '../Header';
+import SimpleMsg from '../SimpleMsg';
+import TextBtn from '../TextBtn';
+import {
+  checkUsernameAvailability,
+  patchUser,
+  getUsersRecipes,
+} from '../../util/api';
+import { getUsernameErr, getPasswordErr } from '../../util/validate';
 import './Profile.css';
 
 export default function Profile() {
   const { activeUser, activateUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const [recipes, setRecipes] = useState([]);
   const [username, setUsername] = useState('');
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
@@ -20,6 +25,19 @@ export default function Profile() {
 
   const [isValidateOnChange, setIsValidateOnChange] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      if (activeUser?.token) {
+        try {
+          setRecipes(await getUsersRecipes(activeUser.token));
+        } catch (err) {
+          console.log(err);
+          navigate('/error');
+        }
+      }
+    })();
+  }, [activeUser]);
 
   const validateUsername = (username) => {
     let currentUsernameErr = getUsernameErr(username);
@@ -62,10 +80,10 @@ export default function Profile() {
         setUsernameErr('Username not available');
       } else {
         try {
-          // const user = await login(username, password1);
-          // const userStr = JSON.stringify(user);
-          // localStorage.setItem('user', userStr);
-          // await activateUser(userStr);
+          const user = await patchUser(username, password1, activeUser.token);
+          const userStr = JSON.stringify(user);
+          localStorage.setItem('user', userStr);
+          await activateUser(userStr);
           navigate('/profile-updated');
         } catch (err) {
           console.log(err);
@@ -96,7 +114,7 @@ export default function Profile() {
         <section id="Profile">
           <div id="Profile__inner" className="inner">
             <div className="Profile__input-section">
-              <p>Update Your Details:</p>
+              <h3 className="Profile__section-title">Update Your Details:</h3>
               <input
                 type="text"
                 value={username}
@@ -146,25 +164,31 @@ export default function Profile() {
             </div>
 
             <div className="Profile__input-section">
-              <div>Edit Your Recipes:</div>
+              <h3 className="Profile__section-title">Edit Your Recipes:</h3>
               <select
                 className="Profile__dropdown"
                 defaultValue=""
-                onChange={() => {
-                  alert('todo');
+                onChange={(evt) => {
+                  navigate(`/edit-recipe?slug=${evt.target.value}`);
                 }}
               >
                 <option value="" disabled>
-                  Choose Recipe:
-                  {/* TODO test for no user recipes, show different message */}
+                  {recipes.length > 0 ? 'Choose Recipe:' : 'No recipes'}
                 </option>
+                {recipes.map((recipe, i) => {
+                  return (
+                    <option key={i} value={recipe.slug}>
+                      {recipe.name}
+                    </option>
+                  );
+                })}
               </select>
               <div className="Profile__button-row">
                 <TextBtn
-                  text="Create New..."
+                  text="Create New"
                   size="2"
                   callback={() => {
-                    alert('todo');
+                    navigate('/edit-recipe');
                   }}
                 />
               </div>
