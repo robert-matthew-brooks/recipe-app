@@ -179,3 +179,21 @@ export async function getUsersRecipes(token) {
   });
   return data.recipes;
 }
+
+export async function patchRecipe(
+  slug,
+  name,
+  ingredients,
+  newIngredients,
+  steps,
+  token
+) {
+  const { data } = await api.patch(
+    `/recipes/${slug}`,
+    { name, ingredients, new_ingredients: newIngredients, steps, token },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+  // return data.recipe;
+}

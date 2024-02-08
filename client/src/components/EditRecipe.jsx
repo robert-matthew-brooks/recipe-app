@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { UserContext } from './context/UserContext';
 import Header from './Header';
 import TextBtn from './TextBtn';
-import { getIngredients, getRecipe } from '../util/api';
+import { getIngredients, getRecipe, patchRecipe } from '../util/api';
 import './EditRecipe.css';
 import CrossBtn from './CrossBtn';
 
@@ -17,7 +17,7 @@ export default function EditRecipe() {
 
   // new recipe variables
   const [name, setName] = useState('');
-  const [slug, setSlug] = useState('');
+  const [slug, setSlug] = useState(''); // current slug, new one generated server side
   const [ingredients, setIngredients] = useState([]);
   const [steps, setSteps] = useState(['']);
 
@@ -29,6 +29,7 @@ export default function EditRecipe() {
 
         const slug = searchParams.get('slug');
         if (slug) {
+          setSlug(slug);
           const recipe = await getRecipe(slug);
           setName(recipe.name);
           setIngredients(recipe.ingredients);
@@ -118,22 +119,34 @@ export default function EditRecipe() {
   };
 
   const saveRecipe = async () => {
-    const slug = name
-      .replace('&', 'and')
-      .replace(/[^a-zA-Z\s]/g, '')
-      .replace(/\s+/g, '-')
-      .toLowerCase();
-
     if (isFormValid()) {
       try {
-        console.log({
+        const updateData = [
           name,
-          slug,
-          ingredients: ingredients.filter((el) => el.id),
-          newIngredients: ingredients.filter((el) => !el.id),
+          ingredients // existing ingredients
+            .filter((el) => el.id)
+            .map((el) => {
+              const { id, amount } = el;
+              return { id, amount };
+            }),
+          ingredients // new ingredients
+            .filter((el) => !el.id)
+            .map((el) => {
+              const { name, units, amount } = el;
+              return { name, units, amount };
+            }),
           steps,
-          token: activeUser?.token,
-        });
+          activeUser?.token,
+        ];
+
+        if (slug) {
+          const { recipe } = await patchRecipe(slug, ...updateData);
+          console.log(recipe.slug);
+          // navigate to new slug
+        } else {
+          // create...
+          // navigate to new slug
+        }
       } catch (err) {
         console.log(err);
         setFormErr('Something went wrong');
