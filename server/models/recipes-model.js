@@ -248,10 +248,11 @@ async function patchRecipe(
     [recipeId, name, newSlug, makeSqlArr(steps)]
   );
 
-  // add any new ingredients to the ingredients table, and get ids
-  const { rows: insertedIngredients } = await pool.query(
-    format(
-      `
+  // create ids for new ingredients, and append them to list
+  if (newIngredients.length > 0) {
+    const { rows: insertedIngredients } = await pool.query(
+      format(
+        `
         INSERT INTO ingredients (
           name,
           units
@@ -259,17 +260,17 @@ async function patchRecipe(
         VALUES %L
         RETURNING id;
       `,
-      newIngredients.map((ingredient) => [ingredient.name, ingredient.units])
-    )
-  );
+        newIngredients.map((ingredient) => [ingredient.name, ingredient.units])
+      )
+    );
 
-  // get [id, amount] for each ingredient and merge into one array
-  ingredients = [
-    ...ingredients,
-    ...newIngredients.map((ingredient, i) => {
-      return { id: insertedIngredients[i].id, amount: ingredient.amount };
-    }),
-  ];
+    ingredients = [
+      ...ingredients,
+      ...newIngredients.map((ingredient, i) => {
+        return { id: insertedIngredients[i].id, amount: ingredient.amount };
+      }),
+    ];
+  }
 
   // update recipes-ingredients junction table
   await pool.query(
