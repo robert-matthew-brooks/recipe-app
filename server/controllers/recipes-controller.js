@@ -1,10 +1,10 @@
 const recipesModel = require('../models/recipes-model');
 
 async function getOne(req, res, next) {
-  const { recipe_slug: recipeSlug } = req.params;
+  const { recipe_slug: slug } = req.params;
 
   try {
-    const { recipe } = await recipesModel.getOne(recipeSlug);
+    const { recipe } = await recipesModel.getOne(slug);
     res.send({ recipe });
   } catch (err) {
     next(err);
@@ -45,4 +45,41 @@ async function getMany(req, res, next) {
   }
 }
 
-module.exports = { getOne, getMany };
+async function patchRecipe(req, res, next) {
+  const token = req.headers?.authorization?.split(' ')[1];
+  const { recipe_slug: slug } = req.params;
+  const {
+    name,
+    ingredients,
+    new_ingredients: newIngredients,
+    steps,
+  } = req.body;
+
+  try {
+    const { recipe } = await recipesModel.patchRecipe(
+      slug,
+      name,
+      ingredients,
+      newIngredients,
+      steps,
+      token
+    );
+    res.send({ recipe });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function deleteRecipe(req, res, next) {
+  const token = req.headers?.authorization?.split(' ')[1];
+  const { recipe_slug: slug } = req.params;
+
+  try {
+    await recipesModel.deleteRecipe(slug, token);
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { getOne, getMany, patchRecipe, deleteRecipe };

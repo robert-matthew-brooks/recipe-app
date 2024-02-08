@@ -1,6 +1,7 @@
 const pool = require('./pool');
 const format = require('pg-format');
 const { hash } = require('../util/encrypt');
+const { makeSqlArr, makeSlug } = require('../util/sql-functions');
 
 async function seed({ recipes, users }) {
   /******************/
@@ -21,10 +22,6 @@ async function seed({ recipes, users }) {
     );
 
     return rows[0].id;
-  };
-
-  const arrToSqlArr = (arr) => {
-    return `{${arr.map((el) => `"${el}"`)}}`;
   };
 
   /***************/
@@ -85,9 +82,18 @@ async function seed({ recipes, users }) {
     `
       CREATE TABLE recipes_ingredients (
         id SERIAL PRIMARY KEY,
-        recipe_id INT REFERENCES recipes NOT NULL,
-        ingredient_id INT REFERENCES ingredients NOT NULL,
-        amount INT NOT NULL
+        recipe_id INT NOT NULL,
+        ingredient_id INT NOT NULL,
+        amount INT NOT NULL,
+
+        CONSTRAINT fk_recipe_id
+          FOREIGN KEY (recipe_id) 
+          REFERENCES recipes (id) 
+          ON DELETE CASCADE,
+        CONSTRAINT fk_ingredient_id
+          FOREIGN KEY (ingredient_id) 
+          REFERENCES ingredients (id) 
+          ON DELETE CASCADE
       );
     `
   );
@@ -96,8 +102,17 @@ async function seed({ recipes, users }) {
     `
       CREATE TABLE favourites (
         id SERIAL PRIMARY KEY,
-        user_id INT REFERENCES users NOT NULL,
-        recipe_id INT REFERENCES recipes NOT NULL
+        user_id INT NOT NULL,
+        recipe_id INT NOT NULL,
+
+        CONSTRAINT fk_user_id
+          FOREIGN KEY (user_id) 
+          REFERENCES users (id) 
+          ON DELETE CASCADE,
+        CONSTRAINT fk_recipe_id
+          FOREIGN KEY (recipe_id) 
+          REFERENCES recipes (id) 
+          ON DELETE CASCADE
       );
     `
   );
@@ -106,9 +121,17 @@ async function seed({ recipes, users }) {
     `
       CREATE TABLE todos (
         id SERIAL PRIMARY KEY,
-        user_id INT REFERENCES users NOT NULL,
-        recipe_id INT REFERENCES recipes NOT NULL,
-        is_done BOOLEAN DEFAULT FALSE
+        user_id INT NOT NULL,
+        recipe_id INT NOT NULL,
+
+        CONSTRAINT fk_user_id
+          FOREIGN KEY (user_id) 
+          REFERENCES users (id) 
+          ON DELETE CASCADE,
+        CONSTRAINT fk_recipe_id
+          FOREIGN KEY (recipe_id) 
+          REFERENCES recipes (id) 
+          ON DELETE CASCADE
       );
     `
   );
@@ -117,9 +140,18 @@ async function seed({ recipes, users }) {
     `
       CREATE TABLE ratings (
         id SERIAL PRIMARY KEY,
-        recipe_id INT REFERENCES recipes NOT NULL,
-        user_id INT REFERENCES users NOT NULL,
-        stars INT
+        recipe_id INT NOT NULL,
+        user_id INT NOT NULL,
+        stars INT,
+
+        CONSTRAINT fk_recipe_id
+          FOREIGN KEY (recipe_id) 
+          REFERENCES recipes (id) 
+          ON DELETE CASCADE,
+        CONSTRAINT fk_user_id
+          FOREIGN KEY (user_id) 
+          REFERENCES users (id) 
+          ON DELETE CASCADE
       );
     `
   );
@@ -169,7 +201,7 @@ async function seed({ recipes, users }) {
         name,
         units
       )
-      VALUES %L
+      VALUES %L;
     `,
     ingredientsData.map((ingredient) => {
       return [ingredient.name, ingredient.units];
@@ -198,10 +230,10 @@ async function seed({ recipes, users }) {
         `,
         await Promise.all([
           recipe.name,
-          recipe.slug,
+          makeSlug(recipe.name),
           await getId(recipe.author, 'username', 'users'),
           recipe.imgUrl,
-          arrToSqlArr(recipe.steps),
+          makeSqlArr(recipe.steps),
           recipe.isVegetarian,
         ])
       );
@@ -219,7 +251,7 @@ async function seed({ recipes, users }) {
   const recipesIngredientsData = [];
 
   for (const recipe of recipes) {
-    const recipeId = await getId(recipe.slug, 'slug', 'recipes');
+    const recipeId = await getId(recipe.name, 'name', 'recipes');
 
     for (const ingredient of recipe.ingredients) {
       const ingredientId = await getId(ingredient.name, 'name', 'ingredients');
@@ -255,23 +287,16 @@ async function seed({ recipes, users }) {
   for (const user of users) {
     const userId = await getId(user.username, 'username', 'users');
 
-    for (const recipeSlug of user.favourites) {
-      const recipeId = await getId(recipeSlug, 'slug', 'recipes');
-
+    for (const recipeId of user.favourites) {
       recipeFavouritesData.push([recipeId, userId]);
     }
 
-    for (const recipeSlug of user.todos) {
-      const recipeId = await getId(recipeSlug, 'slug', 'recipes');
-      const isDone = user.done.includes(recipeSlug);
-
-      recipeTodosData.push([recipeId, userId, isDone]);
+    for (const recipeId of user.todos) {
+      recipeTodosData.push([recipeId, userId]);
     }
 
     for (const rating of user.ratings) {
-      const recipeId = await getId(rating.slug, 'slug', 'recipes');
-
-      recipeRatingsData.push([recipeId, userId, rating.stars]);
+      recipeRatingsData.push([rating.id, userId, rating.stars]);
     }
   }
 
@@ -296,8 +321,7 @@ async function seed({ recipes, users }) {
     `
       INSERT INTO todos (
         recipe_id,
-        user_id,
-        is_done
+        user_id
       )
       VALUES %L;
     `,

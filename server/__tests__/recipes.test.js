@@ -5,9 +5,12 @@ const pool = require('../db/pool');
 const seed = require('../db/seed');
 const data = require('../db/data/test');
 const { createToken } = require('../util/token');
+const { makeSlug } = require('../util/sql-functions');
 
 expect.extend(matchers);
 let token;
+const recipe1 = makeSlug(data.recipes[0].name);
+let recipePatchObj;
 
 beforeEach(async () => {
   await seed(data);
@@ -15,6 +18,23 @@ beforeEach(async () => {
   token = createToken(
     (await pool.query('SELECT id, username FROM users;')).rows[0]
   );
+
+  recipePatchObj = {
+    name: 'Beans On Toast',
+    ingredients: [
+      { id: 1, amount: 10 },
+      { id: 2, amount: 20 },
+    ],
+    new_ingredients: [
+      { name: 'Beans', units: 'cans', amount: 1 },
+      { name: 'Bread', units: 'slices', amount: 2 },
+    ],
+    steps: [
+      'Put bread in toaster and beans in a pan.',
+      'Butter toast.',
+      'Put hot beans on toast.',
+    ],
+  };
 });
 
 afterAll(async () => {
@@ -24,7 +44,7 @@ afterAll(async () => {
 describe('GET /recipes/:recipe_id', () => {
   it('200: should return a recipe object with correct properties', async () => {
     const { body } = await supertest(server)
-      .get('/recipes/recipe-1')
+      .get(`/recipes/${recipe1}`)
       .expect(200);
 
     expect(body.recipe).toMatchObject({
@@ -85,7 +105,7 @@ describe('GET /recipes', () => {
     }
   });
 
-  it('200: should return 10 recipes from 30 total ', async () => {
+  it('200: should return 10 recipes from 30 total', async () => {
     const { body } = await supertest(server).get('/recipes').expect(200);
     expect(body.recipes).toHaveLength(10);
     expect(body.total_recipes).toBe(30);
@@ -288,6 +308,150 @@ describe('GET /recipes?is_todos=true', () => {
   describe('error handling', () => {
     it('401: should return an error if token for todos is not valid', async () => {
       await supertest(server).get('/recipes?is_todos=true').expect(401);
+    });
+  });
+});
+
+describe('PATCH /recipes/:recipe_slug', () => {
+  it('200: should return a new recipe object with correct properties', async () => {
+    const { body } = await supertest(server)
+      .patch(`/recipes/${recipe1}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send(recipePatchObj)
+      .expect(200);
+
+    expect(body.recipe).toMatchObject({
+      id: expect.any(Number),
+      name: expect.any(String),
+      slug: expect.any(String),
+      author: expect.any(String),
+      img_url: expect.toBeOneOf([expect.any(String), null]),
+      ingredients: expect.any(Array),
+      steps: expect.any(Array),
+      is_vegetarian: expect.any(Boolean),
+      created_at: expect.any(String),
+      votes: expect.any(Number),
+      rating: expect.toBeOneOf([expect.any(Number), null]),
+    });
+
+    for (const ingredient of body.recipe.ingredients) {
+      expect(ingredient).toMatchObject({
+        id: expect.any(Number),
+        name: expect.any(String),
+        amount: expect.any(Number),
+        units: expect.any(String),
+      });
+    }
+
+    for (const step of body.recipe.steps) {
+      expect(typeof step).toBe('string');
+    }
+  });
+
+  describe('error handling', () => {
+    it('401: should return an error if token is not valid', async () => {
+      await supertest(server)
+        .patch(`/recipes/${recipe1}`)
+        .set('Authorisation', 'Bearer invalid')
+        .send(recipePatchObj)
+        .expect(401);
+    });
+
+    it('404: should return an error if recipe_id is not in database', async () => {
+      await supertest(server)
+        .patch('/recipes/recipe-999')
+        .set('Authorization', `Bearer ${token}`)
+        .send(recipePatchObj)
+        .expect(404);
+    });
+
+    it('403: should return an error if the token user does not match the recipe author', async () => {
+      tokenUser2 = createToken(
+        (await pool.query('SELECT id, username FROM users;')).rows[1]
+      );
+
+      await supertest(server)
+        .patch(`/recipes/${recipe1}`)
+        .set('Authorization', `Bearer ${tokenUser2}`)
+        .send(recipePatchObj)
+        .expect(403);
+    });
+
+    it('400: should return an error if ingredient id is not a number', async () => {
+      recipePatchObj.ingredients[0].id = 'a';
+
+      await supertest(server)
+        .patch(`/recipes/${recipe1}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send(recipePatchObj)
+        .expect(400);
+    });
+
+    it('400: should return an error if ingredient amount is not a number', async () => {
+      recipePatchObj.ingredients[0].amount = 'ten';
+
+      await supertest(server)
+        .patch(`/recipes/${recipe1}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send(recipePatchObj)
+        .expect(400);
+    });
+
+    it('409: should return an error if recipe slug already exists', async () => {
+      recipePatchObj.name = data.recipes[1].name;
+
+      await supertest(server)
+        .patch(`/recipes/${recipe1}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send(recipePatchObj)
+        .expect(409);
+    });
+  });
+});
+
+describe('DELETE /recipes/:recipe_slug', () => {
+  it('204: should delete specified recipe', async () => {
+    const { body } = await supertest(server)
+      .delete(`/recipes/${recipe1}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(204);
+
+    expect(
+      (
+        await pool.query(
+          `
+            SELECT * FROM recipes
+            WHERE slug = '${recipe1}';
+          `
+        )
+      ).rows
+    ).toHaveLength(0);
+  });
+
+  describe('error handling', () => {
+    it('401: should return an error if token is not valid', async () => {
+      await supertest(server)
+        .delete(`/recipes/${recipe1}`)
+        .set('Authorisation', 'Bearer invalid')
+        .expect(401);
+    });
+
+    it('404: should return an error if recipe_id is not in database', async () => {
+      await supertest(server)
+        .delete('/recipes/recipe-999')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(404);
+    });
+
+    it('403: should return an error if the token user does not match the recipe author', async () => {
+      tokenUser2 = createToken(
+        (await pool.query('SELECT id, username FROM users;')).rows[1]
+      );
+
+      await supertest(server)
+        .delete(`/recipes/${recipe1}`)
+        .set('Authorization', `Bearer ${tokenUser2}`)
+        .expect(403);
     });
   });
 });

@@ -2,9 +2,10 @@ const pool = require('../db/pool');
 const format = require('pg-format');
 const { verifyToken } = require('../util/token');
 const validate = require('../util/validate');
+const { makeSqlArr, makeSlug } = require('../util/sql-functions');
 
-async function getOne(recipeSlug) {
-  await validate.rejectIfNotInDb(recipeSlug, 'slug', 'recipes');
+async function getOne(slug) {
+  await validate.rejectIfNotInDb(slug, 'slug', 'recipes');
 
   const { rows } = await pool.query(
     `
@@ -41,7 +42,7 @@ async function getOne(recipeSlug) {
         r.id,
         u.username;
     `,
-    [recipeSlug]
+    [slug]
   );
 
   return { recipe: rows[0] };
@@ -195,4 +196,138 @@ async function getMany({
   return { recipes, total_recipes: rows[0].total_recipes };
 }
 
-module.exports = { getOne, getMany };
+async function patchRecipe(
+  slug,
+  name,
+  ingredients = [],
+  newIngredients = [],
+  steps = [],
+  token
+) {
+  const userId = verifyToken(token).id;
+  await Promise.all([validate.rejectIfNotInDb(slug, 'slug', 'recipes')]);
+  validate.rejectIfFailsRegex(name, /^[\w,& ]+$/);
+
+  for (const ingredient of ingredients) {
+    validate.rejectIfFailsRegex(ingredient.id, /^\d+$/);
+    validate.rejectIfFailsRegex(ingredient.amount, /^\d+$/);
+  }
+  for (const ingredient of newIngredients) {
+    validate.rejectIfFailsRegex(ingredient.name, /^[\w ]+$/);
+    validate.rejectIfFailsRegex(ingredient.units, /^[\w ]+$/);
+    validate.rejectIfFailsRegex(ingredient.amount, /^\d+$/);
+  }
+
+  const { id: recipeId, author_id: authorId } = (
+    await pool.query(
+      `
+        SELECT id, author_id
+        FROM recipes
+        WHERE slug = $1;
+      `,
+      [slug]
+    )
+  ).rows[0];
+
+  if (authorId !== userId) {
+    throw { status: 403, msg: 'token user does not match recipe author' };
+  }
+
+  // update main recipe
+  const newSlug = makeSlug(name);
+
+  await pool.query(
+    `
+      UPDATE recipes
+      SET
+        name = $2,
+        slug = $3,
+        steps = $4
+      WHERE id = $1;
+    `,
+    [recipeId, name, newSlug, makeSqlArr(steps)]
+  );
+
+  // add any new ingredients to the ingredients table, and get ids
+  const { rows: insertedIngredients } = await pool.query(
+    format(
+      `
+        INSERT INTO ingredients (
+          name,
+          units
+        )
+        VALUES %L
+        RETURNING id;
+      `,
+      newIngredients.map((ingredient) => [ingredient.name, ingredient.units])
+    )
+  );
+
+  // get [id, amount] for each ingredient and merge into one array
+  ingredients = [
+    ...ingredients,
+    ...newIngredients.map((ingredient, i) => {
+      return { id: insertedIngredients[i].id, amount: ingredient.amount };
+    }),
+  ];
+
+  // update recipes-ingredients junction table
+  await pool.query(
+    `
+      DELETE FROM recipes_ingredients
+      WHERE recipe_id = $1;
+    `,
+    [recipeId]
+  );
+
+  await pool.query(
+    format(
+      `
+        INSERT INTO recipes_ingredients (
+          recipe_id,
+          ingredient_id,
+          amount
+        )
+        VALUES %L;
+      `,
+
+      ingredients.map((ingredient) => [
+        recipeId,
+        ingredient.id,
+        ingredient.amount,
+      ])
+    )
+  );
+
+  return await getOne(newSlug);
+}
+
+async function deleteRecipe(slug, token) {
+  const userId = verifyToken(token).id;
+  await validate.rejectIfNotInDb(slug, 'slug', 'recipes');
+
+  const { id: recipeId, author_id: authorId } = (
+    await pool.query(
+      `
+        SELECT id, author_id
+        FROM recipes
+        WHERE slug = $1;
+      `,
+      [slug]
+    )
+  ).rows[0];
+
+  if (authorId !== userId) {
+    throw { status: 403, msg: 'token user does not match recipe author' };
+  }
+
+  await pool.query(
+    `
+      DELETE FROM recipes
+      WHERE id = $1;
+    `,
+    [recipeId]
+  );
+}
+
+module.exports = { getOne, getMany, patchRecipe, deleteRecipe };

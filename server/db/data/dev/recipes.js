@@ -1,8 +1,8 @@
 const recipes = [
   {
     name: 'Chicken, Leek & Bacon Pie',
-    slug: 'chicken-leek-and-bacon-pie',
-    imgUrl: '/recipe-imgs/chicken-leek-and-bacon-pie.jpeg',
+    slug: 'chicken-leek-&-bacon-pie',
+    imgUrl: '/recipe-imgs/chicken-leek-&-bacon-pie.jpeg',
     author: 'Bob',
     ingredients: [
       { name: 'Chicken Breasts', amount: '2' },
@@ -34,8 +34,8 @@ const recipes = [
   },
   {
     name: 'Penne & Cheese',
-    slug: 'penne-and-cheese',
-    imgUrl: '/recipe-imgs/penne-and-cheese.jpeg',
+    slug: 'penne-&-cheese',
+    imgUrl: '/recipe-imgs/penne-&-cheese.jpeg',
     author: 'Bob',
     ingredients: [
       { name: 'Shallot', amount: '1' },
@@ -158,8 +158,8 @@ const recipes = [
   },
   {
     name: 'Beef Meatballs with Tomato Sauce & Linguine',
-    slug: 'beef-meatballs-with-tomato-sauce-and-linguine',
-    imgUrl: '/recipe-imgs/beef-meatballs-with-tomato-sauce-and-linguine.jpeg',
+    slug: 'beef-meatballs-with-tomato-sauce-&-linguine',
+    imgUrl: '/recipe-imgs/beef-meatballs-with-tomato-sauce-&-linguine.jpeg',
     author: 'Bob',
     ingredients: [
       { name: 'Red Onions', amount: '1' },
@@ -190,8 +190,8 @@ const recipes = [
   },
   {
     name: 'Chicken & Pepper Chow Mein',
-    slug: 'chicken-and-pepper-chow-mein',
-    imgUrl: '/recipe-imgs/chicken-and-pepper-chow-mein.jpg',
+    slug: 'chicken-&-pepper-chow-mein',
+    imgUrl: '/recipe-imgs/chicken-&-pepper-chow-mein.jpg',
     author: 'Bob',
     ingredients: [
       { name: 'Chicken Breasts', amount: '2' },
@@ -215,8 +215,8 @@ const recipes = [
   },
   {
     name: 'Cheesy Bacon & Potato Gratin',
-    slug: 'cheesy-bacon-and-potato-gratin',
-    imgUrl: '/recipe-imgs/cheesy-bacon-and-potato-gratin.jpg',
+    slug: 'cheesy-bacon-&-potato-gratin',
+    imgUrl: '/recipe-imgs/cheesy-bacon-&-potato-gratin.jpg',
     author: 'Bob',
     ingredients: [
       { name: 'Onions', amount: '1' },
