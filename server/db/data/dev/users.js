@@ -4,7 +4,7 @@ const users = [
     password: 'password123!',
     favourites: [1],
     todos: [1, 2, 3],
-    ratings: [{ slug: 2, stars: 4 }],
+    ratings: [{ recipeId: 2, stars: 4 }],
   },
   {
     username: 'some_user',
@@ -12,8 +12,8 @@ const users = [
     favourites: [],
     todos: [],
     ratings: [
-      { slug: 2, stars: 3 },
-      { slug: 6, stars: 2 },
+      { recipeId: 2, stars: 3 },
+      { recipeId: 6, stars: 2 },
     ],
   },
   {
@@ -22,8 +22,8 @@ const users = [
     favourites: [],
     todos: [],
     ratings: [
-      { slug: 2, stars: 3 },
-      { slug: 6, stars: 5 },
+      { recipeId: 2, stars: 3 },
+      { recipeId: 6, stars: 5 },
     ],
   },
 ];
