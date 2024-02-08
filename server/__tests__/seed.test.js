@@ -133,7 +133,6 @@ describe('todo table', () => {
         id: expect.any(Number),
         recipe_id: expect.any(Number),
         user_id: expect.any(Number),
-        is_done: expect.any(Boolean),
       });
     }
   });

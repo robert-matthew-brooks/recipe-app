@@ -4,7 +4,10 @@ const pool = require('../db/pool');
 const seed = require('../db/seed');
 const data = require('../db/data/test');
 const { createToken } = require('../util/token');
+const { makeSlug } = require('../util/sql-functions');
 
+const recipe1 = makeSlug(data.recipes[0].name);
+const recipe3 = makeSlug(data.recipes[2].name);
 let token;
 
 beforeAll(async () => {
@@ -40,7 +43,7 @@ describe('GET /favourites', () => {
 describe('PUT /favourites/:recipe_slug', () => {
   it('204: should add a recipe slug to the favourites list', async () => {
     await supertest(server)
-      .put('/favourites/recipe-3')
+      .put(`/favourites/${recipe3}`)
       .set('Authorization', `Bearer ${token}`)
       .expect(204);
 
@@ -49,12 +52,12 @@ describe('PUT /favourites/:recipe_slug', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
-    expect(body.favourites).toContain('recipe-3');
+    expect(body.favourites).toContain('recipe-three-tagged');
   });
 
   describe('error handling', () => {
     it('401: should return an error if user token not provided', async () => {
-      await supertest(server).put('/favourites/recipe-3').expect(401);
+      await supertest(server).put(`/favourites/${recipe3}`).expect(401);
     });
 
     it('404: should return an error if recipe_id is not in database', async () => {
@@ -69,7 +72,7 @@ describe('PUT /favourites/:recipe_slug', () => {
 describe('DELETE /favourites/:recipe_slug', () => {
   it('204: should remove a recipe slug from the favourites list', async () => {
     await supertest(server)
-      .delete('/favourites/recipe-1')
+      .delete(`/favourites/${recipe1}`)
       .set('Authorization', `Bearer ${token}`)
       .expect(204);
 
@@ -78,12 +81,12 @@ describe('DELETE /favourites/:recipe_slug', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
-    expect(body.favourites).not.toContain('recipe-1');
+    expect(body.favourites).not.toContain('recipe-one');
   });
 
   describe('error handling', () => {
     it('401: should return an error if user token not provided', async () => {
-      await supertest(server).delete('/favourites/recipe-1').expect(401);
+      await supertest(server).delete(`/favourites/${recipe1}`).expect(401);
     });
 
     it('404: should return an error if recipe_id is not in database', async () => {

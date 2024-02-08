@@ -2,6 +2,9 @@ const validate = require('../util/validate');
 const pool = require('../db/pool');
 const seed = require('../db/seed');
 const data = require('../db/data/test');
+const { makeSlug } = require('../util/sql-functions');
+
+const recipe1 = makeSlug(data.recipes[0].name);
 
 beforeAll(async () => {
   await seed(data);
@@ -43,7 +46,7 @@ describe('util/validate.js', () => {
       let returnedError;
 
       try {
-        await validate.rejectIfNotInDb('recipe-1', 'slug', 'recipes');
+        await validate.rejectIfNotInDb(recipe1, 'slug', 'recipes');
       } catch (err) {
         returnedError = err;
       }
