@@ -348,6 +348,16 @@ describe('PATCH /recipes/:recipe_slug', () => {
     }
   });
 
+  it('200: should update recipe if no new ingredients are provided', async () => {
+    delete recipePatchObj.new_ingredients;
+
+    const { body } = await supertest(server)
+      .patch(`/recipes/${recipe1}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send(recipePatchObj)
+      .expect(200);
+  });
+
   describe('error handling', () => {
     it('401: should return an error if token is not valid', async () => {
       await supertest(server)
