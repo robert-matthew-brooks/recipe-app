@@ -296,7 +296,7 @@ async function seed({ recipes, users }) {
     }
 
     for (const rating of user.ratings) {
-      recipeRatingsData.push([rating.id, userId, rating.stars]);
+      recipeRatingsData.push([rating.recipeId, userId, rating.stars]);
     }
   }
 

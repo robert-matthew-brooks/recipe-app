@@ -5,9 +5,9 @@ const users = [
     favourites: [2, 1],
     todos: [5, 3, 4],
     ratings: [
-      { id: 1, stars: 5 },
-      { id: 2, stars: 4 },
-      { id: 3, stars: 1 },
+      { recipeId: 1, stars: 5 },
+      { recipeId: 2, stars: 4 },
+      { recipeId: 3, stars: 1 },
     ],
   },
   {
@@ -16,11 +16,11 @@ const users = [
     favourites: [6, 7],
     todos: [1, 8, 6],
     ratings: [
-      { id: 3, stars: 5 },
-      { id: 4, stars: 5 },
-      { id: 5, stars: 3 },
-      { id: 6, stars: 2 },
-      { id: 8, stars: 3 },
+      { recipeId: 3, stars: 5 },
+      { recipeId: 4, stars: 5 },
+      { recipeId: 5, stars: 3 },
+      { recipeId: 6, stars: 2 },
+      { recipeId: 8, stars: 3 },
     ],
   },
   {
@@ -29,8 +29,8 @@ const users = [
     favourites: [7, 5, 3],
     todos: [4, 2],
     ratings: [
-      { id: 7, stars: 3 },
-      { id: 9, stars: 4 },
+      { recipeId: 7, stars: 3 },
+      { recipeId: 9, stars: 4 },
     ],
   },
   {
@@ -46,9 +46,9 @@ const users = [
     favourites: [8],
     todos: [5],
     ratings: [
-      { id: 3, stars: 4 },
-      { id: 1, stars: 1 },
-      { id: 8, stars: 2 },
+      { recipeId: 3, stars: 4 },
+      { recipeId: 1, stars: 1 },
+      { recipeId: 8, stars: 2 },
     ],
   },
 ];
