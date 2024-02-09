@@ -29,14 +29,6 @@ export default function EditRecipe() {
   const [ingredients, setIngredients] = useState([]);
   const [steps, setSteps] = useState(['']);
 
-  // TODO
-  // STYLE delete button to have RED background
-  // instead of light=true, have style=light, style=danger
-
-  // validate inputs, one error message at bottom
-  // generate slug??? if not already existing
-  // check recipe name/slug doesn't exist (add 2, 3 etc to end of slug)
-
   const addIngredient = (id) => {
     if (id) {
       const { name, units } = allIngredients.find(

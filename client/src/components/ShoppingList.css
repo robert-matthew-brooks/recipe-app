@@ -44,6 +44,7 @@
 #ShoppingList__ingredients > ul > li > input[type='checkbox'] {
   /* hide actual checkbox and replace it with a span */
   width: 0;
+  display: none;
 }
 #ShoppingList__ingredients > ul > li > input[type='checkbox'] + span {
   display: inline-flex;
