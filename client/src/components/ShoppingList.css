@@ -11,6 +11,12 @@
   gap: 3rem;
 }
 
+#ShoppingList__counter {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
 #ShoppingList__ingredients {
 }
 

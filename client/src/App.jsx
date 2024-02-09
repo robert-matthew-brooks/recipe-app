@@ -12,6 +12,7 @@ import ShoppingList from './components/ShoppingList';
 import Profile from './components/profile/Profile';
 import ProfileUpdated from './components/profile/ProfileUpdated';
 import EditRecipe from './components/EditRecipe';
+import RecipeDeleted from './components/RecipeDeleted';
 import Footer from './components/Footer';
 import Missing404 from './components/404';
 import Error from './components/Error';
@@ -45,6 +46,7 @@ export default function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile-updated" element={<ProfileUpdated />} />
         <Route path="/edit-recipe" element={<EditRecipe />} />
+        <Route path="/recipe-deleted" element={<RecipeDeleted />} />
 
         <Route path="/404" element={<Missing404 />} />
         <Route path="/Error" element={<Error />} />

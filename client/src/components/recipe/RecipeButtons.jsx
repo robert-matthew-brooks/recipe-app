@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import TextBtn from '../TextBtn';
 import {
@@ -10,7 +10,7 @@ import {
 } from '../../util/api';
 import './RecipeButtons.css';
 
-export default function RecipeButtons({ slug, name }) {
+export default function RecipeButtons({ slug, name, author }) {
   const {
     activeUser,
     favouriteSlugs,
@@ -18,6 +18,7 @@ export default function RecipeButtons({ slug, name }) {
     todoSlugs,
     setTodoSlugs,
   } = useContext(UserContext);
+  const navigate = useNavigate();
   const [isSignedInErr, setIsSignedInErr] = useState(false);
 
   const handleFavouritesClick = async () => {
@@ -50,11 +51,13 @@ export default function RecipeButtons({ slug, name }) {
     <>
       <div className="RecipeButtons">
         <TextBtn
-          light={true}
+          style="light"
           text="Share via Email"
           size="2"
           callback={() => {
-            window.location.href = `mailto:?subject=${name}&body=${window.location.href}`;
+            window.location.href = `mailto:?subject=${encodeURIComponent(
+              name
+            )}&body=${window.location.href.split('?')[0]}`;
           }}
         />
 
@@ -66,7 +69,7 @@ export default function RecipeButtons({ slug, name }) {
                   ? 'Remove from Favourites'
                   : 'Add to Favourites'
               }
-              inverted={favouriteSlugs.includes(slug)}
+              style={favouriteSlugs.includes(slug) ? 'inverted' : 'dark'}
               size="2"
               callback={handleFavouritesClick}
             />
@@ -76,7 +79,7 @@ export default function RecipeButtons({ slug, name }) {
                   ? 'Remove from Meal List'
                   : 'Add to Meal List'
               }
-              inverted={todoSlugs.includes(slug)}
+              style={todoSlugs.includes(slug) ? 'inverted' : 'dark'}
               size="2"
               callback={handleTodosClick}
             />
@@ -85,6 +88,17 @@ export default function RecipeButtons({ slug, name }) {
           <p className="err">
             <Link to="/login">Sign in</Link> to use favourites
           </p>
+        )}
+
+        {activeUser?.username === author && (
+          <TextBtn
+            text="Edit..."
+            style="danger"
+            size="2"
+            callback={() => {
+              navigate(`/edit-recipe?slug=${slug}`);
+            }}
+          />
         )}
       </div>
     </>

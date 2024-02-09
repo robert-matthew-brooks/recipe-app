@@ -5,7 +5,7 @@ export default function Missing404() {
     <SimpleMsg
       title="Oops!"
       msg="Sorry, the page you're looking for doesn't exist! &#9785;"
-      linkText="Back to Recipes"
+      linkText="Back to Recipes..."
       linkHref="/recipes"
     />
   );

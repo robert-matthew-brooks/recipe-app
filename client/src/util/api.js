@@ -161,6 +161,7 @@ export async function getShoppingList(token) {
   const { data } = await api.get('/ingredients/shopping-list', {
     headers: { Authorization: `Bearer ${token}` },
   });
+
   return data.ingredients;
 }
 
@@ -170,6 +171,7 @@ export async function patchUser(username, password, token) {
     { username, password },
     { headers: { Authorization: `Bearer ${token}` } }
   );
+
   return data.user;
 }
 
@@ -177,6 +179,7 @@ export async function getUsersRecipes(token) {
   const { data } = await api.get('/users/recipes', {
     headers: { Authorization: `Bearer ${token}` },
   });
+
   return data.recipes;
 }
 
@@ -195,5 +198,30 @@ export async function patchRecipe(
       headers: { Authorization: `Bearer ${token}` },
     }
   );
-  // return data.recipe;
+
+  return data.recipe;
+}
+
+export async function createRecipe(
+  name,
+  ingredients,
+  newIngredients,
+  steps,
+  token
+) {
+  const { data } = await api.post(
+    '/recipes',
+    { name, ingredients, new_ingredients: newIngredients, steps, token },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+
+  return data.recipe;
+}
+
+export async function deleteRecipe(slug, token) {
+  await api.delete(`/recipes/${slug}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }

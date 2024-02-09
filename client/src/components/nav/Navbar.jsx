@@ -81,7 +81,7 @@ export default function Navbar() {
               )}
               <TextBtn
                 dataTest={activeUser ? 'logout-btn' : 'login-btn'}
-                light={true}
+                style="light"
                 text={activeUser ? 'Sign out' : 'Sign in'}
                 size="2"
                 callback={() => {
@@ -91,7 +91,7 @@ export default function Navbar() {
               {activeUser && (
                 <TextBtn
                   dataTest={activeUser ? 'logout-btn' : 'login-btn'}
-                  light={true}
+                  style="light"
                   text="&#128100;"
                   size="2"
                   callback={() => {

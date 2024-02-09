@@ -5,7 +5,7 @@ export default function ProfileUpdated() {
     <SimpleMsg
       title="Profile Updated"
       msg="Your details were updated successfully"
-      linkText="Back to Profile"
+      linkText="Back to Profile..."
       linkHref="/profile"
     />
   );

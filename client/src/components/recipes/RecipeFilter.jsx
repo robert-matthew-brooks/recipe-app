@@ -227,7 +227,7 @@ export default function RecipeFilter({
                 <li key={i}>
                   {ingredient.name}
                   <CrossBtn
-                    light={true}
+                    style="light"
                     size={1.1}
                     callback={() => {
                       removeIngredientFromFilter(i);

@@ -61,7 +61,7 @@ export default function Todos() {
       <SimpleMsg
         title="My Meal List"
         msg="Please sign in to create your meal list"
-        linkText="OK, Sign Me In!"
+        linkText="OK, Sign Me In..."
         linkHref="/login"
       />
     );
@@ -70,7 +70,7 @@ export default function Todos() {
       <SimpleMsg
         title="My Meal List"
         msg="Empty... add some recipes to your meal list!"
-        linkText="Browse Recipes"
+        linkText="Browse Recipes..."
         linkHref="/recipes"
       />
     );
@@ -93,7 +93,7 @@ export default function Todos() {
               }}
             >
               <TextBtn
-                text="Remove All..."
+                text="Remove All"
                 size={3}
                 callback={async () => {
                   await clearTodos();

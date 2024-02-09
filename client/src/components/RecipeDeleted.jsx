@@ -1,10 +1,10 @@
 import SimpleMsg from './SimpleMsg';
 
-export default function Error() {
+export default function RecipeDeleted() {
   return (
     <SimpleMsg
-      title="Oops!"
-      msg="Something went wrong &#9785;. Please try again later"
+      title="Deleted"
+      msg="Your recipe has been successfully removed."
       linkText="Back to Recipes..."
       linkHref="/recipes"
     />

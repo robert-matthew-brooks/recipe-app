@@ -23,9 +23,8 @@
 
   /* buttons */
   --c-cta-bg: #8fbc8f;
-  --c-cta-text: #000000;
-  --c-cta-hover-bg: #000000;
-  --c-cta-hover-text: #ffffff;
+  --c-cta-danger-bg: #c51a1a;
+  --c-cta-danger-bg-hover: #8b0000;
 
   /*****************/
   /* page specific */

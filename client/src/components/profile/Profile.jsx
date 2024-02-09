@@ -102,7 +102,7 @@ export default function Profile() {
       <SimpleMsg
         title="Your Account"
         msg="Please sign in to access your account!"
-        linkText="OK, Sign Me In!"
+        linkText="OK, Sign Me In..."
         linkHref="/login"
       />
     );
@@ -153,7 +153,7 @@ export default function Profile() {
               </p>
               <div className="Profile__button-row">
                 <TextBtn
-                  text="Update"
+                  text="Update..."
                   size="2"
                   callback={async () => {
                     await handleFormSubmit();
@@ -185,10 +185,24 @@ export default function Profile() {
               </select>
               <div className="Profile__button-row">
                 <TextBtn
-                  text="Create New"
+                  text="Create New..."
                   size="2"
                   callback={() => {
                     navigate('/edit-recipe');
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="Profile__input-section">
+              <h3 className="Profile__section-title">Delete Profile:</h3>
+              <div className="Profile__button-row">
+                <TextBtn
+                  text="Delete..."
+                  style="danger"
+                  size="2"
+                  callback={() => {
+                    alert('todo');
                   }}
                 />
               </div>
