@@ -3,7 +3,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { UserContext } from './context/UserContext';
 import Header from './Header';
 import TextBtn from './TextBtn';
-import { getIngredients, getRecipe, patchRecipe } from '../util/api';
+import {
+  createRecipe,
+  deleteRecipe,
+  getIngredients,
+  getRecipe,
+  patchRecipe,
+} from '../util/api';
 import './EditRecipe.css';
 import CrossBtn from './CrossBtn';
 
@@ -139,14 +145,10 @@ export default function EditRecipe() {
           activeUser?.token,
         ];
 
-        if (slug) {
-          const { recipe } = await patchRecipe(slug, ...updateData);
-          console.log(recipe.slug);
-          // navigate to new slug
-        } else {
-          // create...
-          // navigate to new slug
-        }
+        const recipe = slug
+          ? await patchRecipe(slug, ...updateData)
+          : await createRecipe(...updateData);
+        navigate(`/recipes/${recipe.slug}`);
       } catch (err) {
         console.log(err);
         setFormErr('Something went wrong');
@@ -154,8 +156,10 @@ export default function EditRecipe() {
     }
   };
 
-  const deleteRecipe = async () => {
+  const removeRecipe = async () => {
     try {
+      await deleteRecipe(slug, activeUser?.token);
+      navigate('/recipe-deleted');
     } catch (err) {
       console.log(err);
       setFormErr('Something went wrong');
@@ -172,6 +176,7 @@ export default function EditRecipe() {
             <input
               type="text"
               value={name}
+              placeholder="Recipe name..."
               onChange={(evt) => {
                 setName(evt.target.value);
               }}
@@ -297,6 +302,7 @@ export default function EditRecipe() {
                 <textarea
                   key={i}
                   value={step}
+                  placeholder={`Step ${i + 1}...`}
                   onChange={(evt) => {
                     updateStep(i, evt.target.value);
                   }}
@@ -322,32 +328,26 @@ export default function EditRecipe() {
             </div>
           </div>
 
-          <hr style={{ width: '100%' }} />
-
           <div className="EditRecipe__input-section">
+            <h3 className="EditRecipe__section-title">File:</h3>
             <div className="EditRecipe__button-row">
               <TextBtn
-                text="Save"
+                text="Save..."
                 size="2"
                 callback={() => {
                   saveRecipe();
                 }}
-              />{' '}
-              <TextBtn
-                text="Cancel"
-                size="2"
-                callback={() => {
-                  navigate('/profile');
-                }}
               />
-              <TextBtn
-                text="Delete"
-                light={true}
-                size="2"
-                callback={() => {
-                  alert('todo');
-                }}
-              />
+              {slug && (
+                <TextBtn
+                  text="Delete..."
+                  style="danger"
+                  size="2"
+                  callback={() => {
+                    removeRecipe();
+                  }}
+                />
+              )}
             </div>
             <p className={`err ${!formErr && 'err--hidden'}`}>{formErr}</p>
           </div>

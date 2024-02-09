@@ -97,7 +97,7 @@ export default function ShoppingList() {
       <SimpleMsg
         title="My Shopping List"
         msg="Please sign in to see your shopping list"
-        linkText="OK, Sign Me In!"
+        linkText="OK, Sign Me In..."
         linkHref="/login"
       />
     );
@@ -106,7 +106,7 @@ export default function ShoppingList() {
       <SimpleMsg
         title="My Shopping List"
         msg="Empty... add some recipes to your meal list!"
-        linkText="Browse Recipes"
+        linkText="Browse Recipes..."
         linkHref="/recipes"
       />
     );
@@ -118,6 +118,14 @@ export default function ShoppingList() {
         <section id="ShoppingList">
           <div id="ShoppingList__inner" className="inner">
             <Loading isLoading={isLoading}>
+              <p id="ShoppingList__counter">
+                {ingredients.filter((el) => !el.isChecked).length === 0
+                  ? `All ticked ${String.fromCharCode(9786)}`
+                  : `${ingredients.filter((el) => el.isChecked).length} / ${
+                      ingredients.length
+                    }`}
+              </p>
+
               <section id="ShoppingList__ingredients">
                 <ul>
                   {ingredients.map((ingredient, i) => {
@@ -151,7 +159,7 @@ export default function ShoppingList() {
             </Loading>
 
             <TextBtn
-              text="Untick All..."
+              text="Untick All"
               size={3}
               callback={() => {
                 clearCheckedIngredients();

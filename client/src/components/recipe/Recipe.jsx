@@ -76,7 +76,12 @@ export default function Recipe() {
               </p>
             )}
 
-            <RecipeButtons slug={recipe.slug} name={recipe.name} />
+            <RecipeButtons
+              slug={recipe.slug}
+              name={recipe.name}
+              author={recipe.author}
+            />
+
             <RecipeRating
               slug={recipe.slug}
               votes={recipe.votes}

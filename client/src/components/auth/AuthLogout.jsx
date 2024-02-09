@@ -13,7 +13,7 @@ export default function AuthLogout() {
     <SimpleMsg
       title="Signed Out"
       msg="Hope to see you again soon!"
-      linkText="Back to Recipes"
+      linkText="Back to Recipes..."
       linkHref="/recipes"
     />
   );
