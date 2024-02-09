@@ -24,18 +24,6 @@ export default function AllRecipes() {
   const limit = 6;
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    (async () => {
-      addRecipes([], 1);
-    })();
-  }, [
-    filterName,
-    filterOrderBy,
-    filterIngredients,
-    filterIsFavourites,
-    filterIsVegetarian,
-  ]);
-
   const addRecipes = async (currentRecipes, page) => {
     if (!isLoading) setIsLoading(true);
     try {
@@ -58,6 +46,18 @@ export default function AllRecipes() {
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    (async () => {
+      addRecipes([], 1);
+    })();
+  }, [
+    filterName,
+    filterOrderBy,
+    filterIngredients,
+    filterIsFavourites,
+    filterIsVegetarian,
+  ]);
 
   return (
     <>

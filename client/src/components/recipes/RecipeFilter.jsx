@@ -26,12 +26,6 @@ export default function RecipeFilter({
   const [searchBoxValue, setSearchBoxValue] = useState(filterName);
   const [isSignedInErr, setIsSignedInErr] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      setAllIngredients(await getIngredients());
-    })();
-  }, []);
-
   const togglePanel = async () => {
     const panelDiv = panelRef.current;
     panelDiv.style.maxHeight = `${panelDiv.scrollHeight}px`; // set to absolute value, can't animate to zero from 'fit-content'
@@ -79,6 +73,12 @@ export default function RecipeFilter({
       clearTimeout(filterNameDebounce);
     };
   }, [searchBoxValue]);
+
+  useEffect(() => {
+    (async () => {
+      setAllIngredients(await getIngredients());
+    })();
+  }, []);
 
   const clearSearchbox = () => {
     setSearchBoxValue('');
@@ -229,9 +229,7 @@ export default function RecipeFilter({
                   <CrossBtn
                     style="light"
                     size={1.1}
-                    callback={() => {
-                      removeIngredientFromFilter(i);
-                    }}
+                    callback={() => removeIngredientFromFilter(i)}
                   />
                 </li>
               );

@@ -7,12 +7,13 @@ import AuthLogin from './components/auth/AuthLogin';
 import AuthLogout from './components/auth/AuthLogout';
 import Recipes from './components/recipes/Recipes';
 import Recipe from './components/recipe/Recipe';
+import EditRecipe from './components/EditRecipe';
+import RecipeDeleted from './components/RecipeDeleted';
 import Todos from './components/Todos';
 import ShoppingList from './components/ShoppingList';
 import Profile from './components/profile/Profile';
 import ProfileUpdated from './components/profile/ProfileUpdated';
-import EditRecipe from './components/EditRecipe';
-import RecipeDeleted from './components/RecipeDeleted';
+import ProfileDeleted from './components/profile/ProfileDeleted';
 import Footer from './components/Footer';
 import Missing404 from './components/404';
 import Error from './components/Error';
@@ -39,14 +40,15 @@ export default function App() {
 
         <Route path="/recipes" element={<Recipes />} />
         <Route path="/recipes/:recipe_slug" element={<Recipe />} />
+        <Route path="/edit-recipe" element={<EditRecipe />} />
+        <Route path="/recipe-deleted" element={<RecipeDeleted />} />
 
         <Route path="meal-list" element={<Todos />} />
         <Route path="shopping-list" element={<ShoppingList />} />
 
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile-updated" element={<ProfileUpdated />} />
-        <Route path="/edit-recipe" element={<EditRecipe />} />
-        <Route path="/recipe-deleted" element={<RecipeDeleted />} />
+        <Route path="/profile-deleted" element={<ProfileDeleted />} />
 
         <Route path="/404" element={<Missing404 />} />
         <Route path="/Error" element={<Error />} />

@@ -161,9 +161,7 @@ export default function ShoppingList() {
             <TextBtn
               text="Untick All"
               size={3}
-              callback={() => {
-                clearCheckedIngredients();
-              }}
+              callback={() => clearCheckedIngredients()}
             />
           </div>
         </section>

@@ -95,9 +95,7 @@ export default function RecipeButtons({ slug, name, author }) {
             text="Edit..."
             style="danger"
             size="2"
-            callback={() => {
-              navigate(`/edit-recipe?slug=${slug}`);
-            }}
+            callback={() => navigate(`/edit-recipe?slug=${slug}`)}
           />
         )}
       </div>

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import { PromptContext } from '../context/PromptContext';
 import Header from '../Header';
 import SimpleMsg from '../SimpleMsg';
 import TextBtn from '../TextBtn';
@@ -8,12 +9,14 @@ import {
   checkUsernameAvailability,
   patchUser,
   getUsersRecipes,
+  deleteUser,
 } from '../../util/api';
 import { getUsernameErr, getPasswordErr } from '../../util/validate';
 import './Profile.css';
 
 export default function Profile() {
   const { activeUser, activateUser } = useContext(UserContext);
+  const { createPrompt } = useContext(PromptContext);
   const navigate = useNavigate();
   const [recipes, setRecipes] = useState([]);
   const [username, setUsername] = useState('');
@@ -25,19 +28,6 @@ export default function Profile() {
 
   const [isValidateOnChange, setIsValidateOnChange] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      if (activeUser?.token) {
-        try {
-          setRecipes(await getUsersRecipes(activeUser.token));
-        } catch (err) {
-          console.log(err);
-          navigate('/error');
-        }
-      }
-    })();
-  }, [activeUser]);
 
   const validateUsername = (username) => {
     let currentUsernameErr = getUsernameErr(username);
@@ -96,6 +86,19 @@ export default function Profile() {
 
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    (async () => {
+      if (activeUser?.token) {
+        try {
+          setRecipes(await getUsersRecipes(activeUser.token));
+        } catch (err) {
+          console.log(err);
+          navigate('/error');
+        }
+      }
+    })();
+  }, [activeUser]);
 
   if (!activeUser)
     return (
@@ -187,9 +190,7 @@ export default function Profile() {
                 <TextBtn
                   text="Create New..."
                   size="2"
-                  callback={() => {
-                    navigate('/edit-recipe');
-                  }}
+                  callback={() => navigate('/edit-recipe')}
                 />
               </div>
             </div>
@@ -202,7 +203,16 @@ export default function Profile() {
                   style="danger"
                   size="2"
                   callback={() => {
-                    alert('todo');
+                    createPrompt({
+                      message: 'Really delete your profile?',
+                      positiveText: 'Delete',
+                      positiveStyle: 'danger',
+                      negativeText: 'Cancel',
+                      cb: async () => {
+                        await deleteUser(activeUser?.token);
+                        navigate('/profile-deleted');
+                      },
+                    });
                   }}
                 />
               </div>

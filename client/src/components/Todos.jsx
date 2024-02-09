@@ -39,14 +39,6 @@ export default function Todos() {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    (async () => {
-      if (activeUser?.token) {
-        addRecipes([], 1);
-      }
-    })();
-  }, [activeUser]);
-
   const clearTodos = async () => {
     await Promise.all([
       recipes.map((recipe) => deleteTodo(activeUser.token, recipe.slug)),
@@ -55,6 +47,14 @@ export default function Todos() {
     setTodoSlugs([]);
     setRecipes([]);
   };
+
+  useEffect(() => {
+    (async () => {
+      if (activeUser?.token) {
+        addRecipes([], 1);
+      }
+    })();
+  }, [activeUser]);
 
   if (!activeUser)
     return (

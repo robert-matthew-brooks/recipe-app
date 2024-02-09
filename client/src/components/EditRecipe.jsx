@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { UserContext } from './context/UserContext';
+import { PromptContext } from './context/PromptContext';
 import Header from './Header';
 import TextBtn from './TextBtn';
 import {
@@ -15,6 +16,7 @@ import CrossBtn from './CrossBtn';
 
 export default function EditRecipe() {
   const { activeUser } = useContext(UserContext);
+  const { createPrompt } = useContext(PromptContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [allIngredients, setAllIngredients] = useState([]);
@@ -26,28 +28,6 @@ export default function EditRecipe() {
   const [slug, setSlug] = useState(''); // current slug, new one generated server side
   const [ingredients, setIngredients] = useState([]);
   const [steps, setSteps] = useState(['']);
-
-  useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      try {
-        setAllIngredients(await getIngredients());
-
-        const slug = searchParams.get('slug');
-        if (slug) {
-          setSlug(slug);
-          const recipe = await getRecipe(slug);
-          setName(recipe.name);
-          setIngredients(recipe.ingredients);
-          setSteps(recipe.steps);
-        }
-      } catch (err) {
-        console.log(err);
-        navigate('/error');
-      }
-      setIsLoading(false);
-    })();
-  }, []);
 
   // TODO
   // STYLE delete button to have RED background
@@ -166,6 +146,28 @@ export default function EditRecipe() {
     }
   };
 
+  useEffect(() => {
+    (async () => {
+      setIsLoading(true);
+      try {
+        setAllIngredients(await getIngredients());
+
+        const slug = searchParams.get('slug');
+        if (slug) {
+          setSlug(slug);
+          const recipe = await getRecipe(slug);
+          setName(recipe.name);
+          setIngredients(recipe.ingredients);
+          setSteps(recipe.steps);
+        }
+      } catch (err) {
+        console.log(err);
+        navigate('/error');
+      }
+      setIsLoading(false);
+    })();
+  }, []);
+
   return (
     <>
       <Header title="Edit Recipe" />
@@ -209,12 +211,7 @@ export default function EditRecipe() {
                       }}
                       className="EditRecipe__input EditRecipe__input--small"
                     />
-                    <CrossBtn
-                      size={1.1}
-                      callback={() => {
-                        removeIngredient(i);
-                      }}
-                    />
+                    <CrossBtn size={1.1} callback={() => removeIngredient(i)} />
                   </li>
                 ) : (
                   <li key={i}>
@@ -248,12 +245,7 @@ export default function EditRecipe() {
                       }}
                       className="EditRecipe__input EditRecipe__input--small"
                     />
-                    <CrossBtn
-                      size={1.1}
-                      callback={() => {
-                        removeIngredient(i);
-                      }}
-                    />
+                    <CrossBtn size={1.1} callback={() => removeIngredient(i)} />
                   </li>
                 );
               })}
@@ -288,9 +280,7 @@ export default function EditRecipe() {
               <TextBtn
                 text="Create New"
                 size="2"
-                callback={() => {
-                  addIngredient();
-                }}
+                callback={() => addIngredient()}
               />
             </div>
           </div>
@@ -314,9 +304,7 @@ export default function EditRecipe() {
               <TextBtn
                 text="Add"
                 size="2"
-                callback={() => {
-                  setSteps([...steps, '']);
-                }}
+                callback={() => setSteps([...steps, ''])}
               />
               <TextBtn
                 text="Remove"
@@ -334,8 +322,8 @@ export default function EditRecipe() {
               <TextBtn
                 text="Save..."
                 size="2"
-                callback={() => {
-                  saveRecipe();
+                callback={async () => {
+                  await saveRecipe();
                 }}
               />
               {slug && (
@@ -344,7 +332,15 @@ export default function EditRecipe() {
                   style="danger"
                   size="2"
                   callback={() => {
-                    removeRecipe();
+                    createPrompt({
+                      message: 'Really delete this recipe?',
+                      positiveText: 'Delete',
+                      positiveStyle: 'danger',
+                      negativeText: 'Cancel',
+                      cb: async () => {
+                        await removeRecipe();
+                      },
+                    });
                   }}
                 />
               )}

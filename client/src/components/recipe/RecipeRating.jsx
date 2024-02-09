@@ -19,11 +19,6 @@ export default function RecipeRating({
   const [isSignedInErr, setIsSignedInErr] = useState(false);
   const [isErr, setIsErr] = useState(false);
 
-  useEffect(() => {
-    setOptimisticVotes(votes);
-    setOptimisticRating(rating);
-  }, [rating, votes]);
-
   const handleRatingClick = async (clickedRating) => {
     if (!activeUser) setIsSignedInErr(true);
     else {
@@ -68,6 +63,11 @@ export default function RecipeRating({
       }
     }
   };
+
+  useEffect(() => {
+    setOptimisticVotes(votes);
+    setOptimisticRating(rating);
+  }, [rating, votes]);
 
   if (isSignedInErr)
     return (
