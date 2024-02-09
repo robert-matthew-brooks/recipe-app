@@ -65,4 +65,16 @@ async function patchUser(username, password, token) {
   return { user: newUser };
 }
 
-module.exports = { getAvailability, getRecipes, patchUser };
+async function deleteUser(token) {
+  const userId = verifyToken(token).id;
+
+  await pool.query(
+    `
+      DELETE FROM users
+      WHERE id = $1;
+    `,
+    [userId]
+  );
+}
+
+module.exports = { getAvailability, getRecipes, patchUser, deleteUser };

@@ -10,7 +10,7 @@ const { makeSlug } = require('../util/sql-functions');
 expect.extend(matchers);
 let token;
 const recipe1 = makeSlug(data.recipes[0].name);
-let recipePatchObj;
+let recipeObj;
 
 beforeEach(async () => {
   await seed(data);
@@ -19,7 +19,7 @@ beforeEach(async () => {
     (await pool.query('SELECT id, username FROM users;')).rows[0]
   );
 
-  recipePatchObj = {
+  recipeObj = {
     name: 'Beans On Toast',
     ingredients: [
       { id: 1, amount: 10 },
@@ -317,7 +317,7 @@ describe('PATCH /recipes/:recipe_slug', () => {
     const { body } = await supertest(server)
       .patch(`/recipes/${recipe1}`)
       .set('Authorization', `Bearer ${token}`)
-      .send(recipePatchObj)
+      .send(recipeObj)
       .expect(200);
 
     expect(body.recipe).toMatchObject({
@@ -349,12 +349,12 @@ describe('PATCH /recipes/:recipe_slug', () => {
   });
 
   it('200: should update recipe if no new ingredients are provided', async () => {
-    delete recipePatchObj.new_ingredients;
+    delete recipeObj.new_ingredients;
 
     const { body } = await supertest(server)
       .patch(`/recipes/${recipe1}`)
       .set('Authorization', `Bearer ${token}`)
-      .send(recipePatchObj)
+      .send(recipeObj)
       .expect(200);
   });
 
@@ -363,7 +363,7 @@ describe('PATCH /recipes/:recipe_slug', () => {
       await supertest(server)
         .patch(`/recipes/${recipe1}`)
         .set('Authorisation', 'Bearer invalid')
-        .send(recipePatchObj)
+        .send(recipeObj)
         .expect(401);
     });
 
@@ -371,7 +371,7 @@ describe('PATCH /recipes/:recipe_slug', () => {
       await supertest(server)
         .patch('/recipes/recipe-999')
         .set('Authorization', `Bearer ${token}`)
-        .send(recipePatchObj)
+        .send(recipeObj)
         .expect(404);
     });
 
@@ -383,37 +383,124 @@ describe('PATCH /recipes/:recipe_slug', () => {
       await supertest(server)
         .patch(`/recipes/${recipe1}`)
         .set('Authorization', `Bearer ${tokenUser2}`)
-        .send(recipePatchObj)
+        .send(recipeObj)
         .expect(403);
     });
 
     it('400: should return an error if ingredient id is not a number', async () => {
-      recipePatchObj.ingredients[0].id = 'a';
+      recipeObj.ingredients[0].id = 'a';
 
       await supertest(server)
         .patch(`/recipes/${recipe1}`)
         .set('Authorization', `Bearer ${token}`)
-        .send(recipePatchObj)
+        .send(recipeObj)
         .expect(400);
     });
 
     it('400: should return an error if ingredient amount is not a number', async () => {
-      recipePatchObj.ingredients[0].amount = 'ten';
+      recipeObj.ingredients[0].amount = 'ten';
 
       await supertest(server)
         .patch(`/recipes/${recipe1}`)
         .set('Authorization', `Bearer ${token}`)
-        .send(recipePatchObj)
+        .send(recipeObj)
         .expect(400);
     });
 
     it('409: should return an error if recipe slug already exists', async () => {
-      recipePatchObj.name = data.recipes[1].name;
+      recipeObj.name = data.recipes[1].name;
 
       await supertest(server)
         .patch(`/recipes/${recipe1}`)
         .set('Authorization', `Bearer ${token}`)
-        .send(recipePatchObj)
+        .send(recipeObj)
+        .expect(409);
+    });
+  });
+});
+
+describe('CREATE /recipes', () => {
+  it('200: should return a new recipe object with correct properties', async () => {
+    const { body } = await supertest(server)
+      .post('/recipes')
+      .set('Authorization', `Bearer ${token}`)
+      .send(recipeObj)
+      .expect(200);
+
+    expect(body.recipe).toMatchObject({
+      id: expect.any(Number),
+      name: expect.any(String),
+      slug: expect.any(String),
+      author: expect.any(String),
+      img_url: expect.toBeOneOf([expect.any(String), null]),
+      ingredients: expect.any(Array),
+      steps: expect.any(Array),
+      is_vegetarian: expect.any(Boolean),
+      created_at: expect.any(String),
+      votes: expect.any(Number),
+      rating: expect.toBeOneOf([expect.any(Number), null]),
+    });
+
+    for (const ingredient of body.recipe.ingredients) {
+      expect(ingredient).toMatchObject({
+        id: expect.any(Number),
+        name: expect.any(String),
+        amount: expect.any(Number),
+        units: expect.any(String),
+      });
+    }
+
+    for (const step of body.recipe.steps) {
+      expect(typeof step).toBe('string');
+    }
+  });
+
+  it('200: should update recipe if no new ingredients are provided', async () => {
+    delete recipeObj.new_ingredients;
+
+    const { body } = await supertest(server)
+      .post('/recipes')
+      .set('Authorization', `Bearer ${token}`)
+      .send(recipeObj)
+      .expect(200);
+  });
+
+  describe('error handling', () => {
+    it('401: should return an error if token is not valid', async () => {
+      await supertest(server)
+        .post('/recipes')
+        .set('Authorisation', 'Bearer invalid')
+        .send(recipeObj)
+        .expect(401);
+    });
+
+    it('400: should return an error if ingredient id is not a number', async () => {
+      recipeObj.ingredients[0].id = 'a';
+
+      await supertest(server)
+        .post('/recipes')
+        .set('Authorization', `Bearer ${token}`)
+        .send(recipeObj)
+        .expect(400);
+    });
+
+    it('400: should return an error if ingredient amount is not a number', async () => {
+      recipeObj.ingredients[0].amount = 'ten';
+
+      await supertest(server)
+        .post('/recipes')
+        .set('Authorization', `Bearer ${token}`)
+        .send(recipeObj)
+        .expect(400);
+    });
+
+    it('409: should return an error if recipe slug already exists', async () => {
+      recipeObj.name = data.recipes[1].name;
+
+      await supertest(server)
+        .post('/recipes')
+        .set('Authorization', `Bearer ${token}`)
+        .send(recipeObj)
         .expect(409);
     });
   });
@@ -421,7 +508,7 @@ describe('PATCH /recipes/:recipe_slug', () => {
 
 describe('DELETE /recipes/:recipe_slug', () => {
   it('204: should delete specified recipe', async () => {
-    const { body } = await supertest(server)
+    await supertest(server)
       .delete(`/recipes/${recipe1}`)
       .set('Authorization', `Bearer ${token}`)
       .expect(204);

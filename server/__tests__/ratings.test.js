@@ -37,7 +37,6 @@ describe('GET /ratings/:recipe_slug', () => {
       .get(`/ratings/${recipe4}`)
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
-    console.log(body);
 
     expect(body.rating).toBeUndefined();
   });

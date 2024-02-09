@@ -65,10 +65,23 @@ function rejectIfInvalidPassword(password) {
   throw { status: 400, msg: 'invalid password' };
 }
 
+function rejectIfInvalidIngredients(ingredients, newIngredients) {
+  for (const ingredient of ingredients) {
+    rejectIfFailsRegex(ingredient.id, /^\d+$/);
+    rejectIfFailsRegex(ingredient.amount, /^\d+$/);
+  }
+  for (const ingredient of newIngredients) {
+    rejectIfFailsRegex(ingredient.name, /^[\w ]+$/);
+    rejectIfFailsRegex(ingredient.units, /^[\w ]+$/);
+    rejectIfFailsRegex(ingredient.amount, /^\d+$/);
+  }
+}
+
 module.exports = {
   rejectIfFailsRegex,
   rejectIfNotInDb,
   rejectIfNotInList,
   rejectIfInvalidUsername,
   rejectIfInvalidPassword,
+  rejectIfInvalidIngredients,
 };

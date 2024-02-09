@@ -196,70 +196,19 @@ async function getMany({
   return { recipes, total_recipes: rows[0].total_recipes };
 }
 
-async function patchRecipe(
-  slug,
-  name,
-  ingredients = [],
-  newIngredients = [],
-  steps = [],
-  token
-) {
-  const userId = verifyToken(token).id;
-  await Promise.all([validate.rejectIfNotInDb(slug, 'slug', 'recipes')]);
-  validate.rejectIfFailsRegex(name, /^[\w,& ]+$/);
-
-  for (const ingredient of ingredients) {
-    validate.rejectIfFailsRegex(ingredient.id, /^\d+$/);
-    validate.rejectIfFailsRegex(ingredient.amount, /^\d+$/);
-  }
-  for (const ingredient of newIngredients) {
-    validate.rejectIfFailsRegex(ingredient.name, /^[\w ]+$/);
-    validate.rejectIfFailsRegex(ingredient.units, /^[\w ]+$/);
-    validate.rejectIfFailsRegex(ingredient.amount, /^\d+$/);
-  }
-
-  const { id: recipeId, author_id: authorId } = (
-    await pool.query(
-      `
-        SELECT id, author_id
-        FROM recipes
-        WHERE slug = $1;
-      `,
-      [slug]
-    )
-  ).rows[0];
-
-  if (authorId !== userId) {
-    throw { status: 403, msg: 'token user does not match recipe author' };
-  }
-
-  // update main recipe
-  const newSlug = makeSlug(name);
-
-  await pool.query(
-    `
-      UPDATE recipes
-      SET
-        name = $2,
-        slug = $3,
-        steps = $4
-      WHERE id = $1;
-    `,
-    [recipeId, name, newSlug, makeSqlArr(steps)]
-  );
-
+const insertNewIngredients = async (recipeId, ingredients, newIngredients) => {
   // create ids for new ingredients, and append them to list
   if (newIngredients.length > 0) {
     const { rows: insertedIngredients } = await pool.query(
       format(
         `
-        INSERT INTO ingredients (
-          name,
-          units
-        )
-        VALUES %L
-        RETURNING id;
-      `,
+          INSERT INTO ingredients (
+            name,
+            units
+          )
+          VALUES %L
+          RETURNING id;
+        `,
         newIngredients.map((ingredient) => [ingredient.name, ingredient.units])
       )
     );
@@ -300,6 +249,93 @@ async function patchRecipe(
     )
   );
 
+  return ingredients;
+};
+
+async function patchRecipe(
+  slug,
+  name,
+  ingredients = [],
+  newIngredients = [],
+  steps = [],
+  token
+) {
+  const userId = verifyToken(token).id;
+  await Promise.all([validate.rejectIfNotInDb(slug, 'slug', 'recipes')]);
+  validate.rejectIfFailsRegex(name, /^[\w,& ]+$/);
+  validate.rejectIfInvalidIngredients(ingredients, newIngredients);
+
+  const { id: recipeId, author_id: authorId } = (
+    await pool.query(
+      `
+        SELECT id, author_id
+        FROM recipes
+        WHERE slug = $1;
+      `,
+      [slug]
+    )
+  ).rows[0];
+
+  if (authorId !== userId) {
+    throw { status: 403, msg: 'token user does not match recipe author' };
+  }
+
+  // update main recipe
+  const newSlug = makeSlug(name);
+
+  await pool.query(
+    `
+      UPDATE recipes
+      SET
+        name = $2,
+        slug = $3,
+        steps = $4
+      WHERE id = $1;
+    `,
+    [recipeId, name, newSlug, makeSqlArr(steps)]
+  );
+
+  await insertNewIngredients(recipeId, ingredients, newIngredients);
+
+  return await getOne(newSlug);
+}
+
+async function createRecipe(
+  name,
+  ingredients = [],
+  newIngredients = [],
+  steps = [],
+  token
+) {
+  const userId = verifyToken(token).id;
+  validate.rejectIfFailsRegex(name, /^[\w,& ]+$/);
+  validate.rejectIfInvalidIngredients(ingredients, newIngredients);
+
+  // insert recipe
+  const newSlug = makeSlug(name);
+
+  const { id: recipeId } = (
+    await pool.query(
+      format(
+        `
+          INSERT INTO recipes (
+            name,
+            slug,
+            author_id,
+            img_url,
+            steps,
+            is_vegetarian
+          )
+          VALUES (%L)
+          RETURNING id;
+        `,
+        [name, newSlug, userId, 'todo_img_url', makeSqlArr(steps), false]
+      )
+    )
+  ).rows[0]; // todo is_vegetarian
+
+  await insertNewIngredients(recipeId, ingredients, newIngredients);
+
   return await getOne(newSlug);
 }
 
@@ -331,4 +367,4 @@ async function deleteRecipe(slug, token) {
   );
 }
 
-module.exports = { getOne, getMany, patchRecipe, deleteRecipe };
+module.exports = { getOne, getMany, patchRecipe, createRecipe, deleteRecipe };

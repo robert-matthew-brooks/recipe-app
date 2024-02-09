@@ -70,6 +70,29 @@ async function patchRecipe(req, res, next) {
   }
 }
 
+async function createRecipe(req, res, next) {
+  const token = req.headers?.authorization?.split(' ')[1];
+  const {
+    name,
+    ingredients,
+    new_ingredients: newIngredients,
+    steps,
+  } = req.body;
+
+  try {
+    const { recipe } = await recipesModel.createRecipe(
+      name,
+      ingredients,
+      newIngredients,
+      steps,
+      token
+    );
+    res.send({ recipe });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function deleteRecipe(req, res, next) {
   const token = req.headers?.authorization?.split(' ')[1];
   const { recipe_slug: slug } = req.params;
@@ -82,4 +105,4 @@ async function deleteRecipe(req, res, next) {
   }
 }
 
-module.exports = { getOne, getMany, patchRecipe, deleteRecipe };
+module.exports = { getOne, getMany, patchRecipe, createRecipe, deleteRecipe };

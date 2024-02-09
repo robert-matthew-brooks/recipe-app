@@ -34,4 +34,15 @@ async function patchUser(req, res, next) {
   }
 }
 
-module.exports = { getAvailability, getRecipes, patchUser };
+async function deleteUser(req, res, next) {
+  const token = req.headers?.authorization?.split(' ')[1];
+
+  try {
+    await usersModel.deleteUser(token);
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { getAvailability, getRecipes, patchUser, deleteUser };
