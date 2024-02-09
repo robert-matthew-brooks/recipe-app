@@ -508,7 +508,7 @@ describe('CREATE /recipes', () => {
 
 describe('DELETE /recipes/:recipe_slug', () => {
   it('204: should delete specified recipe', async () => {
-    const { body } = await supertest(server)
+    await supertest(server)
       .delete(`/recipes/${recipe1}`)
       .set('Authorization', `Bearer ${token}`)
       .expect(204);

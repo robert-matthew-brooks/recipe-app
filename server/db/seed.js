@@ -68,10 +68,15 @@ async function seed({ recipes, users }) {
         name VARCHAR NOT NULL,
         slug VARCHAR UNIQUE NOT NULL,
         img_url VARCHAR,
-        author_id INT REFERENCES users NOT NULL,
+        author_id INT NOT NULL,
         steps VARCHAR[],
         is_vegetarian BOOLEAN,
-        created_at TIMESTAMP DEFAULT NOW()
+        created_at TIMESTAMP DEFAULT NOW(),
+
+        CONSTRAINT fk_author_id
+          FOREIGN KEY (author_id) 
+          REFERENCES users (id) 
+          ON DELETE CASCADE
       );
     `
   );

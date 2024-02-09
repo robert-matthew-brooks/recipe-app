@@ -7,6 +7,7 @@ const { createToken } = require('../util/token');
 
 let username;
 let token;
+let userId;
 
 beforeEach(async () => {
   await seed(data);
@@ -15,6 +16,7 @@ beforeEach(async () => {
 
   username = user.username;
   token = createToken(user);
+  userId = user.id;
 });
 
 afterAll(async () => {
@@ -185,6 +187,35 @@ describe('PATCH /users', () => {
           password: 'must_have_a_number',
         })
         .expect(400);
+    });
+  });
+});
+
+describe('DELETE /users', () => {
+  it('204: should delete specified user', async () => {
+    await supertest(server)
+      .delete('/users')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(204);
+
+    expect(
+      (
+        await pool.query(
+          `
+            SELECT * FROM users
+            WHERE id = '${userId}';
+          `
+        )
+      ).rows
+    ).toHaveLength(0);
+  });
+
+  describe('error handling', () => {
+    it('401: should return an error if token is not valid', async () => {
+      await supertest(server)
+        .delete('/users')
+        .set('Authorisation', 'Bearer invalid')
+        .expect(401);
     });
   });
 });
