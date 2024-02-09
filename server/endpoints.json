@@ -70,6 +70,14 @@
       }
     }
   },
+  "DELETE /users": {
+    "description": "deletes the account associated with the provided token",
+    "example_request": {
+      "headers": {
+        "token": "eyJngUciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCb2IiLCJpYXQiOjE3MDM2DRK4MzcsImV4cCI6MTcwNDIxMDYzN30.FdnqV9j_0ZjGmbDYiAce7m5_goHS0eALv8QmgaOl3UQ"
+      }
+    }
+  },
   "GET /recipes": {
     "description": "responds with a filtered and paginated list of recipes, and the number of total matches with the provided paramters",
     "accepted_queries": [
