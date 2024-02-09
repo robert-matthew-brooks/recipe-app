@@ -15,9 +15,7 @@ export default function SimpleMsg({ title, msg, linkText, linkHref }) {
           <TextBtn
             text={linkText}
             size={3}
-            callback={() => {
-              navigate(linkHref);
-            }}
+            callback={() => navigate(linkHref)}
           />
         </div>
       </section>

@@ -1,0 +1,38 @@
+#Prompt {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+}
+.Prompt--hidden {
+  display: none !important;
+}
+
+#Prompt__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: var(--c-gs-wk);
+  box-shadow: var(--medium-box-shadow);
+}
+
+#Prompt__message {
+  font-size: 1.5rem;
+}
+
+#Prompt__button-row {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}

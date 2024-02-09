@@ -225,3 +225,9 @@ export async function deleteRecipe(slug, token) {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+
+export async function deleteUser(token) {
+  await api.delete('/users', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}

@@ -21,15 +21,6 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginScreen, setIsLoginScreen] = useState(false);
 
-  // show back button only on login/register screens
-  useEffect(() => {
-    if (['/login', '/register'].includes(location.pathname)) {
-      setIsLoginScreen(true);
-    } else {
-      setIsLoginScreen(false);
-    }
-  }, [location]);
-
   const toggleMenu = () => {
     if (isMenuOpen) {
       setIsMenuOpen(false);
@@ -39,6 +30,15 @@ export default function Navbar() {
       document.body.classList.add('noscroll');
     }
   };
+
+  // show back button only on login/register screens
+  useEffect(() => {
+    if (['/login', '/register'].includes(location.pathname)) {
+      setIsLoginScreen(true);
+    } else {
+      setIsLoginScreen(false);
+    }
+  }, [location]);
 
   if (isLoginScreen) {
     return (
@@ -74,9 +74,7 @@ export default function Navbar() {
                 <TextBtn
                   text="Register"
                   size="2"
-                  callback={() => {
-                    navigate('/register');
-                  }}
+                  callback={() => navigate('/register')}
                 />
               )}
               <TextBtn
@@ -94,9 +92,7 @@ export default function Navbar() {
                   style="light"
                   text="&#128100;"
                   size="2"
-                  callback={() => {
-                    navigate('/profile');
-                  }}
+                  callback={() => navigate('/profile')}
                 />
               )}
             </div>

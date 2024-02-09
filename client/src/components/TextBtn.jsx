@@ -4,8 +4,7 @@ import './TextBtn.css';
 
 export default function TextBtn({
   dataTest,
-  light,
-  style = 'dark', // light, danger, inverted
+  style, // light, danger, inverted
   text,
   size = 1,
   callback,
@@ -21,7 +20,7 @@ export default function TextBtn({
   return (
     <button
       data-test={dataTest}
-      className={`TextBtn TextBtn--${style}`}
+      className={`TextBtn TextBtn--${style || 'dark'}`}
       style={{
         height: `${size}rem`,
         fontSize: `${size / 2.5}rem`,

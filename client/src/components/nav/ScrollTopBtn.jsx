@@ -19,13 +19,6 @@ export default function ScrollTopBtn() {
     setPrevScrollY(scrollY);
   }, 100);
 
-  useEffect(() => {
-    document.addEventListener('scroll', handleScroll);
-    return () => {
-      document.removeEventListener('scroll', handleScroll);
-    };
-  }, [isVisible, prevScrollY]);
-
   const scrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.addEventListener(
@@ -37,6 +30,13 @@ export default function ScrollTopBtn() {
       { once: true }
     );
   };
+
+  useEffect(() => {
+    document.addEventListener('scroll', handleScroll);
+    return () => {
+      document.removeEventListener('scroll', handleScroll);
+    };
+  }, [isVisible, prevScrollY]);
 
   return (
     <div

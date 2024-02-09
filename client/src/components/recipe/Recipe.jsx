@@ -26,6 +26,14 @@ export default function Recipe() {
   const [optimisticVotes, setOptimisticVotes] = useState(0);
   const [optimisticRating, setOptimisticRating] = useState(0);
 
+  const from = searchParams.get('from') || '/recipes';
+  const fromName = from
+    .replace('/', '')
+    .replace('-', ' ')
+    .split(' ')
+    .map((el) => el[0].toUpperCase() + el.slice(1))
+    .join(' ');
+
   useEffect(() => {
     (async () => {
       setIsLoading(true);
@@ -49,14 +57,6 @@ export default function Recipe() {
       setIsLoading(false);
     })();
   }, [slug]);
-
-  const from = searchParams.get('from') || '/recipes';
-  const fromName = from
-    .replace('/', '')
-    .replace('-', ' ')
-    .split(' ')
-    .map((el) => el[0].toUpperCase() + el.slice(1))
-    .join(' ');
 
   return (
     <article id="Recipe">
@@ -135,7 +135,12 @@ export default function Recipe() {
               </div>
             )}
 
-            <RecipeButtons slug={recipe.slug} name={recipe.name} />
+            <RecipeButtons
+              slug={recipe.slug}
+              name={recipe.name}
+              author={recipe.author}
+            />
+
             <RecipeRating
               slug={recipe.slug}
               votes={recipe.votes}
